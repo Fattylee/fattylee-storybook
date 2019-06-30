@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>List of Ideas</title>
+  </head>
+  <body>
+    
+    <ol>
+      {{#each ideas }}
+        <li style="border-bottom: solid 1px">
+          <span>{{title}}</span>
+          <div>{{details}} 
+            <a href="/ideas/edit/{{id}}">Edit X</a>
+            <form action="/ideas/{{_id}}?_method=DELETE" method="post">
+            <button>Delete X</button>
+            </form>
+          </div>
+        </li>
+        {{else}}
+        <p>No ideas</p>
+      {{/each}}
+    </ol>
+  </body>
+</html>
