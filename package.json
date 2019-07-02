@@ -2,7 +2,7 @@
   "name": "fattylee-story-book",
   "version": "1.0.0",
   "description": "this app is used for managing stories of all kinds",
-  "main": "db.js",
+  "main": "index.js",
   "directories": {
     "test": "tests"
   },
@@ -20,7 +20,8 @@
   },
   "scripts": {
     "test": "jest --watchAll",
-    "start": "nodemon index.js"
+    "dev": "nodemon index.js"
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
