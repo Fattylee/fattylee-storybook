@@ -1,5 +1,5 @@
 {
-  "name": "fattylee-story-book",
+  "name": "fattylee-storybook",
   "version": "1.0.0",
   "description": "this app is used for managing stories of all kinds",
   "main": "index.js",
@@ -20,8 +20,9 @@
   },
   "scripts": {
     "test": "jest --watchAll",
-    "dev": "nodemon index.js"
-    "start": "node index.js"
+    "dev": "export NODE_ENV=\"development\" && nodemon index.js",
+    "start": "node index.js",
+    "deploy": "echo 'i am ready for a deployment'"
   },
   "keywords": [],
   "author": "",
