@@ -12,7 +12,7 @@
     "method-override": "3.0.0",
     "express-handlebars": "3.1.0",
     "morgan": "1.9.1",
-    "bcryptjs": "5.4.16",
+    "bcryptjs": "2.4.3",
     "config": "3.1.0"
   },
   "devDependencies": {
@@ -24,7 +24,10 @@
     "start": "node index.js",
     "deploy": "echo 'i am ready for a deployment'"
   },
-  "keywords": [],
-  "author": "",
+  "engines": {
+    "node": "12.1.0"
+  },
+  "keywords": ["express", "nodejs", "passportjs", "express-handlebars", "stories"],
+  "author": "fatai balogun",
   "license": "ISC"
 }
