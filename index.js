@@ -4,7 +4,8 @@ const methodOverride = require('method-override');
 const morgan = require('morgan');
 const exphbs = require('express-handlebars');
 const path = require('path');
-const ideas = require('./routes/ideas');
+const stories = require('./routes/stories');
+const users = require('./routes/users');
 
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
@@ -36,7 +37,8 @@ app.set('view engine', 'html');
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.use('/ideas', ideas);
+app.use('/stories', stories);
+app.use('/users', users);
 app.get('/', (req, res) => {
   res.render('index');
 });

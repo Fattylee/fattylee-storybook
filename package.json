@@ -1,7 +1,7 @@
 {
-  "name": "testing-demo",
+  "name": "fattylee-story-book",
   "version": "1.0.0",
-  "description": "",
+  "description": "this app is used for managing stories of all kinds",
   "main": "db.js",
   "directories": {
     "test": "tests"
@@ -10,8 +10,8 @@
     "mongoose": "5.4.16",
     "express": "4.16.4",
     "method-override": "3.0.0",
-    "express-handlebars": "3.1.0"
-    "morgan": "1.9.1"
+    "express-handlebars": "3.1.0",
+    "morgan": "1.9.1",
     "bcryptjs": "5.4.16"
   },
   "devDependencies": {

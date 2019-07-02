@@ -1,0 +1,11 @@
+<h3>Login Page</h3>
+    {{#each errors}}
+      <p>{{error}}</p>
+    {{/each}}
+<form method="post" action="/users/login">
+  <input placeholder="enter title" name="title" value="{{idea.title}}">
+  <div>
+    <textarea name="details" placeholder="enter details">{{idea.details}}</textarea>
+  </div>
+  <button>Login</button>
+</form>

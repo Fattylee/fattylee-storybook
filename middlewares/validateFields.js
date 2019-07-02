@@ -15,8 +15,8 @@ const validateAddFields = async (req, res, next) => {
     errors.push({error: 'details min. length character is 10'});
   }
   if(errors.length > 0){
-    const idea = { title, details, };
-    res.render('ideas/add', {errors, idea});
+    const story = { title, details, };
+    res.render('stories/add', {errors, story});
   }
   else {
     next();
@@ -40,8 +40,8 @@ const validateEditFields = async (req, res, next) => {
     errors.push({error: 'details min. length character is 10'});
   }
   if(errors.length > 0){
-    const idea = { title, details, _id: req.params.id };
-    res.render('ideas/edit', {errors, idea});
+    const story  = { title, details, _id: req.params.id };
+    res.render('stories/edit', {errors, story});
   }
   else {
     next();
@@ -50,4 +50,3 @@ const validateEditFields = async (req, res, next) => {
 
 exports.validateEditFields = validateEditFields;
 exports.validateAddFields = validateAddFields;
-

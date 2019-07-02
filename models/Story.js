@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const Idea = mongoose.model('idea', new Schema({
+const Story = mongoose.model('story', new Schema({
   title: String,
   details: String,
   date: {
@@ -10,4 +10,4 @@ const Idea = mongoose.model('idea', new Schema({
   },
 }));
 
-module.exports = Idea;
+module.exports = Story;

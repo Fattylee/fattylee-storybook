@@ -1,0 +1,20 @@
+
+    <div class="container">
+      {{#each stories }}
+        <div class="card mb-3"> 
+          <div class="card-body"> 
+            <h5 class="card-title text-center">{{title}}</h5>  
+            <p class="card-text">{{details}}</p> 
+           
+          </div> 
+          <div class="card-footer">
+           <a href="/stories/edit/{{id}}" class="btn btn-block btn-dark mb-2">Edit </a> 
+             <form action="/stories/{{_id}}?_method=DELETE" method="post">
+              <button class="btn btn-block btn-danger">Delete </button> 
+            </form>
+            </div>
+        </div>
+           {{else}}
+        <p class="jumbotron">No stories</p>
+      {{/each}}
+    </div>
