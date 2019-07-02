@@ -12,7 +12,8 @@
     "method-override": "3.0.0",
     "express-handlebars": "3.1.0",
     "morgan": "1.9.1",
-    "bcryptjs": "5.4.16"
+    "bcryptjs": "5.4.16",
+    "config": "3.1.0"
   },
   "devDependencies": {
     "jest": "24.1.0"

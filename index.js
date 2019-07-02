@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const express = require('express');
 const methodOverride = require('method-override');
 const morgan = require('morgan');
@@ -6,28 +5,10 @@ const exphbs = require('express-handlebars');
 const path = require('path');
 const stories = require('./routes/stories');
 const users = require('./routes/users');
+const startDB = require('./startups/db');
 
-mongoose.set('useNewUrlParser', true);
-mongoose.set('useFindAndModify', false);
-mongoose.set('useCreateIndex', true);
-mongoose.Promise = global.Promise;
-
-
+startDB();
 const app = express();
-
-const startDB = async (mongdbUri) => {
-  try {
-    await mongoose.connect(mongdbUri);
-    console.log('connected to mongodb(expert)');
-  }
-  catch(ex) {
-    console.error('Could not connect', ex.message);
-  }
-};
-startDB('mongodb://localhost/expert');
-
-
-
 app.use(morgan('tiny'));
 app.use(methodOverride('_method'));
 app.use(express.json());
