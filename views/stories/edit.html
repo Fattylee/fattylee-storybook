@@ -1,13 +1,8 @@
 <div class="container">
-  <h3>Edit story</h3>
-    {{#each errors}}
-      <div class="alert alert-danger border border-danger alert-dismissible fade show" role="alert">{{error}}
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span> 
-      </button>
-      </div>
-    {{/each}}
-    
+  <h3 class="text-center">Edit story</h3>
+
+ <div class="row">
+    <div class="col-sm-8 mx-auto">    
 <form method="post" action="/stories/{{story._id}}?_method=PUT">
   <div class="form-group">
     <label for="title">Title</label>
@@ -20,5 +15,8 @@
   </div>
 
   <button type="submit" class="btn btn-block  btn-primary">Edit story</button>
+  <a href="/stories" class="btn btn-block  btn-secondary">Cancel</a>
 </form>
+</div>
+</div>
 </div>

@@ -9,7 +9,7 @@ mongoose.Promise = global.Promise;
 const startDB = async () => {
   try {
     const mongdbUri = config.get('MONGODB_URI');
-    console.log('mongdbUri', mongdbUri);
+    //console.log('mongdbUri', mongdbUri);
     await mongoose.connect(mongdbUri);
     console.log('connected to mongodb(expert)');
   }
@@ -19,4 +19,3 @@ const startDB = async () => {
 };
 
 module.exports = startDB;
-

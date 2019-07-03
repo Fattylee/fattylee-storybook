@@ -79,6 +79,7 @@ const validateRegisterFields = async (req, res, next) => {
   const email = req.body.email.trim();
   const password = req.body.password.trim();
   const confirmPassword = req.body.confirmPassword.trim();
+  const user  = { name, email, password, confirmPassword };
   if(!name){
     errors.push({error: 'pls enter some text in the name field'})
   }
@@ -104,10 +105,11 @@ const validateRegisterFields = async (req, res, next) => {
     errors.push({error: 'password and confirm password does not match'});
   }
   if(errors.length > 0){
-    const user  = { name, email, password, confirmPassword };
     res.render('users/register', {errors, user});
   }
   else {
+    req.user = user;
+    req.errors = errors;
     next();
   }
 }
