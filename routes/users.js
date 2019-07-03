@@ -5,7 +5,7 @@ const User = require('../models/User')
 const {validateAddFields, validateEditFields, validateLoginFields, validateRegisterFields} = require('../middlewares/validateFields');
 
 router.get('/', async (req, res) => {
-  const users = await User.find();
+  const users = await User.find().sort('-date').select('email name').limit(20);
   //const userExist = await User.findOne({email: 'fatai4humility@yahoo.com '});
   res.status(200).json(users);
 });
@@ -27,6 +27,7 @@ router.post('/register', validateRegisterFields, async (req, res) => {
       password: hash,
     });
     const newUser = await user.save();
+    req.flash('success_msg', 'registration was successful');
     res.redirect('/stories')
   }
   catch(err) {
