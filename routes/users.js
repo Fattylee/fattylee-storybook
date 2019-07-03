@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User')
-const {validateAddFields, validateEditFields} = require('../middlewares/validateFields');
+const {validateAddFields, validateEditFields, validateLoginFields, validateRegisterFields} = require('../middlewares/validateFields');
 
 
 router.get('/login', (req, res) => {
@@ -12,11 +12,11 @@ router.get('/register', (req, res) => {
   res.render('users/register');
 });
 
-router.post('/register', (req, res) => {
+router.post('/register', validateRegisterFields, (req, res) => {
   res.redirect('/')
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', validateLoginFields, (req, res) => {
   res.redirect('/')
 });
 
