@@ -35,18 +35,13 @@ app.use((req, res, next) => {
   next();
 });
 
-
 app.use('/stories', stories);
 app.use('/users', users);
 app.get('/', (req, res) => {
   res.render('index');
 });
 
-app.get('/app', (req, res) => {
-  req.flash('success_msg', 'ok babe!!!');
-  req.flash('error_msg', 'another error here!!!');
-  res.redirect('/');
-});
+
 app.get('/about', (req, res) => {
   res.render('about');
 });
