@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-sm navbar-dark bg-primary mb-3">
+<nav class="navbar navbar-expand-sm navbar-dark bg-primary mb-4">
 <div class='container'>
   <a class="navbar-brand" href="/">StoryBook</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -6,18 +6,32 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav mr-auto">
       <li class="nav-item ">
-        <a class="nav-link" href="/">Home</a>
+        <a class="nav-link" href="/about">About</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/stories">Stories</a>
+      
+    </ul>
+    
+    <ul class="navbar-nav ml-auto dropdown">
+    <li class="nav-item ">
+        <a class="nav-link" href="/users/login">Login</a>
       </li>
      <li class="nav-item">
-        <a class="nav-link" href="/stories/add">Add story</a>
+        <a class="nav-link" href="/users/register">Register</a>
       </li>
+      
+    <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Story
+    </a>
+    
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+     <a class="dropdown-item text-dark" href="/stories">View stories</a>
+    <a class="dropdown-item text-dark" href="/stories/add">Add story</a>
+    
+    </div>
     </ul>
-
+    
   </div>
   </div>
 </nav>
