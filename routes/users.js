@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const router = express.Router();
 const User = require('../models/User')
 const {validateAddFields, validateEditFields, validateLoginFields, validateRegisterFields} = require('../middlewares/validateFields');
+const passport = require('passport');
 
 router.get('/', async (req, res) => {
   const users = await User.find().sort('-date').select('email name').limit(20);
@@ -39,9 +40,16 @@ router.post('/register', validateRegisterFields, async (req, res) => {
   }
 });
 
-router.post('/login', validateLoginFields, (req, res) => {
+router.post('/login', validateLoginFields, passport.authenticate('local', {failureRedirect: 'login', failureFlash: true}), (req, res, next) => {
+  /*
+  passport.authenticate('local', {
+    failureRedirect: '/users/login',
+    failureFlash: true,
+    successRedirect: '/stories',
+  })(req, res, next);
+  */
   req.flash('success_msg', 'Your login was successful')
-  res.redirect('/')
+  res.redirect('/stories')
 });
 
 

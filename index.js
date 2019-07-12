@@ -9,22 +9,27 @@ const stories = require('./routes/stories');
 const users = require('./routes/users');
 const index = require('./routes');
 const startDB = require('./startups/db');
+const passport = require('passport');
 
 startDB();
+require('./config/passport')(passport);
 const app = express();
 app.use(morgan('dev'));
 app.use(methodOverride('_method'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.engine('html', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'html');
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-  secret: 'keyboard cat',                                                  
-  resave: false,
-  saveUninitialized: true
-}));
+  secret: 'keyboard cat',
+  saveUninitialized: true,
+  resave: true,
+  }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(flash());
 

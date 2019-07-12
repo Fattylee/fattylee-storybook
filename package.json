@@ -13,14 +13,14 @@
     "express-handlebars": "3.1.0",
     "morgan": "1.9.1",
     "bcryptjs": "2.4.3",
-    "config": "3.1.0",
     "passport": "0.4.0",
     "passport-local": "1.0.0",
     "connect-flash": "0.1.1",
     "express-session": "1.16.2"
   },
   "devDependencies": {
-    "jest": "24.1.0"
+    "jest": "24.1.0",
+    "nodemon": "1.90.0"
   },
   "scripts": {
     "test": "jest --watchAll",

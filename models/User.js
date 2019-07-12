@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const { Schema } = mongoose;
 
-const User = mongoose.model('user', new Schema({
+const UserSchema =  new Schema({
   name: {
     type: String,
     required: true,
@@ -22,7 +23,13 @@ const User = mongoose.model('user', new Schema({
     type: Date,
     default: Date.now,
   },
-}));
+});
 
-module.exports = User;
+UserSchema.methods.isValidPassword = function () {
+  const user = this;
+  console.log('isValidPassword');
+  return true;
+};
+
+module.exports = mongoose.model('user', UserSchema);
 
