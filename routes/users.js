@@ -39,6 +39,7 @@ router.post('/register', validateRegisterFields, async (req, res) => {
 });
 
 router.post('/login', validateLoginFields, (req, res) => {
+  req.flash('success_msg', 'Your login was successful')
   res.redirect('/')
 });
 
