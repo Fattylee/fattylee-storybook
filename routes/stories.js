@@ -16,7 +16,7 @@ router.post('/', validateAddFields, async (req, res) => {
 
 router.get('/', async (req, res) => {
   const stories = await Story.find().sort('-date');
-  res.render('stories', { stories, pageTitle: 'All'});
+  res.render('stories', { stories, pageTitle: 'Stories'});
 });
 
 router.get('/add', (req, res) => {

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const config = require('config');
+const keys = require('../config/keys');
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
@@ -8,8 +8,8 @@ mongoose.Promise = global.Promise;
 
 const startDB = async () => {
   try {
-    const mongdbUri = config.get('MONGODB_URI');
-    //console.log('mongdbUri', mongdbUri);
+    const mongdbUri = keys.MONGODB_URI;
+    console.log('mongdbUri', mongdbUri);
     await mongoose.connect(mongdbUri);
     console.log('connected to mongodb(expert)');
   }
