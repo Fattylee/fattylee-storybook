@@ -27,15 +27,16 @@ router.post('/register', validateRegisterFields, async (req, res) => {
       password: hash,
     });
     const newUser = await user.save();
-    req.flash('success_msg', 'registration was successful');
-    res.redirect('/stories')
+    req.flash('success_msg', 'You are now registered, pls login');
+    res.redirect('/users/login')
   }
   catch(err) {
-    const errors = req.errors;
-    if(err.message.includes('duplicate key error')) errors.push({error: `email "${req.user.email}" already registered`});
-    res.render('users/register', {errors, user: req.user, pageTitle: 'Error'})
+    if(err.message.includes('duplicate key error')) {
+      req.flash('error_msg', `email "${req.userValue.email}" already registered, pls login to your account`);
+    return res.redirect('login');
+    }
+    res.status(500).render('')
   }
-  
 });
 
 router.post('/login', validateLoginFields, (req, res) => {
@@ -45,3 +46,4 @@ router.post('/login', validateLoginFields, (req, res) => {
 
 
 module.exports = router;
+

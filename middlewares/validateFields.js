@@ -16,7 +16,7 @@ const validateAddFields = async (req, res, next) => {
   }
   if(errors.length > 0){
     const story = { title, details, };
-    res.render('stories/add', {errors, story});
+    res.render('stories/add', {errors, story, pageTitle: 'New'});
   }
   else {
     next();
@@ -41,7 +41,7 @@ const validateEditFields = async (req, res, next) => {
   }
   if(errors.length > 0){
     const story  = { title, details, _id: req.params.id };
-    res.render('stories/edit', {errors, story});
+    res.render('stories/edit', {errors, story, pageTitle: 'Edit'});
   }
   else {
     next();
@@ -66,7 +66,7 @@ const validateLoginFields = async (req, res, next) => {
   }
   if(errors.length > 0){
     const user  = { email, password };
-    res.render('users/login', {errors, user});
+    res.render('users/login', {errors, user, pageTitle: 'Login'});
   }
   else {
     next();
@@ -105,10 +105,10 @@ const validateRegisterFields = async (req, res, next) => {
     errors.push({error: 'password and confirm password does not match'});
   }
   if(errors.length > 0){
-    res.render('users/register', {errors, user});
+    res.render('users/register', {errors, user, pageTitle: 'Register'});
   }
   else {
-    req.user = user;
+    req.userValue = user;
     req.errors = errors;
     next();
   }
