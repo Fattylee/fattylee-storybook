@@ -16,11 +16,11 @@ router.post('/', validateAddFields, async (req, res) => {
 
 router.get('/', async (req, res) => {
   const stories = await Story.find().sort('-date');
-  res.render('stories', { stories, });
+  res.render('stories', { stories, pageTitle: 'All'});
 });
 
 router.get('/add', (req, res) => {
-  res.render('stories/add');
+  res.render('stories/add', {pageTitle: 'New'});
 });
 
 router.put('/:id', validateEditFields, async (req, res) => {
@@ -47,7 +47,7 @@ router.delete('/:id', async (req, res) => {
 
 router.get('/edit/:id', async (req, res) => {
   const story = await Story.findById(req.params.id);
-  res.render('stories/edit', {story}); 
+  res.render('stories/edit', {story, pageTitle: 'Edit'}); 
 });
 
 module.exports = router;

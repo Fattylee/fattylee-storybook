@@ -24,7 +24,7 @@
   },
   "scripts": {
     "test": "jest --watchAll",
-    "dev": "export NODE_ENV=\"development\" && nodemon index.js",
+    "dev": "export NODE_ENV=\"development\" && nodemon index.js -e 'js  json'",
     "start": "node index.js",
     "deploy": "echo 'i am ready for a deployment'"
   },

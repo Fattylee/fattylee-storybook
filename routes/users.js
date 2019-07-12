@@ -11,11 +11,11 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/login', (req, res) => {
-  res.render('users/login');
+  res.render('users/login', {pageTitle: 'Login'});
 });
 
 router.get('/register', (req, res) => {
-  res.render('users/register');
+  res.render('users/register', {pageTitle: 'Register'});
 });
 
 router.post('/register', validateRegisterFields, async (req, res) => {
@@ -33,7 +33,7 @@ router.post('/register', validateRegisterFields, async (req, res) => {
   catch(err) {
     const errors = req.errors;
     if(err.message.includes('duplicate key error')) errors.push({error: `email "${req.user.email}" already registered`});
-    res.render('users/register', {errors, user: req.user})
+    res.render('users/register', {errors, user: req.user, pageTitle: 'Error'})
   }
   
 });

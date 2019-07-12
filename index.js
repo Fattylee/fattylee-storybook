@@ -7,6 +7,7 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const stories = require('./routes/stories');
 const users = require('./routes/users');
+const index = require('./routes');
 const startDB = require('./startups/db');
 
 startDB();
@@ -37,14 +38,7 @@ app.use((req, res, next) => {
 
 app.use('/stories', stories);
 app.use('/users', users);
-app.get('/', (req, res) => {
-  res.render('index');
-});
-
-
-app.get('/about', (req, res) => {
-  res.render('about');
-});
+app.use('/', index);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log('Server running on port', port));

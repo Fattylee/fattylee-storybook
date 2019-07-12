@@ -1,7 +1,13 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Storybook</title>
+    <title> 
+    {{#if pageTitle }}
+    {{ pageTitle }} || Storybook 
+    {{ else}}
+     Storybook 
+    {{/if}}
+    </title>
     <link rel="shortcut icon" href="/img/storybook.png" />
     <link rel="stylesheet" href="/bootstrap-4.0.0-beta/css/bootstrap-4.0.0-beta.min.css" />
       <link rel="stylesheet" href="/fontawesome-free-5.8.2-web/css/all.css">
@@ -17,10 +23,12 @@
   <body>
   
     {{> _navbar }}
+    
     <div class="container">
     {{> _msg }}
     </div>
     {{> _errors }}
+    
     {{{body}}}
     
    <!-- Optional JavaScript -->
