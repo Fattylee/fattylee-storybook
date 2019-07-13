@@ -6,10 +6,12 @@ module.exports = (passport) => {
   passport.use(new LocalStrategy(
   {usernameField: 'email'}, 
   async (email, password, done) => {
-    console.log('email', email, 'password', password);
+    
     const user = await User.findOne({email});
     if(!user) return done(null, false, {message: 'Email not found'});
-    if(!user.isValidPassword()) return done(null, false, {message: 'Password is incorrect'});
+    const result = await user.isValidPassword(password).catch(err => console.error('bcrypt password err', err));
+    
+    if(!result) return done(null, false, {message: 'Password is incorrect'});
     
     return done(null, user);
   }));
@@ -24,4 +26,3 @@ module.exports = (passport) => {
     return done(null, user);
   });
 }
-

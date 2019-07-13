@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/add', (req, res) => {
-  res.render('stories/add', {pageTitle: 'New'});
+  res.render('stories/add', {pageTitle: 'Create story'});
 });
 
 router.put('/:id', validateEditFields, async (req, res) => {
