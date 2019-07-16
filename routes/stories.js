@@ -3,19 +3,25 @@ const router = express.Router();
 const Story = require('../models/Story');
 const {validateAddFields, validateEditFields} = require('../middlewares/validateFields');
 
-router.post('/', validateAddFields, async (req, res) => {
+router.post('/', validateAddFields, async (req, res, next) => {
   
     const newStory = new Story({
-      title: req.body.title,
-      details: req.body.details,
+      ...req.storyValue,
+      status: req.body.status,
+      user: req.user._id,
     });
-    await newStory.save();
-    req.flash('success_msg', 'story was published successfully');
+    const story = await newStory.save();
+    req.flash('success_msg', `"${story.title}" was created successfully`);
     res.redirect('/stories');
 });
 
+// come back to this
+// get all stories with associated user
 router.get('/', async (req, res) => {
-  const stories = await Story.find().sort('-date');
+  const stories = await Story.find({user: req.user._id})
+  //.populate('user', 'email ')
+  .sort('-date');
+  console.log('stories', stories);
   res.render('stories', { stories, pageTitle: 'Stories'});
 });
 
@@ -33,6 +39,7 @@ router.put('/:id', validateEditFields, async (req, res) => {
   
   story.title = req.body.title;
   story.details = req.body.details;
+  story.status = req.body.status;
   await story.save();
   req.flash('success_msg', 'story was updated successfully');
   res.redirect('/stories');
@@ -48,6 +55,10 @@ router.delete('/:id', async (req, res) => {
 router.get('/edit/:id', async (req, res) => {
   const story = await Story.findById(req.params.id);
   res.render('stories/edit', {story, pageTitle: 'Edit'}); 
+}); 
+
+router.all('/*', (req, res, next) => {
+  res.send('404 not found, Stories');
 });
 
 module.exports = router;

@@ -16,7 +16,8 @@
     "passport": "0.4.0",
     "passport-local": "1.0.0",
     "connect-flash": "0.1.1",
-    "express-session": "1.16.2"
+    "express-session": "1.16.2",
+    "express-async-errors": ""
   },
   "devDependencies": {
     "jest": "24.1.0",
@@ -24,7 +25,7 @@
   },
   "scripts": {
     "test": "jest --watchAll",
-    "dev": "export NODE_ENV=\"development\" && nodemon index.js -e 'js  json'",
+    "dev": "export NODE_ENV=\"development\" && DEBUG=active:app nodemon index.js -e 'js  json'",
     "start": "node index.js",
     "start:stag": "export NODE_ENV=\"staging\" && nodemon index",
     "deploy": "echo 'i am ready for a deployment'"

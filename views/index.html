@@ -1,6 +1,42 @@
-<div class="container">
-   <div class="card card-body">
-    <h1 class="display-4 text-center">Welcome to Storybook app <span class="fas fa-book text-secondary"></span>
+{{#unless user}}
+<div class="jumbotron bg-dark jumbotron-fluid">
+  <div class="container text-center  text-white">
+    <h1 class="display-4" >Welcome to Storybook app<span class="fas fa-book text-secondary"></span>
     </h1>
-   </div>
-</div>
+    <p class="lead">Publish your thought and make a difference! </p>
+    <p><a href='/users/register'>Register</a> or <a href='/users/login'>Login</a> to get started</p>
+  </div>
+  {{else}}
+  <div class="container mt-4">
+    <h3>Latest stories</h3>
+  </div>
+  
+  {{!-- display only public stories --}}
+      <div class="container">
+      <div class="row">
+        {{#each stories }}
+        <div class=" col-sm-6">
+          <div class="card mb-3"> 
+          <div class="card-body"> 
+            <h5 class="card-title text-center">{{title}}</h5>  
+            <p class="card-text">{{details}}</p>
+          </div> 
+          <div class="card-footer">
+           <a href="/stories/edit/{{id}}" class="btn btn-block btn-dark mb-2">Edit </a> 
+             <form action="/stories/{{_id}}?_method=DELETE" method="post">
+              <button class="btn btn-block btn-danger">Delete </button> 
+            </form>
+            <p class="text-muted small mt-2">
+            Posted on July 15th 2019 by {{user}}
+          </p>
+          </div><!-- class="card-footer" -->
+        </div><!-- End Card-->
+      </div><!-- End col -->
+           {{else}}
+        <div class="col">
+           <p class="jumbotron">No published stories</p>
+         </div>
+    {{/each}}
+  </div><!-- End row  -->
+</div><!-- End container -->
+{{/unless}}

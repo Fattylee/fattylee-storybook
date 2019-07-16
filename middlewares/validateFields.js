@@ -1,7 +1,12 @@
+const debug = require('debug')('active:app');
+
+
 const validateAddFields = async (req, res, next) => {
   let errors = [];
   const title = req.body.title.trim();
     const details = req.body.details.trim();
+    const story = {title, details};
+    
   if(!title){
     errors.push({error: 'pls enter some text in the title field'})
   }
@@ -15,10 +20,10 @@ const validateAddFields = async (req, res, next) => {
     errors.push({error: 'details min. length character is 10'});
   }
   if(errors.length > 0){
-    const story = { title, details, };
-    res.render('stories/add', {errors, story, pageTitle: 'New'});
+    res.render('stories/add', {errors, story, pageTitle: 'Create story'});
   }
   else {
+    req.storyValue = story;
     next();
   }
 };
@@ -87,7 +92,7 @@ const validateRegisterFields = async (req, res, next) => {
     errors.push({error: 'name min. length character is 5'});
   }
   if(!email){
-    errors.push({error: 'pls enter some text in the email field'})
+    errors.push({error: 'pls enter some text in the email field'});
   }
   else if(email.length < 5){
     errors.push({error: 'email min. length character is 5'});
@@ -104,8 +109,12 @@ const validateRegisterFields = async (req, res, next) => {
   else if(confirmPassword !== password){
     errors.push({error: 'password and confirm password does not match'});
   }
-  if(errors.length > 0){
-    res.render('users/register', {errors, user, pageTitle: 'Register'});
+  if(errors.length > 0) {
+    return res.render('users/register', {
+      errors, 
+      userValue: user, 
+      pageTitle: 'Register',
+      });
   }
   else {
     req.userValue = user;

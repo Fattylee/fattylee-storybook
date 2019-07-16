@@ -22,13 +22,12 @@ const UserSchema =  new Schema({
   date: {
     type: Date,
     default: Date.now,
-  },
-});
+  }, 
+}, {usePushEach: true});
 
 UserSchema.methods.isValidPassword = async function (password) {
   const user = this;
   return bcrypt.compare(password, user.password);
 };
 
-module.exports = mongoose.model('user', UserSchema);
-
+module.exports = mongoose.model('User', UserSchema);
