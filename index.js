@@ -13,12 +13,12 @@ const startDB = require('./startups/db');
 const passport = require('passport');
 const isAuthenticated = require('./middlewares/auth');
 const debug = require('debug')('active:app');
-const { isNotStories, abu, isNotCreateStories, capitalizeEach, displayDate, isEqual } = require('./helpers/handlebars');
+const { isNotEqual, capitalizeEach, displayDate, isEqual } = require('./helpers/handlebars');
 
 const hbs = exphbs.create({
   // optional config goes here
   extname: 'html',
-  helpers: { isNotStories, abu, isNotCreateStories, capitalizeEach, displayDate, isEqual},
+  helpers: { capitalizeEach, displayDate, isEqual, isNotEqual },
 });
 
 startDB();

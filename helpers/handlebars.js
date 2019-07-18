@@ -3,17 +3,7 @@ const active = require('debug')('active:app');
 
 
 module.exports = {
-    abu: function (str){return 'Allaahu Akbar!' + str;},
-    isNotStories(pageTitle, options) {
-      if(pageTitle !== 'Stories') 
-        return options.fn(this);
-      return options.inverse(this);
-      },
-    isNotCreateStories(pageTitle, options) {
-      if(pageTitle !== 'Create story') 
-        return options.fn(this);
-      return options.inverse(this);
-      },
+    
     capitalizeEach(options) {
       const {name, sex} = options.hash;
       return name.replace(/<.*?>/i, 'UPPER');
@@ -31,7 +21,13 @@ module.exports = {
       return  formattedDate;
     },
     isEqual(a, b, options) {
+      active(a, b, typeof a, typeof b);
       if(a.toString() === b.toString()) return options.fn(this);
+      options.inverse(this);
+    },
+    isNotEqual(a, b, options) {
+      active(a, b, typeof a, typeof b);
+      if(a.toString() !== b.toString()) return options.fn(this);
       options.inverse(this);
     },
 };
