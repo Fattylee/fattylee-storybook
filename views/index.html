@@ -11,7 +11,6 @@
   <div class="container mt-4">
     <h3>Latest stories</h3>
   </div>
-  
   {{!-- display only public stories --}}
       <div class="container">
       <div class="row">
@@ -20,13 +19,17 @@
           <div class="card mb-3"> 
           <div class="card-body"> 
             <h5 class="card-title text-center">{{title}}</h5>  
-            <p class="card-text">{{details}}</p>
+            <p class="card-text">{{details}}
+              <a class="btn btn-dark text-white">Read more...</a>
+            </p>
           </div> 
           <div class="card-footer">
+            {{#isEqual  user._id ../user._id}}
            <a href="/stories/edit/{{id}}" class="btn btn-block btn-dark mb-2">Edit </a> 
              <form action="/stories/{{_id}}?_method=DELETE" method="post">
               <button class="btn btn-block btn-danger">Delete </button> 
             </form>
+            {{/isEqual}}
             <p class="text-muted small mt-2">
             Posted on {{displayDate updatedAt 'MMM DD[th] YYYY [at] hh:mm a' }} By {{user.name}}
           </p>

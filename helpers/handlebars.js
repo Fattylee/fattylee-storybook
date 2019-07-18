@@ -26,9 +26,12 @@ module.exports = {
       .join(' ');
     },
     displayDate(date, format) {
-      //const {date} = options.hash;
       active('date:', date, 'format', format);
       const formattedDate = dayjs(date).format(format);
       return  formattedDate;
+    },
+    isEqual(a, b, options) {
+      if(a.toString() === b.toString()) return options.fn(this);
+      options.inverse(this);
     },
 };

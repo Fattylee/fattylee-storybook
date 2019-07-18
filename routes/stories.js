@@ -17,9 +17,8 @@ router.post('/', validateAddFields, async (req, res, next) => {
       status: req.body.status,
       user: req.user._id,
     });
-    debug('newStory b4 save', newStory);
     const story = await newStory.save();
-    debug('newStory after save', newStory);
+    
     req.flash('success_msg', `"${story.title}" was created successfully`);
     res.redirect('/stories');
 });
@@ -44,6 +43,11 @@ router.put('/:id', validateEditFields, async (req, res) => {
   if(!story){
     req.flash('error_msg', 'story not found');
     return res.redirect('/stories');
+  }
+  
+  if(story.user.toString() !== req.user._id.toString()) {
+    req.flash('error_msg', 'Unauthorized, not your story');
+  return res.redirect('/');
   }
   
   story.title = req.body.title;

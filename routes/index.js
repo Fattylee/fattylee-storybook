@@ -9,7 +9,7 @@ router.all('/*', (error, req, res, next) => {
 router.get('/', async (req, res) => {
   
   const stories = await Story.find({})
-  .populate('user', 'name -_id')
+  .populate('user', 'name')
   .sort('-updatedAt');
   
   res.render('index', { stories, pageTitle: req.user ? 'Feeds' : 'Welcome' });
