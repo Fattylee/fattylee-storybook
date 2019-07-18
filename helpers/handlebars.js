@@ -3,7 +3,6 @@ const active = require('debug')('active:app');
 
 
 module.exports = {
-    
     capitalizeEach(options) {
       const {name, sex} = options.hash;
       return name.replace(/<.*?>/i, 'UPPER');
@@ -16,7 +15,6 @@ module.exports = {
       .join(' ');
     },
     displayDate(date, format) {
-      active('date:', date, 'format', format);
       const formattedDate = dayjs(date).format(format);
       return  formattedDate;
     },
@@ -26,7 +24,7 @@ module.exports = {
       options.inverse(this);
     },
     isNotEqual(a, b, options) {
-      active(a, b, typeof a, typeof b);
+      
       if(a.toString() !== b.toString()) return options.fn(this);
       options.inverse(this);
     },
