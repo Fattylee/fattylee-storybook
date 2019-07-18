@@ -19,11 +19,7 @@ const UserSchema =  new Schema({
     type: String,
     required: true,
   },
-  date: {
-    type: Date,
-    default: Date.now,
-  }, 
-}, {usePushEach: true });
+}, {usePushEach: true, timestamps: true });
 
 UserSchema.methods.isValidPassword = async function (password) {
   const user = this;

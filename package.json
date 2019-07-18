@@ -17,7 +17,8 @@
     "passport-local": "1.0.0",
     "connect-flash": "0.1.1",
     "express-session": "1.16.2",
-    "express-async-errors": ""
+    "express-async-errors": "3.1.1",
+    "dayjs": "1.8.15"
   },
   "devDependencies": {
     "jest": "24.1.0",
@@ -31,7 +32,8 @@
     "deploy": "echo 'i am ready for a deployment'"
   },
   "engines": {
-    "node": "12.1.0"
+    "node": "12.1.0",
+    "npm": "6:10:1"
   },
   "keywords": ["express", "nodejs", "passportjs", "express-handlebars", "stories"],
   "author": "fatai balogun",

@@ -1,3 +1,7 @@
+const dayjs = require('dayjs');
+const active = require('debug')('active:app');
+
+
 module.exports = {
     abu: function (str){return 'Allaahu Akbar!' + str;},
     isNotStories(pageTitle, options) {
@@ -20,5 +24,11 @@ module.exports = {
       return name.split(/\s+/)
       .map(e => e.slice(0,1).toUpperCase() + e.slice(1))
       .join(' ');
+    },
+    displayDate(date, format) {
+      //const {date} = options.hash;
+      active('date:', date, 'format', format);
+      const formattedDate = dayjs(date).format(format);
+      return  formattedDate;
     },
 };

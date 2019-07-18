@@ -1,12 +1,17 @@
 const router = require('express').Router();
 const Story = require('../models/Story');
+const debug = require('debug')('active:app');
+
+router.all('/*', (error, req, res, next) => {
+  res.send('ASYNC ERROR FOR INDEX: ' + error);
+});
 
 router.get('/', async (req, res) => {
-  const stories = await Story.find({status: 'public'})
+  
+  const stories = await Story.find({})
   .populate('user', 'name -_id')
-  .select('date')
-  .sort('-date');
-  return console.log('stories', stories, 'req.user', req.user);
+  .sort('-updatedAt');
+  
   res.render('index', { stories, pageTitle: req.user ? 'Feeds' : 'Welcome' });
  
 });

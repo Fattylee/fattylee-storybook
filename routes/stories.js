@@ -28,7 +28,6 @@ router.post('/', validateAddFields, async (req, res, next) => {
 // get all stories with associated user
 router.get('/', async (req, res) => {
   const stories = await Story.find({user: req.user._id, })
-  //.populate('user', 'name -_id')
   .sort('-updatedAt');
   
   debug('stories', stories);
