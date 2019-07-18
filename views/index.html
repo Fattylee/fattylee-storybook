@@ -7,6 +7,7 @@
     <p><a href='/users/register'>Register</a> or <a href='/users/login'>Login</a> to get started</p>
   </div>
   {{else}}
+  
   <div class="container mt-4">
     <h3>Latest stories</h3>
   </div>
@@ -14,7 +15,7 @@
   {{!-- display only public stories --}}
       <div class="container">
       <div class="row">
-        {{#each stories }}
+        {{#each stories}}
         <div class=" col-sm-6">
           <div class="card mb-3"> 
           <div class="card-body"> 
@@ -27,7 +28,7 @@
               <button class="btn btn-block btn-danger">Delete </button> 
             </form>
             <p class="text-muted small mt-2">
-            Posted on July 15th 2019 by {{user}}
+            Posted on July 15th 2019 by {{user.name}}
           </p>
           </div><!-- class="card-footer" -->
         </div><!-- End Card-->

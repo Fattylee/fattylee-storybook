@@ -22,10 +22,7 @@ const Story = mongoose.model('Story', new Schema({
     ref: 'User',
     required: true,
   },
-  date: {
-    type: Date,
-    default: Date.now,
-  },
-}));
+}, { timestamps: true }));
 
 module.exports = Story;
+

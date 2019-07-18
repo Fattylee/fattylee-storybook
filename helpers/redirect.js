@@ -1,7 +1,8 @@
-const redirectLogin = (req, res, next) => {
+const redirectToLogin = (req, res, next) => {
   if(req.user) return res.redirect('/stories');
   next();
 }
 
-exports.redirectLogin = redirectLogin;
+
+exports.redirectToLogin = redirectToLogin;
 

@@ -12,34 +12,15 @@ const index = require('./routes');
 const startDB = require('./startups/db');
 const passport = require('passport');
 const isAuthenticated = require('./middlewares/auth');
-const storyError = require('./controllers/errors/storyError');
 const debug = require('debug')('active:app');
-
+const { isNotStories, abu, isNotCreateStories, capitalizeEach} = require('./helpers/handlebars');
 
 const hbs = exphbs.create({
   // optional config goes here
   extname: 'html',
-  helpers: {
-    abu: function (str){return 'Allaahu Akbar!' + str;},
-    isNotStories(pageTitle, options) {
-      if(pageTitle !== 'Stories') 
-        return options.fn(this);
-      return options.inverse(this);
-      },
-    isNotCreateStories(pageTitle, options) {
-      if(pageTitle !== 'Create story') 
-        return options.fn(this);
-      return options.inverse(this);
-      },
-    capitalizeEach(first, options) {
-      const {name, sex} = options.hash;
-      if(sex === 'male') return 'You are a male';
-      return name.split(/\s+/)
-      .map(e => e.slice(0,1).toUpperCase() + e.slice(1))
-      .join(' ');
-    },
-  }
+  helpers: { isNotStories, abu, isNotCreateStories, capitalizeEach},
 });
+
 startDB();
 require('./config/passport')(passport);
 const app = express();
@@ -72,8 +53,6 @@ app.use((req, res, next) => {
 });
 
 app.use('/stories', isAuthenticated, stories);
-// catch all async errors related to stories route
-app.use('/stories', storyError);
 app.use('/users', users);
 app.use('/', index);
 

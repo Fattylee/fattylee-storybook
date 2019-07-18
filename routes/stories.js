@@ -1,8 +1,15 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 const Story = require('../models/Story');
 const {validateAddFields, validateEditFields} = require('../middlewares/validateFields');
+const debug = require('debug')('active:app');
+const storyError = require('../controllers/errors/storyError');
 
+
+
+// catch all async errors related to stories route
+router.all('/*', storyError);
+
+// Create a new story
 router.post('/', validateAddFields, async (req, res, next) => {
   
     const newStory = new Story({
@@ -10,7 +17,9 @@ router.post('/', validateAddFields, async (req, res, next) => {
       status: req.body.status,
       user: req.user._id,
     });
+    debug('newStory b4 save', newStory);
     const story = await newStory.save();
+    debug('newStory after save', newStory);
     req.flash('success_msg', `"${story.title}" was created successfully`);
     res.redirect('/stories');
 });
@@ -18,11 +27,12 @@ router.post('/', validateAddFields, async (req, res, next) => {
 // come back to this
 // get all stories with associated user
 router.get('/', async (req, res) => {
-  const stories = await Story.find({user: req.user._id})
-  //.populate('user', 'email ')
-  .sort('-date');
-  console.log('stories', stories);
-  res.render('stories', { stories, pageTitle: 'Stories'});
+  const stories = await Story.find({user: req.user._id, })
+  //.populate('user', 'name -_id')
+  .sort('-updatedAt');
+  
+  debug('stories', stories);
+  res.render('stories', { stories, pageTitle: 'Stories',  });
 });
 
 router.get('/add', (req, res) => {

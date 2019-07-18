@@ -6,7 +6,7 @@ const {validateAddFields, validateEditFields, validateLoginFields, validateRegis
 const passport = require('passport');
 const authLogout = require('../middlewares/authLogout');
 const debug = require('debug')('active:app');
-const { redirectLogin } = require('../helpers/redirect');
+const { redirectToLogin } = require('../helpers/redirect');
 
 
 router.get('/', async (req, res) => {
@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
   res.status(200).json(users);
 });
 
-router.get('/login', redirectLogin, async (req, res) => {
+router.get('/login', redirectToLogin, async (req, res) => {
   res.render('users/login', {pageTitle: 'Login'});
 });
 router.get('/logout', authLogout, (req, res) => {
@@ -23,7 +23,7 @@ router.get('/logout', authLogout, (req, res) => {
   res.redirect('login');
 })
 
-router.get('/register', (req, res) => {
+router.get('/register', redirectToLogin, (req, res) => {
   res.render('users/register', {pageTitle: 'Register'});
 });
 
