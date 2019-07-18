@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "jest": "24.1.0",
-    "nodemon": "1.90.0"
+    "nodemon": "1.19.0"
   },
   "scripts": {
     "test": "jest --watchAll",
@@ -32,7 +32,7 @@
     "deploy": "echo 'i am ready for a deployment'"
   },
   "engines": {
-   
+    "node": "12.1.0"
   },
   "keywords": ["express", "nodejs", "passportjs", "express-handlebars", "stories"],
   "author": "fatai balogun",
