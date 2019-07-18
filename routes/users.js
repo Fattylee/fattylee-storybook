@@ -10,7 +10,8 @@ const { redirectToLogin } = require('../helpers/redirect');
 
 
 router.get('/', async (req, res) => {
-  const users = await User.find().sort('-date').select('email name').limit(20);
+  
+  const users = await User.find().sort('-createdAt').select('email name').limit(20);
   
   res.status(200).json(users);
 });
@@ -19,6 +20,7 @@ router.get('/login', redirectToLogin, async (req, res) => {
   res.render('users/login', {pageTitle: 'Login'});
 });
 router.get('/logout', authLogout, (req, res) => {
+  req.logout();
   req.flash('success_msg', 'Your logout was successful')
   res.redirect('login');
 })
