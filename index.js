@@ -14,12 +14,7 @@ const passport = require('passport');
 const isAuthenticated = require('./middlewares/auth');
 const debug = require('debug')('active:app');
 const { isNotEqual, capitalizeEach, displayDate, isEqual } = require('./helpers/handlebars');
-
-const hbs = exphbs.create({
-  // optional config goes here
-  extname: 'html',
-  helpers: { capitalizeEach, displayDate, isEqual, isNotEqual },
-});
+const storyError = require('./controllers/errors/storyError');
 
 startDB();
 require('./config/passport')(passport);
@@ -28,8 +23,14 @@ app.use(morgan('dev'));
 app.use(methodOverride('_method'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.engine('html', hbs.engine);
+
+app.engine('html', exphbs({
+  // optional config goes here
+  extname: 'html',
+  helpers: { capitalizeEach, displayDate, isEqual, isNotEqual },
+}));
 app.set('view engine', 'html');
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
@@ -49,20 +50,28 @@ app.use((req, res, next) => {
   res.locals.error_msg = req.flash('error_msg');
   res.locals.error = req.flash('error');
   res.locals.user = req.user;
+  res.locals.success = req.flash('success');
   next();
 });
 
+//app.use('/stories', storyError);
+app.use('/', index);
 app.use('/stories', isAuthenticated, stories);
 app.use('/users', users);
-app.use('/', index);
+
+app.use((err, req, res, next) => {
+  debug('Async error', err);
+  if(err.message.includes('duplicate key error')) {
+      req.flash('error_msg', `email "${req.userValue.email}" already registered, pls login to your account`);
+    return res.redirect('/users/login');
+    }
+  res.status(500).render('errors/500');
+});
 
 /*
-app.use('/', (error, req, res, next) => {
-  debug('Async error', error);
-  res.send('Error async' + error);
-});
-*/
-
+app.all('*', (req, res, next) => {
+  res.render('404');
+});*/
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log('Server running on port', port));

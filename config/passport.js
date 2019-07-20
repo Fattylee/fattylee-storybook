@@ -13,7 +13,7 @@ module.exports = (passport) => {
     
     if(!result) return done(null, false, {message: 'Password is incorrect'});
     
-    return done(null, user);
+    return done(null, user, {message: 'na so u enter finish'});
   }));
   
   passport.serializeUser((user, done) => {

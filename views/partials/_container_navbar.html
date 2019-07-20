@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+<nav class="navbar navbar-expand-sm navbar-dark bg-secondary mb-4">
 <div class='container'>
   <a class="navbar-brand" href="/">StoryBook</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -17,10 +17,10 @@
    {{#if user}}
      <div class="dropdown">
     <a class="btn btn-primary dropdown-toggle nav-link text-left" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <i class="fas fa-book"></i>  Story </a>
+    <i class="fas fa-book"></i> Story
+    </a>
     
      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-       
      {{#isNotEqual 'Stories' pageTitle}}
      <a class="dropdown-item text-dark" href="/stories"><i class="fas fa-book-open"></i> View stories</a>
      {{/isNotEqual}}
@@ -28,7 +28,7 @@
      {{#isNotEqual 'Create story' pageTitle}}
     <a class="dropdown-item text-dark" href="/stories/add"><i class="fas fa-plus"></i> Add story</a>
     {{/isNotEqual}}
-    </div> <!-- end dropdown-menu -->
+    </div> 
     </div>
   
    

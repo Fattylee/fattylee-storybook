@@ -1,25 +1,29 @@
 const debug = require('debug')('active:app');
+const Joi = require('joi');
 
+const config = Joi.object().options({abortEarly: false, allowUnknown: true});
+
+const loginSchema = config.keys({
+    email: Joi.string().min(5).email({minDomainAtoms: 2}).required().label('Email').trim(),
+    password: Joi.string().min(5).required().label('Password').trim(), 
+  });
+
+const registerSchema = loginSchema.keys({
+  name: Joi.string().min(5).required().label('Name').trim(),
+  confirmPassword: Joi.string().valid(Joi.ref('password')).required().label('Confirm password').options({ language: { any: { allowOnly: 'must match Password' } } }).trim(),
+ 
+})
+
+const storySchema = config.keys({
+    title: Joi.string().min(5).required().label('Title').trim(),
+    details: Joi.string().min(10).required().label('Details').trim(), 
+  });
 
 const validateAddFields = async (req, res, next) => {
-  let errors = [];
-  const title = req.body.title.trim();
-    const details = req.body.details.trim();
-    const story = {title, details};
-    
-  if(!title){
-    errors.push({error: 'pls enter some text in the title field'})
-  }
-  else if(title.length < 5){
-    errors.push({error: 'title min. length character is 5'});
-  }
-  if(!details){
-    errors.push({error: 'pls enter some text in the details field'})
-  }
-  else if(details.length < 10){
-    errors.push({error: 'details min. length character is 10'});
-  }
-  if(errors.length > 0){
+  const { error, value } = Joi.validate(req.body, storySchema);
+  const story = value;
+  if(error) {
+    const errors = error.details.map(e => ({error: e.message}));
     res.render('stories/add', {errors, story, pageTitle: 'Create story'});
   }
   else {
@@ -29,23 +33,10 @@ const validateAddFields = async (req, res, next) => {
 };
 
 const validateEditFields = async (req, res, next) => {
-  let errors = [];
-  const title = req.body.title.trim();
-    const details = req.body.details.trim();
-  if(!title){
-    errors.push({error: 'pls enter some text in the title field'})
-  }
-  else if(title.length < 5){
-    errors.push({error: 'title min. length character is 5'});
-  }
-  if(!details){
-    errors.push({error: 'pls enter some text in the details field'})
-  }
-  else if(details.length < 10){
-    errors.push({error: 'details min. length character is 10'});
-  }
-  if(errors.length > 0){
-    const story  = { title, details, _id: req.params.id };
+  const { error, value } = Joi.validate(req.body, storySchema);
+  const story = {...value, _id: req.params.id};
+  if(error) {
+    const errors = error.details.map(e => ({error: e.message}));
     res.render('stories/edit', {errors, story, pageTitle: 'Edit'});
   }
   else {
@@ -54,24 +45,10 @@ const validateEditFields = async (req, res, next) => {
 }
 
 const validateLoginFields = async (req, res, next) => {
-  let errors = [];
-  const email = req.body.email.trim();
-    const password = req.body.password.trim();
-  if(!email){
-    errors.push({error: 'pls enter some text in the email field'})
-  }
-  else if(email.length < 5){
-    errors.push({error: 'email min. length character is 5'});
-  }
-  if(!password){
-    errors.push({error: 'pls enter some text in the password field'})
-  }
-  else if(password.length < 5){
-    errors.push({error: 'password min. length character is 5'});
-  }
-  if(errors.length > 0){
-    const user  = { email, password };
-    res.render('users/login', {errors, user, pageTitle: 'Login'});
+  const { error, value } = Joi.validate(req.body, loginSchema);
+  if(error) {
+    const errors = error.details.map(e => ({error: e.message}));
+    res.render('users/login', {errors, user: value, pageTitle: 'Login'});
   }
   else {
     next();
@@ -79,46 +56,13 @@ const validateLoginFields = async (req, res, next) => {
 }
 
 const validateRegisterFields = async (req, res, next) => {
-  let errors = [];
-  const name = req.body.name.trim();
-  const email = req.body.email.trim();
-  const password = req.body.password.trim();
-  const confirmPassword = req.body.confirmPassword.trim();
-  const user  = { name, email, password, confirmPassword };
-  if(!name){
-    errors.push({error: 'pls enter some text in the name field'})
-  }
-  else if(name.length < 5){
-    errors.push({error: 'name min. length character is 5'});
-  }
-  if(!email){
-    errors.push({error: 'pls enter some text in the email field'});
-  }
-  else if(email.length < 5){
-    errors.push({error: 'email min. length character is 5'});
-  }
-  if(!password){
-    errors.push({error: 'pls enter some text in the password field'})
-  }
-  else if(password.length < 5){
-    errors.push({error: 'password min. length character is 5'});
-  }
-  if(!confirmPassword){
-    errors.push({error: 'pls enter some text in the confirm password field'})
-  }
-  else if(confirmPassword !== password){
-    errors.push({error: 'password and confirm password does not match'});
-  }
-  if(errors.length > 0) {
-    return res.render('users/register', {
-      errors, 
-      userValue: user, 
-      pageTitle: 'Register',
-      });
+  const { error, value } = Joi.validate(req.body, registerSchema);
+  if(error) {
+    const errors = error.details.map(e => ({error: e.message}));
+    res.render('users/register', {errors, userValue: value, pageTitle: 'Register'});
   }
   else {
-    req.userValue = user;
-    req.errors = errors;
+    req.userValue = value;
     next();
   }
 }

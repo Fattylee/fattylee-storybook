@@ -1,572 +1,177 @@
-Express Handlebars
-==================
+[![passport banner](http://cdn.auth0.com/img/passport-banner-github.png)](http://passportjs.org)
 
-[![Join the chat at https://gitter.im/ericf/express-handlebars](https://badges.gitter.im/ericf/express-handlebars.svg)](https://gitter.im/ericf/express-handlebars?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# Passport
 
-A [Handlebars][] view engine for [Express][] which doesn't suck.
-
-[![npm version][npm-badge]][npm]
-[![dependency status][dep-badge]][dep-status]
-
-**This package used to be named `express3-handlebars`. The previous `express-handlebars` package by @jneen can be found [here][jneen-exphbs].**
+[![Build](https://travis-ci.org/jaredhanson/passport.svg?branch=master)](https://travis-ci.org/jaredhanson/passport)
+[![Coverage](https://coveralls.io/repos/jaredhanson/passport/badge.svg?branch=master)](https://coveralls.io/r/jaredhanson/passport)
+[![Quality](https://codeclimate.com/github/jaredhanson/passport/badges/gpa.svg)](https://codeclimate.com/github/jaredhanson/passport)
+[![Dependencies](https://david-dm.org/jaredhanson/passport.svg)](https://david-dm.org/jaredhanson/passport)
+[![Tips](https://img.shields.io/gratipay/jaredhanson.svg)](https://gratipay.com/jaredhanson/)
 
 
-[Express]: https://github.com/visionmedia/express
-[Handlebars]: https://github.com/wycats/handlebars.js
-[npm]: https://www.npmjs.org/package/express-handlebars
-[npm-badge]: https://img.shields.io/npm/v/express-handlebars.svg?style=flat-square
-[dep-status]: https://david-dm.org/ericf/express-handlebars
-[dep-badge]: https://img.shields.io/david/ericf/express-handlebars.svg?style=flat-square
-[jneen-exphbs]: https://github.com/jneen/express-handlebars
+Passport is [Express](http://expressjs.com/)-compatible authentication
+middleware for [Node.js](http://nodejs.org/).
 
+Passport's sole purpose is to authenticate requests, which it does through an
+extensible set of plugins known as _strategies_.  Passport does not mount
+routes or assume any particular database schema, which maximizes flexibility and
+allows application-level decisions to be made by the developer.  The API is
+simple: you provide Passport a request to authenticate, and Passport provides
+hooks for controlling what occurs when authentication succeeds or fails.
 
-## Goals & Design
+## Install
 
-I created this project out of frustration with the existing Handlebars view engines for Express. As of version 3.x, Express got out of the business of being a generic view engine — this was a great decision — leaving developers to implement the concepts of layouts, partials, and doing file I/O for their template engines of choice.
-
-### Goals and Features
-
-After building a half-dozen Express apps, I developed requirements and opinions about what a Handlebars view engine should provide and how it should be implemented. The following is that list:
-
-* Add back the concept of "layout", which was removed in Express 3.x.
-
-* Add back the concept of "partials" via Handlebars' partials mechanism.
-
-* Support a directory of partials; e.g., `{{> foo/bar}}` which exists on the file system at `views/partials/foo/bar.handlebars`, by default.
-
-* Smart file system I/O and template caching. When in development, templates are always loaded from disk. In production, raw files and compiled templates are cached, including partials.
-
-* All async and non-blocking. File system I/O is slow and servers should not be blocked from handling requests while reading from disk. I/O queuing is used to avoid doing unnecessary work.
-
-* Ability to easily precompile templates and partials for use on the client, enabling template sharing and reuse.
-
-* Ability to use a different Handlebars module/implementation other than the Handlebars npm package.
-
-### Package Design
-
-This package was designed to work great for both the simple and complex use cases. I _intentionally_ made sure the full implementation is exposed and is easily overridable.
-
-The package exports a function which can be invoked with no arguments or with a `config` object and it will return a function (closed over sensible defaults) which can be registered with an Express app. It's an engine factory function.
-
-This exported engine factory has two properties which expose the underlying implementation:
-
-* `ExpressHandlebars()`: The constructor function which holds the internal implementation on its `prototype`. This produces instance objects which store their configuration, `compiled` and `precompiled` templates, and expose an `engine()` function which can be registered with an Express app.
-
-* `create()`: A convenience factory function for creating `ExpressHandlebars` instances.
-
-An instance-based approach is used so that multiple `ExpressHandlebars` instances can be created with their own configuration, templates, partials, and helpers.
-
-
-## Installation
-
-Install using npm:
-
-```shell
-$ npm install express-handlebars
 ```
-
+$ npm install passport
+```
 
 ## Usage
 
-This view engine uses sensible defaults that leverage the "Express-way" of structuring an app's views. This makes it trivial to use in basic apps:
+#### Strategies
 
-### Basic Usage
+Passport uses the concept of strategies to authenticate requests.  Strategies
+can range from verifying username and password credentials, delegated
+authentication using [OAuth](http://oauth.net/) (for example, via [Facebook](http://www.facebook.com/)
+or [Twitter](http://twitter.com/)), or federated authentication using [OpenID](http://openid.net/).
 
-**Directory Structure:**
-
-```
-.
-├── app.js
-└── views
-    ├── home.handlebars
-    └── layouts
-        └── main.handlebars
-
-2 directories, 3 files
-```
-
-**app.js:**
-
-Creates a super simple Express app which shows the basic way to register a Handlebars view engine using this package.
+Before authenticating requests, the strategy (or strategies) used by an
+application must be configured.
 
 ```javascript
-var express = require('express');
-var exphbs  = require('express-handlebars');
-
-var app = express();
-
-app.engine('handlebars', exphbs());
-app.set('view engine', 'handlebars');
-
-app.get('/', function (req, res) {
-    res.render('home');
-});
-
-app.listen(3000);
-```
-
-**views/layouts/main.handlebars:**
-
-The main layout is the HTML page wrapper which can be reused for the different views of the app. `{{{body}}}` is used as a placeholder for where the main content should be rendered.
-
-```handlebars
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Example App</title>
-</head>
-<body>
-
-    {{{body}}}
-
-</body>
-</html>
-```
-
-**views/home.handlebars:**
-
-The content for the app's home view which will be rendered into the layout's `{{{body}}}`.
-
-```handlebars
-<h1>Example App: Home</h1>
-```
-
-#### Running the Example
-
-The above example is bundled in this package's [examples directory][], where it can be run by:
-
-```shell
-$ cd examples/basic/
-$ npm install
-$ npm start
-```
-
-### Using Instances
-
-Another way to use this view engine is to create an instance(s) of `ExpressHandlebars`, allowing access to the full API:
-
-```javascript
-var express = require('express');
-var exphbs  = require('express-handlebars');
-
-var app = express();
-var hbs = exphbs.create({ /* config */ });
-
-// Register `hbs.engine` with the Express app.
-app.engine('handlebars', hbs.engine);
-app.set('view engine', 'handlebars');
-
-// ...still have a reference to `hbs`, on which methods like `loadPartials()`
-// can be called.
-```
-
-**Note:** The [Advanced Usage][] example demonstrates how `ExpressHandlebars` instances can be leveraged.
-
-### Template Caching
-
-This view engine uses a smart template caching strategy. In development, templates will always be loaded from disk, i.e., no caching. In production, raw files and compiled Handlebars templates are aggressively cached.
-
-The easiest way to control template/view caching is through Express' [view cache setting][]:
-
-```javascript
-app.enable('view cache');
-```
-
-Express enables this setting by default when in production mode, i.e.:
-
-```
-process.env.NODE_ENV === "production"
-```
-
-**Note:** All of the public API methods accept `options.cache`, which gives control over caching when calling these methods directly.
-
-### Layouts
-
-A layout is simply a Handlebars template with a `{{{body}}}` placeholder. Usually it will be an HTML page wrapper into which views will be rendered.
-
-This view engine adds back the concept of "layout", which was removed in Express 3.x. It can be configured with a path to the layouts directory, by default it's set to relative to `express settings.view` + `layouts/`
-
-There are two ways to set a default layout: configuring the view engine's `defaultLayout` property, or setting [Express locals][] `app.locals.layout`.
-
-The layout into which a view should be rendered can be overridden per-request by assigning a different value to the `layout` request local. The following will render the "home" view with no layout:
-
-```javascript
-app.get('/', function (req, res, next) {
-    res.render('home', {layout: false});
-});
-```
-
-### Helpers
-
-Helper functions, or "helpers" are functions that can be [registered with Handlebars][] and can be called within a template. Helpers can be used for transforming output, iterating over data, etc. To keep with the spirit of *logic-less* templates, helpers are the place where logic should be defined.
-
-Handlebars ships with some [built-in helpers][], such as: `with`, `if`, `each`, etc. Most application will need to extend this set of helpers to include app-specific logic and transformations. Beyond defining global helpers on `Handlebars`, this view engine supports `ExpressHandlebars` instance-level helpers via the `helpers` configuration property, and render-level helpers via `options.helpers` when calling the `render()` and `renderView()` methods.
-
-The following example shows helpers being specified at each level:
-
-**app.js:**
-
-Creates a super simple Express app which shows the basic way to register `ExpressHandlebars` instance-level helpers, and override one at the render-level.
-
-```javascript
-var express = require('express');
-var exphbs  = require('express-handlebars');
-
-var app = express();
-
-var hbs = exphbs.create({
-    // Specify helpers which are only registered on this instance.
-    helpers: {
-        foo: function () { return 'FOO!'; },
-        bar: function () { return 'BAR!'; }
-    }
-});
-
-app.engine('handlebars', hbs.engine);
-app.set('view engine', 'handlebars');
-
-app.get('/', function (req, res, next) {
-    res.render('home', {
-        showTitle: true,
-
-        // Override `foo` helper only for this rendering.
-        helpers: {
-            foo: function () { return 'foo.'; }
-        }
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    User.findOne({ username: username }, function (err, user) {
+      if (err) { return done(err); }
+      if (!user) { return done(null, false); }
+      if (!user.verifyPassword(password)) { return done(null, false); }
+      return done(null, user);
     });
+  }
+));
+```
+
+There are 300+ strategies. Find the ones you want at: [passportjs.org](http://passportjs.org)
+
+#### Sessions
+
+Passport will maintain persistent login sessions.  In order for persistent
+sessions to work, the authenticated user must be serialized to the session, and
+deserialized when subsequent requests are made.
+
+Passport does not impose any restrictions on how your user records are stored.
+Instead, you provide functions to Passport which implements the necessary
+serialization and deserialization logic.  In a typical application, this will be
+as simple as serializing the user ID, and finding the user by ID when
+deserializing.
+
+```javascript
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
 });
 
-app.listen(3000);
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function (err, user) {
+    done(err, user);
+  });
+});
 ```
 
-**views/home.handlebars:**
+#### Middleware
 
-The app's home view which uses helper functions to help render the contents.
-
-```handlebars
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Example App - Home</title>
-</head>
-<body>
-
-    <!-- Uses built-in `if` helper. -->
-  {{#if showTitle}}
-    <h1>Home</h1>
-  {{/if}}
-
-    <!-- Calls `foo` helper, overridden at render-level. -->
-    <p>{{foo}}</p>
-
-    <!-- Calls `bar` helper, defined at instance-level. -->
-    <p>{{bar}}</p>
-
-</body>
-</html>
-```
-
-#### More on Helpers
-
-Refer to the [Handlebars website][] for more information on defining helpers:
-
-* [Expression Helpers][]
-* [Block Helpers][]
-
-### Metadata
-
-Handlebars has a data channel feature that propagates data through all scopes, including helpers and partials. Values in the data channel can be accessed via the `{{@variable}}` syntax. Express Handlebars provides metadata about a template it renders on a `{{@exphbs}}` object allowing access to things like the view name passed to `res.render()` via `{{@exphbs.view}}`.
-
-The following is the list of metadata that's accessible on the `{{@exphbs}}` data object:
-
-* `cache`: Boolean whether or not the template is cached.
-* `view`: String name of the view passed to `res.render()`.
-* `layout`: String name of the layout view.
-* `data`: Original data object passed when rendering the template.
-* `helpers`: Collection of helpers used when rendering the template.
-* `partials`: Collection of partials used when rendering the template.
-
-
-[examples directory]: https://github.com/ericf/express-handlebars/tree/master/examples
-[view cache setting]: http://expressjs.com/api.html#app-settings
-[Express locals]: http://expressjs.com/api.html#app.locals
-[registered with Handlebars]: https://github.com/wycats/handlebars.js/#registering-helpers
-[built-in helpers]: http://handlebarsjs.com/#builtins
-[Handlebars website]: http://handlebarsjs.com/
-[Expression Helpers]: http://handlebarsjs.com/expressions.html#helpers
-[Block Helpers]: http://handlebarsjs.com/block_helpers.html
-
-
-## API
-
-### Configuration and Defaults
-
-There are two main ways to use this package: via its engine factory function, or creating `ExpressHandlebars` instances; both use the same configuration properties and defaults.
+To use Passport in an [Express](http://expressjs.com/) or
+[Connect](http://senchalabs.github.com/connect/)-based application, configure it
+with the required `passport.initialize()` middleware.  If your application uses
+persistent login sessions (recommended, but not required), `passport.session()`
+middleware must also be used.
 
 ```javascript
-var exphbs = require('express-handlebars');
-
-// Using the engine factory:
-exphbs({ /* config */ });
-
-// Create an instance:
-exphbs.create({ /* config */ });
-```
-
-The following is the list of configuration properties and their default values (if any):
-
-#### `handlebars=require('handlebars')`
-The Handlebars module/implementation. This allows for the `ExpressHandlebars` instance to use a different Handlebars module/implementation than that provided by the Handlebars npm package.
-
-#### `extname=".handlebars"`
-The string name of the file extension used by the templates. This value should correspond with the `extname` under which this view engine is registered with Express when calling `app.engine()`.
-
-The following example sets up an Express app to use `.hbs` as the file extension for views:
-
-```javascript
-var express = require('express');
-var exphbs  = require('express-handlebars');
-
 var app = express();
-
-app.engine('.hbs', exphbs({extname: '.hbs'}));
-app.set('view engine', '.hbs');
+app.use(require('serve-static')(__dirname + '/../../public'));
+app.use(require('cookie-parser')());
+app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 ```
 
-**Note:** Setting the app's `"view engine"` setting will make that value the default file extension used for looking up views.
+#### Authenticate Requests
 
-#### `layoutsDir`
-Default layouts directory is relative to `express settings.view` + `layouts/`
-The string path to the directory where the layout templates reside.
-
-**Note:** If you configure Express to look for views in a custom location (e.g., `app.set('views', 'some/path/')`), and if your `partialsDir` is not relative to `express settings.view` + `layouts/`, you will need to reflect that by passing an updated path as the `layoutsDir` property in your configuration.
-
-#### `partialsDir`
-Default partials directory is relative to `express settings.view` + `partials/`
-The string path to the directory where the partials templates reside or object with the following properties:
-
-* `dir`: The string path to the directory where the partials templates reside.
-* `namespace`: Optional string namespace to prefix the partial names.
-* `templates`: Optional collection (or promise of a collection) of templates in the form: `{filename: template}`.
-
-**Note:** If you configure Express to look for views in a custom location (e.g., `app.set('views', 'some/path/')`), and if your `partialsDir` is not relative to `express settings.view` + `partials/`, you will need to reflect that by passing an updated path as the `partialsDir` property in your configuration.
-
-**Note:** Multiple partials dirs can be used by making `partialsDir` an array of strings, and/or config objects as described above. The namespacing feature is useful if multiple partials dirs are used and their file paths might clash.
-
-#### `defaultLayout`
-The string name or path of a template in the `layoutsDir` to use as the default layout. `main` is used as the default. This is overridden by a `layout` specified in the app or response `locals`. **Note:** A falsy value will render without a layout; e.g., `res.render('home', {layout: false});`.
-
-#### `helpers`
-An object which holds the helper functions used when rendering templates with this `ExpressHandlebars` instance. When rendering a template, a collection of helpers will be generated by merging: `handlebars.helpers` (global), `helpers` (instance), and `options.helpers` (render-level). This allows Handlebars' `registerHelper()` function to operate as expected, will providing two extra levels over helper overrides.
-
-#### `compilerOptions`
-An object which holds options that will be passed along to the Handlebars compiler functions: `Handlebars.compile()` and `Handlebars.precompile()`.
-
-### Properties
-
-The public API properties are provided via `ExpressHandlebars` instances. In additional to the properties listed in the **Configuration and Defaults** section, the following are additional public properties:
-
-#### `engine`
-A function reference to the `renderView()` method which is bound to `this` `ExpressHandlebars` instance. This bound function should be used when registering this view engine with an Express app.
-
-#### `extname`
-The normalized `extname` which will _always_ start with `.` and defaults to `.handlebars`.
-
-#### `compiled`
-An object cache which holds compiled Handlebars template functions in the format: `{"path/to/template": [Function]}`.
-
-#### `precompiled`
-An object cache which holds precompiled Handlebars template strings in the format: `{"path/to/template": [String]}`.
-
-### Methods
-
-The following is the list of public API methods provided via `ExpressHandlebars` instances:
-
-**Note:** All of the public methods return a [`Promise`][promise] (with the exception of `renderView()` which is the interface with Express.)
-
-#### `getPartials([options])`
-Retrieves the partials in the `partialsDir` and returns a Promise for an object mapping the partials in the form `{name: partial}`.
-
-By default each partial will be a compiled Handlebars template function. Use `options.precompiled` to receive the partials as precompiled templates — this is useful for sharing templates with client code.
-
-**Parameters:**
-
-* `[options]`: Optional object containing any of the following properties:
-
-  * `[cache]`: Whether cached templates can be used if they have already been requested. This is recommended for production to avoid unnecessary file I/O.
-
-  * `[precompiled=false]`: Whether precompiled templates should be provided, instead of compiled Handlebars template functions.
-
-The name of each partial corresponds to its location in `partialsDir`. For example, consider the following directory structure:
-
-```
-views
-└── partials
-    ├── foo
-    │   └── bar.handlebars
-    └── title.handlebars
-
-2 directories, 2 files
-```
-
-`getPartials()` would produce the following result:
+Passport provides an `authenticate()` function, which is used as route
+middleware to authenticate requests.
 
 ```javascript
-var hbs = require('express-handlebars').create();
-
-hbs.getPartials().then(function (partials) {
-    console.log(partials);
-    // => { 'foo/bar': [Function],
-    // =>    title: [Function] }
-});
+app.post('/login', 
+  passport.authenticate('local', { failureRedirect: '/login' }),
+  function(req, res) {
+    res.redirect('/');
+  });
 ```
 
-#### `getTemplate(filePath, [options])`
-Retrieves the template at the specified `filePath` and returns a Promise for the compiled Handlebars template function.
+## Strategies
 
-Use `options.precompiled` to receive a precompiled Handlebars template.
+Passport has a comprehensive set of **over 300** authentication strategies
+covering social networking, enterprise integration, API services, and more.
 
-**Parameters:**
+## Search all strategies
 
-* `filePath`: String path to the Handlebars template file.
+There is a **Strategy Search** at [passportjs.org](http://passportjs.org)
 
-* `[options]`: Optional object containing any of the following properties:
+The following table lists commonly used strategies:
 
-  * `[cache]`: Whether a cached template can be used if it have already been requested. This is recommended for production to avoid necessary file I/O.
-
-  * `[precompiled=false]`: Whether a precompiled template should be provided, instead of a compiled Handlebars template function.
-
-#### `getTemplates(dirPath, [options])`
-Retrieves all the templates in the specified `dirPath` and returns a Promise for an object mapping the compiled templates in the form `{filename: template}`.
-
-Use `options.precompiled` to receive precompiled Handlebars templates — this is useful for sharing templates with client code.
-
-**Parameters:**
-
-* `dirPath`: String path to the directory containing Handlebars template files.
-
-* `[options]`: Optional object containing any of the following properties:
-
-  * `[cache]`: Whether cached templates can be used if it have already been requested. This is recommended for production to avoid necessary file I/O.
-
-  * `[precompiled=false]`: Whether precompiled templates should be provided, instead of a compiled Handlebars template function.
-
-#### `render(filePath, context, [options])`
-Renders the template at the specified `filePath` with the `context`, using this instance's `helpers` and partials by default, and returns a Promise for the resulting string.
-
-**Parameters:**
-
-* `filePath`: String path to the Handlebars template file.
-
-* `context`: Object in which the template will be executed. This contains all of the values to fill into the template.
-
-* `[options]`: Optional object which can contain any of the following properties which affect this view engine's behavior:
-
-  * `[cache]`: Whether a cached template can be used if it have already been requested. This is recommended for production to avoid unnecessary file I/O.
-
-  * `[data]`: Optional object which can contain any data that Handlebars will pipe through the template, all helpers, and all partials. This is a side data channel.
-
-  * `[helpers]`: Render-level helpers that will be used instead of any instance-level helpers; these will be merged with (and will override) any global Handlebars helper functions.
-
-  * `[partials]`: Render-level partials that will be used instead of any instance-level partials. This is used internally as an optimization to avoid re-loading all the partials.
-
-#### `renderView(viewPath, options|callback, [callback])`
-Renders the template at the specified `viewPath` as the `{{{body}}}` within the layout specified by the `defaultLayout` or `options.layout`. Rendering will use this instance's `helpers` and partials, and passes the resulting string to the `callback`.
-
-This method is called by Express and is the main entry point into this Express view engine implementation. It adds the concept of a "layout" and delegates rendering to the `render()` method.
-
-The `options` will be used both as the context in which the Handlebars templates are rendered, and to signal this view engine on how it should behave, e.g., `options.cache=false` will load _always_ load the templates from disk.
-
-**Parameters:**
-
-* `viewPath`: String path to the Handlebars template file which should serve as the `{{{body}}}` when using a layout.
-
-* `[options]`: Optional object which will serve as the context in which the Handlebars templates are rendered. It may also contain any of the following properties which affect this view engine's behavior:
-
-  * `[cache]`: Whether cached templates can be used if they have already been requested. This is recommended for production to avoid unnecessary file I/O.
-
-  * `[data]`: Optional object which can contain any data that Handlebars will pipe through the template, all helpers, and all partials. This is a side data channel.
-
-  * `[helpers]`: Render-level helpers that will be merged with (and will override) instance and global helper functions.
-
-  * `[partials]`: Render-level partials will be merged with (and will override) instance and global partials. This should be a `{partialName: fn}` hash or a Promise of an object with this shape.
-
-  * `[layout]`: Optional string path to the Handlebars template file to be used as the "layout". This overrides any `defaultLayout` value. Passing a falsy value will render with no layout (even if a `defaultLayout` is defined).
-
-* `callback`: Function to call once the template is retrieved.
-
-### Hooks
-
-The following is the list of protected methods that are called internally and serve as _hooks_ to override functionality of `ExpressHandlebars` instances. A value or a promise can be returned from these methods which allows them to perform async operations.
-
-#### `_compileTemplate(template, options)`
-This hook will be called when a Handlebars template needs to be compiled. This function needs to return a compiled Handlebars template function, or a promise for one.
-
-By default this hook calls `Handlebars.compile()`, but it can be overridden to preform operations before and/or after Handlebars compiles the template. This is useful if you wanted to first process Markdown within a Handlebars template.
-
-**Parameters:**
-
-* `template`: String Handlebars template that needs to be compiled.
-
-* `options`: Object `compilerOptions` that were specified when the `ExpressHandlebars` instance as created. This object should be passed along to the `Handlebars.compile()` function.
-
-#### `_precompileTemplate(template, options)`
-This hook will be called when a Handlebars template needs to be precompiled. This function needs to return a serialized Handlebars template spec. string, or a promise for one.
-
-By default this hook calls `Handlebars.precompile()`, but it can be overridden to preform operations before and/or after Handlebars precompiles the template. This is useful if you wanted to first process Markdown within a Handlebars template.
-
-**Parameters:**
-
-* `template`: String Handlebars template that needs to be precompiled.
-
-* `options`: Object `compilerOptions` that were specified when the `ExpressHandlebars` instance as created. This object should be passed along to the `Handlebars.compile()` function.
-
-#### `_renderTemplate(template, context, options)`
-This hook will be called when a compiled Handlebars template needs to be rendered. This function needs to returned the rendered output string, or a promise for one.
-
-By default this hook simply calls the passed-in `template` with the `context` and `options` arguments, but it can be overridden to perform operations before and/or after rendering the template.
-
-**Parameters:**
-
-* `template`: Compiled Handlebars template function to call.
-
-* `context`: The context object in which to render the `template`.
-
-* `options`: Object that contains options and metadata for rendering the template:
-
-  * `data`: Object to define custom `@variable` private variables.
-
-  * `helpers`: Object to provide custom helpers in addition to the globally defined helpers.
-
-  * `partials`: Object to provide custom partials in addition to the globally defined partials.
-
-
-[promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
-
+|Strategy                                                       | Protocol                 |Developer                                       |
+|---------------------------------------------------------------|--------------------------|------------------------------------------------|
+|[Local](https://github.com/jaredhanson/passport-local)         | HTML form                |[Jared Hanson](https://github.com/jaredhanson)  |
+|[OpenID](https://github.com/jaredhanson/passport-openid)       | OpenID                   |[Jared Hanson](https://github.com/jaredhanson)  |
+|[BrowserID](https://github.com/jaredhanson/passport-browserid) | BrowserID                |[Jared Hanson](https://github.com/jaredhanson)  |
+|[Facebook](https://github.com/jaredhanson/passport-facebook)   | OAuth 2.0                |[Jared Hanson](https://github.com/jaredhanson)  |
+|[Google](https://github.com/jaredhanson/passport-google)       | OpenID                   |[Jared Hanson](https://github.com/jaredhanson)  |
+|[Google](https://github.com/jaredhanson/passport-google-oauth) | OAuth / OAuth 2.0        |[Jared Hanson](https://github.com/jaredhanson)  |
+|[Twitter](https://github.com/jaredhanson/passport-twitter)     | OAuth                    |[Jared Hanson](https://github.com/jaredhanson)  |
+|[Azure Active Directory](https://github.com/AzureAD/passport-azure-ad)     | OAuth 2.0 / OpenID / SAML  |[Azure](https://github.com/azuread)  |
 
 ## Examples
 
-### [Basic Usage][]
+- For a complete, working example, refer to the [example](https://github.com/passport/express-4.x-local-example)
+that uses [passport-local](https://github.com/jaredhanson/passport-local).
+- **Local Strategy**: Refer to the following tutorials for setting up user authentication via LocalStrategy (`passport-local`):
+    - Mongo
+      - Express v3x - [Tutorial](http://mherman.org/blog/2016/09/25/node-passport-and-postgres/#.V-govpMrJE5) / [working example](https://github.com/mjhea0/passport-local-knex)
+      - Express v4x - [Tutorial](http://mherman.org/blog/2015/01/31/local-authentication-with-passport-and-express-4/) / [working example](https://github.com/mjhea0/passport-local-express4)
+    - Postgres
+      - [Tutorial](http://mherman.org/blog/2015/01/31/local-authentication-with-passport-and-express-4/) / [working example](https://github.com/mjhea0/passport-local-express4)
+- **Social Authentication**: Refer to the following tutorials for setting up various social authentication strategies:
+    - Express v3x - [Tutorial](http://mherman.org/blog/2013/11/10/social-authentication-with-passport-dot-js/) / [working example](https://github.com/mjhea0/passport-examples)
+    - Express v4x - [Tutorial](http://mherman.org/blog/2015/09/26/social-authentication-in-node-dot-js-with-passport) / [working example](https://github.com/mjhea0/passport-social-auth)
 
-This example shows the most basic way to use this view engine.
+## Related Modules
 
-### [Advanced Usage][]
+- [Locomotive](https://github.com/jaredhanson/locomotive) — Powerful MVC web framework
+- [OAuthorize](https://github.com/jaredhanson/oauthorize) — OAuth service provider toolkit
+- [OAuth2orize](https://github.com/jaredhanson/oauth2orize) — OAuth 2.0 authorization server toolkit
+- [connect-ensure-login](https://github.com/jaredhanson/connect-ensure-login)  — middleware to ensure login sessions
 
-This example is more comprehensive and shows how to use many of the features of this view engine, including helpers, partials, multiple layouts, etc.
+The [modules](https://github.com/jaredhanson/passport/wiki/Modules) page on the
+[wiki](https://github.com/jaredhanson/passport/wiki) lists other useful modules
+that build upon or integrate with Passport.
 
-As noted in the **Package Design** section, this view engine's implementation is instance-based, and more advanced usages can take advantage of this. The Advanced Usage example demonstrates how to use an `ExpressHandlebars` instance to share templates with the client, among other features.
+## Tests
 
+```
+$ npm install
+$ make test
+```
 
-[Basic Usage]: https://github.com/ericf/express-handlebars/tree/master/examples/basic
-[Advanced Usage]: https://github.com/ericf/express-handlebars/tree/master/examples/advanced
+## Credits
 
+  - [Jared Hanson](http://github.com/jaredhanson)
 
-License
--------
+## Supporters
 
-This software is free to use under the Yahoo! Inc. BSD license. See the [LICENSE file][] for license text and copyright information.
+This project is supported by ![](http://passportjs.org/images/supported_logo.svg) [Auth0](https://auth0.com) 
 
+## License
 
-[LICENSE file]: https://github.com/ericf/express-handlebars/blob/master/LICENSE
+[The MIT License](http://opensource.org/licenses/MIT)
+
+Copyright (c) 2011-2015 Jared Hanson <[http://jaredhanson.net/](http://jaredhanson.net/)>
+

@@ -5,4 +5,3 @@ const redirectToLogin = (req, res, next) => {
 
 
 exports.redirectToLogin = redirectToLogin;
-

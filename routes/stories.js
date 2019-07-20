@@ -7,8 +7,13 @@ const storyError = require('../controllers/errors/storyError');
 
 
 // catch all async errors related to stories route
+//This will never get called!
 router.all('/*', storyError);
 
+router.all('/*', (req, res, next) => {
+  req.app.locals.layout = 'main';
+  next();
+});
 // Create a new story
 router.post('/', validateAddFields, async (req, res, next) => {
   
@@ -26,6 +31,7 @@ router.post('/', validateAddFields, async (req, res, next) => {
 // come back to this
 // get all stories with associated user
 router.get('/', async (req, res) => {
+
   const stories = await Story.find({user: req.user._id, })
   .sort('-updatedAt');
   
