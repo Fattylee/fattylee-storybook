@@ -13,7 +13,7 @@ const startDB = require('./startups/db');
 const passport = require('passport');
 const isAuthenticated = require('./middlewares/auth');
 const debug = require('debug')('active:app');
-const { isNotEqual, capitalizeEach, displayDate, isEqual } = require('./helpers/handlebars');
+const handlebarsConfig = require('./helpers/handlebars');
 const storyError = require('./controllers/errors/storyError');
 const app = express();
 
@@ -25,11 +25,7 @@ app.use(methodOverride('_method'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.engine('html', exphbs({
-  // optional config goes here
-  extname: 'html',
-  helpers: { capitalizeEach, displayDate, isEqual, isNotEqual },
-}));
+app.engine('html', exphbs(handlebarsConfig));
 app.set('view engine', 'html');
 
 app.use(express.static(path.join(__dirname, 'public')));

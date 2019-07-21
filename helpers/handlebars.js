@@ -3,6 +3,9 @@ const active = require('debug')('active:app');
 
 
 module.exports = {
+  // optional config goes here
+  extname: 'html',
+  helpers: {
     capitalizeEach(options) {
       const {name, sex} = options.hash;
       return name.replace(/<.*?>/i, 'UPPER');
@@ -28,4 +31,6 @@ module.exports = {
       if(a.toString() !== b.toString()) return options.fn(this);
       options.inverse(this);
     },
+},
 };
+
