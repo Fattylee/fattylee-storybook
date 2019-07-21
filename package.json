@@ -6,6 +6,13 @@
   "directories": {
     "test": "tests"
   },
+   "scripts": {
+    "test": "jest --watchAll",
+    "dev": "export NODE_ENV=\"development\" || set \"NODE_ENV=deployment\" && DEBUG=active:app nodemon index.js -e 'js  json'",
+    "start": "node index.js",
+    "start:stag": "export NODE_ENV=\"staging\" && nodemon index",
+    "deploy": "echo 'i am ready for a deployment'"
+  },
   "dependencies": {
     "mongoose": "5.4.16",
     "express": "4.16.4",
@@ -23,13 +30,6 @@
   "devDependencies": {
     "jest": "24.1.0",
     "nodemon": "1.19.0"
-  },
-  "scripts": {
-    "test": "jest --watchAll",
-    "dev": "export NODE_ENV=\"development\" && DEBUG=active:app nodemon index.js -e 'js  json'",
-    "start": "node index.js",
-    "start:stag": "export NODE_ENV=\"staging\" && nodemon index",
-    "deploy": "echo 'i am ready for a deployment'"
   },
   "engines": {
     "node": "12.1.0"

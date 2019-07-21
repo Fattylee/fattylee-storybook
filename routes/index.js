@@ -4,7 +4,7 @@ const debug = require('debug')('active:app');
 
 
 router.all('/*', ( req, res, next ) => {
-  req.app.locals.layout = 'main';
+  //req.app.locals.layout = 'main';
   next()
   });
 

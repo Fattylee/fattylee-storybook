@@ -7,9 +7,10 @@ const passport = require('passport');
 const authLogout = require('../middlewares/authLogout');
 const debug = require('debug')('active:app');
 const { redirectToLogin } = require('../helpers/redirect');
+const isAuthenticated = require('../middlewares/auth');
 
 router.use((req, res, next) => {
-  req.app.locals.layout = 'container';
+  //req.app.locals.layout = 'container';
   next();
 });
 
@@ -60,7 +61,12 @@ router.post(
       failureFlash: 'Invalid email or password', 
       successFlash: 'Your login was successful', //this will override the message defined at passport stragety callback
       successRedirect: '/stories'
-    }));
+    })
+);
+
+router.get('/me', isAuthenticated, (req, res) => {
+  res.render('users/profile', {pageTitle: 'Profile', user: req.user});
+});
 /*
 router.all('/*', (req, res, next) => {
   res.send('404 not found, Users');

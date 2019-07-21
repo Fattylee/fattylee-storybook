@@ -15,10 +15,11 @@ const isAuthenticated = require('./middlewares/auth');
 const debug = require('debug')('active:app');
 const { isNotEqual, capitalizeEach, displayDate, isEqual } = require('./helpers/handlebars');
 const storyError = require('./controllers/errors/storyError');
-
-startDB();
-require('./config/passport')(passport);
 const app = express();
+
+startDB(app);
+require('./config/passport')(passport);
+
 app.use(morgan('dev'));
 app.use(methodOverride('_method'));
 app.use(express.json());
@@ -68,10 +69,7 @@ app.use((err, req, res, next) => {
   res.status(500).render('errors/500');
 });
 
-/*
-app.all('*', (req, res, next) => {
-  res.render('404');
-});*/
 
-const port = process.env.PORT || 4000;
-app.listen(port, () => console.log('Server running on port', port));
+app.all('*', (req, res, next) => {
+  res.render('errors/404');
+});

@@ -20,7 +20,7 @@
           <div class="card-body"> 
             <h5 class="card-title text-center">{{title}}</h5>  
             <p class="card-text">{{details}}
-              <a class="btn btn-dark text-white">Read more...</a>
+              <a class="btn  text-muted text-dark" href="/stories/{{id}}">Read more...</a>
             </p>
           </div> 
           <div class="card-footer">
@@ -31,14 +31,15 @@
             </form>
             {{/isEqual}}
             <p class="text-muted small mt-2">
-            Posted on {{displayDate updatedAt 'MMM DD[th] YYYY [at] hh:mm a' }} By {{user.name}}
+            <span class="fas fa-user"></span>     
+           <span class="pl-1"> {{user.name}}</span> <span class="ml-2 pl-1 fas fa-clock fa-1x"></span> {{displayDate story.updatedAt 'MMM DD[,] YYYY [at] hh:mm a' }} 
           </p>
           </div><!-- class="card-footer" -->
         </div><!-- End Card-->
       </div><!-- End col -->
            {{else}}
         <div class="col">
-           <p class="jumbotron">No published stories</p>
+           <p class="jumbotron">No published stories <a href="/stories" class="btn btn-primary"><span class="fas fa-plus"></span> Publish a story</a></p></p>
          </div>
     {{/each}}
   </div><!-- End row  -->

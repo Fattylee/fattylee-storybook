@@ -14,6 +14,7 @@ router.all('/*', (req, res, next) => {
   req.app.locals.layout = 'main';
   next();
 });
+
 // Create a new story
 router.post('/', validateAddFields, async (req, res, next) => {
   
@@ -43,6 +44,21 @@ router.get('/add', (req, res) => {
   res.render('stories/add', {pageTitle: 'Create story'});
 });
 
+// Read full story page
+router.get('/:id', async (req, res) => {
+
+  const story = await Story.findOne({_id: req.params.id }).populate('user');
+  
+  debug('Single story', story);
+  res.render('stories/full_story', { story, pageTitle: 'Full Story',  });
+});
+
+// Add story page
+router.get('/add', (req, res) => {
+  res.render('stories/add', {pageTitle: 'Create story'});
+});
+
+// Edit a story action
 router.put('/:id', validateEditFields, async (req, res) => {
   
   const story = await Story.findById(req.params.id);
@@ -64,6 +80,7 @@ router.put('/:id', validateEditFields, async (req, res) => {
   res.redirect('/stories');
 });
 
+// Delete a story
 router.delete('/:id', async (req, res) => {
   const story = await Story.findByIdAndRemove(req.params.id);
   if(!story) return res.redirect('/stories');
@@ -71,6 +88,7 @@ router.delete('/:id', async (req, res) => {
   res.redirect('/stories');
 });
 
+// Edit story page
 router.get('/edit/:id', async (req, res) => {
   const story = await Story.findById(req.params.id);
   res.render('stories/edit', {story, pageTitle: 'Edit'}); 
