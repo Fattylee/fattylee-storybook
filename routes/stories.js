@@ -15,7 +15,7 @@ router.all('/*', (req, res, next) => {
   next();
 });
 
-// Create a new story
+// Create a new story action
 router.post('/', validateAddFields, async (req, res, next) => {
   
     const newStory = new Story({
@@ -24,7 +24,7 @@ router.post('/', validateAddFields, async (req, res, next) => {
       user: req.user._id,
     });
     const story = await newStory.save();
-    
+    debug(story)
     req.flash('success_msg', `"${story.title}" was created successfully`);
     res.redirect('/stories');
 });
@@ -40,6 +40,7 @@ router.get('/', async (req, res) => {
   res.render('stories', { stories, pageTitle: 'Stories',  });
 });
 
+// add a new story form
 router.get('/add', (req, res) => {
   res.render('stories/add', {pageTitle: 'Create story'});
 });
@@ -53,10 +54,11 @@ router.get('/:id', async (req, res) => {
   res.render('stories/full_story', { story, pageTitle: 'Full Story',  });
 });
 
-// Add story page
-router.get('/add', (req, res) => {
-  res.render('stories/add', {pageTitle: 'Create story'});
-});
+// Edit story page
+router.get('/edit/:id', async (req, res) => {
+  const story = await Story.findById(req.params.id);
+  res.render('stories/edit', {story, pageTitle: 'Edit'}); 
+}); 
 
 // Edit a story action
 router.put('/:id', validateEditFields, async (req, res) => {
@@ -88,11 +90,7 @@ router.delete('/:id', async (req, res) => {
   res.redirect('/stories');
 });
 
-// Edit story page
-router.get('/edit/:id', async (req, res) => {
-  const story = await Story.findById(req.params.id);
-  res.render('stories/edit', {story, pageTitle: 'Edit'}); 
-}); 
+
 
 router.all('/*', (req, res, next) => {
   res.send('404 not found, Stories');

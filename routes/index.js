@@ -7,9 +7,10 @@ router.all('/*', ( req, res, next ) => {
   //req.app.locals.layout = 'main';
   next()
   });
-
+  
+// display on public stories on the index page
 router.get('/', async (req, res) => {
-  const stories = await Story.find({})
+  const stories = await Story.find({status: 'public'})
   .populate('user', 'name')
   .sort('-updatedAt');
   res.render('index', { stories, pageTitle: req.user ? 'Feeds' : 'Welcome' });
