@@ -16,14 +16,16 @@ module.exports = {
       return  formattedDate;
     },
     isEqual(a, b, options) {
-      debug(a, b, typeof a, typeof b);
       if(a.toString() === b.toString()) return options.fn(this);
       options.inverse(this);
     },
-    isNotEqual(a, b, options) {
-      debug('a b', a, b);
+    isNotEqual(a, b, options) { 
       if(a.toString() !== b.toString()) return options.fn(this);
       return options.inverse(this);
     },
+    select(status, options) {
+      debug('select:', status);
+      if(status) return options.fn(this).replace(new RegExp(`(value="${status}")`), '$1 selected');
+    }
    },
 };

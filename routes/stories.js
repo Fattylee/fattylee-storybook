@@ -50,14 +50,12 @@ router.get('/:id', async (req, res) => {
 
   const story = await Story.findOne({_id: req.params.id }).populate('user');
   
-  debug('Single story', story);
   res.render('stories/full_story', { story, pageTitle: 'Full Story',  });
 });
 
 // Edit story page
 router.get('/edit/:id', async (req, res) => {
-  const story = await Story.findById(req.params.id).populate('user');
-  debug('get story =============', story);
+  const story = await Story.findById(req.params.id); 
   res.render('stories/edit', {
     story, 
     pageTitle: 'Edit'}); 
@@ -80,8 +78,7 @@ router.put('/:id', validateEditFields, async (req, res) => {
   story.title = req.body.title;
   story.details = req.body.details;
   story.status = req.body.status;
-  await story.save();
-  debug('Edited story', story);
+  await story.save(); 
   req.flash('success_msg', 'story was updated successfully');
   res.redirect('/stories');
 });
