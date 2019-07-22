@@ -60,7 +60,8 @@ router.post(
       failureRedirect: '/users/login', 
       failureFlash: 'Invalid email or password', 
       successFlash: 'Your login was successful', //this will override the message defined at passport stragety callback
-      successRedirect: '/stories'
+      successRedirect: '/stories',
+      //session: false, //default option is true, session can be turned off by allow this line of code
     })
 );
 

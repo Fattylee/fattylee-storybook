@@ -56,8 +56,11 @@ router.get('/:id', async (req, res) => {
 
 // Edit story page
 router.get('/edit/:id', async (req, res) => {
-  const story = await Story.findById(req.params.id);
-  res.render('stories/edit', {story, pageTitle: 'Edit'}); 
+  const story = await Story.findById(req.params.id).populate('user');
+  debug('get story =============', story);
+  res.render('stories/edit', {
+    story, 
+    pageTitle: 'Edit'}); 
 }); 
 
 // Edit a story action
@@ -78,6 +81,7 @@ router.put('/:id', validateEditFields, async (req, res) => {
   story.details = req.body.details;
   story.status = req.body.status;
   await story.save();
+  debug('Edited story', story);
   req.flash('success_msg', 'story was updated successfully');
   res.redirect('/stories');
 });
@@ -91,9 +95,9 @@ router.delete('/:id', async (req, res) => {
 });
 
 
-
 router.all('/*', (req, res, next) => {
   res.send('404 not found, Stories');
 });
 
 module.exports = router;
+

@@ -16,9 +16,9 @@
   <div class="form-group">
      <label for="status">Status</label>
 <select class="form-control" id="status" name="status">
-   
-    <option value="public">Public</option>
-    <option value="private">Private</option>
+  
+    <option {{#isEqual 'public' story.status}}selected{{/isEqual}} value="public">Public</option>
+    <option {{#isEqual 'private' story.status}}selected{{/isEqual}} value="private">Private</option>
   </select>
   </div>
   
