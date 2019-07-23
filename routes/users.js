@@ -1,5 +1,8 @@
 const express = require('express');
+const {join} = require('path');
+const fs = require('fs');
 const bcrypt = require('bcryptjs');
+const uuid = require('uuid');
 const router = express.Router();
 const User = require('../models/User')
 const {validateAddFields, validateEditFields, validateLoginFields, validateRegisterFields} = require('../middlewares/validateFields');
@@ -8,6 +11,7 @@ const authLogout = require('../middlewares/authLogout');
 const debug = require('debug')('active:app');
 const { redirectToLogin } = require('../helpers/redirect');
 const isAuthenticated = require('../middlewares/auth');
+
 
 router.use((req, res, next) => {
   //req.app.locals.layout = 'container';
@@ -65,8 +69,49 @@ router.post(
     })
 );
 
-router.get('/me', isAuthenticated, (req, res) => {
+// show profile page
+router.get('/me', isAuthenticated, async (req, res) => {
   res.render('users/profile', {pageTitle: 'Profile', user: req.user});
+});
+
+// update profile info
+router.patch('/me', /*isAuthenticated,*/ async (req, res) => {
+  
+  let filename = undefined;
+  if(req.files) {
+    const {babu} = req.files;
+    filename = `${uuid()}-${babu.name}`;
+    const avatarPath = join(__dirname, '../public/img/uploads/avatars', filename);
+    
+    babu.mv(avatarPath, (err) => {
+       if(err) throw new Error(err);
+       
+       // write some codes to clear the uploads dir.
+       fs.readdir(join(avatarPath, '../'), (err, files) => {
+         if(err) throw err;
+         files.forEach(file => {
+           const filePath = join(avatarPath, '../', file);
+           if(avatarPath !== filePath) {
+             fs.unlink(filePath, err => {
+               if(err) throw err;
+             })
+           }
+         })
+       })
+     });
+  }
+  if(!filename){
+    
+    req.flash('error_msg', 'pls choose an image');
+    return res.redirect('/users/me');
+  }
+  
+  const update = await User.findByIdAndUpdate(req.user._id, {
+    avatar: filename,
+  }, {new: true});
+   debug('update', update);
+   req.flash('success_msg', 'profile update was successful');
+   res.redirect('/users/me');
 });
 /*
 router.all('/*', (req, res, next) => {

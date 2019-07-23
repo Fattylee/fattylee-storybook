@@ -1,177 +1,293 @@
-[![passport banner](http://cdn.auth0.com/img/passport-banner-github.png)](http://passportjs.org)
+<!--
+  -- This file is auto-generated from README_js.md. Changes should be made there.
+  -->
 
-# Passport
+# uuid [![Build Status](https://secure.travis-ci.org/kelektiv/node-uuid.svg?branch=master)](http://travis-ci.org/kelektiv/node-uuid) #
 
-[![Build](https://travis-ci.org/jaredhanson/passport.svg?branch=master)](https://travis-ci.org/jaredhanson/passport)
-[![Coverage](https://coveralls.io/repos/jaredhanson/passport/badge.svg?branch=master)](https://coveralls.io/r/jaredhanson/passport)
-[![Quality](https://codeclimate.com/github/jaredhanson/passport/badges/gpa.svg)](https://codeclimate.com/github/jaredhanson/passport)
-[![Dependencies](https://david-dm.org/jaredhanson/passport.svg)](https://david-dm.org/jaredhanson/passport)
-[![Tips](https://img.shields.io/gratipay/jaredhanson.svg)](https://gratipay.com/jaredhanson/)
+Simple, fast generation of [RFC4122](http://www.ietf.org/rfc/rfc4122.txt) UUIDS.
 
+Features:
 
-Passport is [Express](http://expressjs.com/)-compatible authentication
-middleware for [Node.js](http://nodejs.org/).
+* Support for version 1, 3, 4 and 5 UUIDs
+* Cross-platform
+* Uses cryptographically-strong random number APIs (when available)
+* Zero-dependency, small footprint (... but not [this small](https://gist.github.com/982883))
 
-Passport's sole purpose is to authenticate requests, which it does through an
-extensible set of plugins known as _strategies_.  Passport does not mount
-routes or assume any particular database schema, which maximizes flexibility and
-allows application-level decisions to be made by the developer.  The API is
-simple: you provide Passport a request to authenticate, and Passport provides
-hooks for controlling what occurs when authentication succeeds or fails.
+[**Deprecation warning**: The use of `require('uuid')` is deprecated and will not be
+supported after version 3.x of this module.  Instead, use `require('uuid/[v1|v3|v4|v5]')` as shown in the examples below.]
 
-## Install
+## Quickstart - CommonJS (Recommended)
 
-```
-$ npm install passport
+```shell
+npm install uuid
 ```
 
-## Usage
+Then generate your uuid version of choice ...
 
-#### Strategies
-
-Passport uses the concept of strategies to authenticate requests.  Strategies
-can range from verifying username and password credentials, delegated
-authentication using [OAuth](http://oauth.net/) (for example, via [Facebook](http://www.facebook.com/)
-or [Twitter](http://twitter.com/)), or federated authentication using [OpenID](http://openid.net/).
-
-Before authenticating requests, the strategy (or strategies) used by an
-application must be configured.
+Version 1 (timestamp):
 
 ```javascript
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-    User.findOne({ username: username }, function (err, user) {
-      if (err) { return done(err); }
-      if (!user) { return done(null, false); }
-      if (!user.verifyPassword(password)) { return done(null, false); }
-      return done(null, user);
-    });
-  }
-));
+const uuidv1 = require('uuid/v1');
+uuidv1(); // ⇨ '45745c60-7b1a-11e8-9c9c-2d42b21b1a3e'
+
 ```
 
-There are 300+ strategies. Find the ones you want at: [passportjs.org](http://passportjs.org)
-
-#### Sessions
-
-Passport will maintain persistent login sessions.  In order for persistent
-sessions to work, the authenticated user must be serialized to the session, and
-deserialized when subsequent requests are made.
-
-Passport does not impose any restrictions on how your user records are stored.
-Instead, you provide functions to Passport which implements the necessary
-serialization and deserialization logic.  In a typical application, this will be
-as simple as serializing the user ID, and finding the user by ID when
-deserializing.
+Version 3 (namespace):
 
 ```javascript
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
-});
+const uuidv3 = require('uuid/v3');
 
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function (err, user) {
-    done(err, user);
-  });
-});
+// ... using predefined DNS namespace (for domain names)
+uuidv3('hello.example.com', uuidv3.DNS); // ⇨ '9125a8dc-52ee-365b-a5aa-81b0b3681cf6'
+
+// ... using predefined URL namespace (for, well, URLs)
+uuidv3('http://example.com/hello', uuidv3.URL); // ⇨ 'c6235813-3ba4-3801-ae84-e0a6ebb7d138'
+
+// ... using a custom namespace
+//
+// Note: Custom namespaces should be a UUID string specific to your application!
+// E.g. the one here was generated using this modules `uuid` CLI.
+const MY_NAMESPACE = '1b671a64-40d5-491e-99b0-da01ff1f3341';
+uuidv3('Hello, World!', MY_NAMESPACE); // ⇨ 'e8b5a51d-11c8-3310-a6ab-367563f20686'
+
 ```
 
-#### Middleware
-
-To use Passport in an [Express](http://expressjs.com/) or
-[Connect](http://senchalabs.github.com/connect/)-based application, configure it
-with the required `passport.initialize()` middleware.  If your application uses
-persistent login sessions (recommended, but not required), `passport.session()`
-middleware must also be used.
+Version 4 (random):
 
 ```javascript
-var app = express();
-app.use(require('serve-static')(__dirname + '/../../public'));
-app.use(require('cookie-parser')());
-app.use(require('body-parser').urlencoded({ extended: true }));
-app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
-app.use(passport.initialize());
-app.use(passport.session());
+const uuidv4 = require('uuid/v4');
+uuidv4(); // ⇨ '10ba038e-48da-487b-96e8-8d3b99b6d18a'
+
 ```
 
-#### Authenticate Requests
-
-Passport provides an `authenticate()` function, which is used as route
-middleware to authenticate requests.
+Version 5 (namespace):
 
 ```javascript
-app.post('/login', 
-  passport.authenticate('local', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/');
-  });
-```
+const uuidv5 = require('uuid/v5');
 
-## Strategies
+// ... using predefined DNS namespace (for domain names)
+uuidv5('hello.example.com', uuidv5.DNS); // ⇨ 'fdda765f-fc57-5604-a269-52a7df8164ec'
 
-Passport has a comprehensive set of **over 300** authentication strategies
-covering social networking, enterprise integration, API services, and more.
+// ... using predefined URL namespace (for, well, URLs)
+uuidv5('http://example.com/hello', uuidv5.URL); // ⇨ '3bbcee75-cecc-5b56-8031-b6641c1ed1f1'
 
-## Search all strategies
-
-There is a **Strategy Search** at [passportjs.org](http://passportjs.org)
-
-The following table lists commonly used strategies:
-
-|Strategy                                                       | Protocol                 |Developer                                       |
-|---------------------------------------------------------------|--------------------------|------------------------------------------------|
-|[Local](https://github.com/jaredhanson/passport-local)         | HTML form                |[Jared Hanson](https://github.com/jaredhanson)  |
-|[OpenID](https://github.com/jaredhanson/passport-openid)       | OpenID                   |[Jared Hanson](https://github.com/jaredhanson)  |
-|[BrowserID](https://github.com/jaredhanson/passport-browserid) | BrowserID                |[Jared Hanson](https://github.com/jaredhanson)  |
-|[Facebook](https://github.com/jaredhanson/passport-facebook)   | OAuth 2.0                |[Jared Hanson](https://github.com/jaredhanson)  |
-|[Google](https://github.com/jaredhanson/passport-google)       | OpenID                   |[Jared Hanson](https://github.com/jaredhanson)  |
-|[Google](https://github.com/jaredhanson/passport-google-oauth) | OAuth / OAuth 2.0        |[Jared Hanson](https://github.com/jaredhanson)  |
-|[Twitter](https://github.com/jaredhanson/passport-twitter)     | OAuth                    |[Jared Hanson](https://github.com/jaredhanson)  |
-|[Azure Active Directory](https://github.com/AzureAD/passport-azure-ad)     | OAuth 2.0 / OpenID / SAML  |[Azure](https://github.com/azuread)  |
-
-## Examples
-
-- For a complete, working example, refer to the [example](https://github.com/passport/express-4.x-local-example)
-that uses [passport-local](https://github.com/jaredhanson/passport-local).
-- **Local Strategy**: Refer to the following tutorials for setting up user authentication via LocalStrategy (`passport-local`):
-    - Mongo
-      - Express v3x - [Tutorial](http://mherman.org/blog/2016/09/25/node-passport-and-postgres/#.V-govpMrJE5) / [working example](https://github.com/mjhea0/passport-local-knex)
-      - Express v4x - [Tutorial](http://mherman.org/blog/2015/01/31/local-authentication-with-passport-and-express-4/) / [working example](https://github.com/mjhea0/passport-local-express4)
-    - Postgres
-      - [Tutorial](http://mherman.org/blog/2015/01/31/local-authentication-with-passport-and-express-4/) / [working example](https://github.com/mjhea0/passport-local-express4)
-- **Social Authentication**: Refer to the following tutorials for setting up various social authentication strategies:
-    - Express v3x - [Tutorial](http://mherman.org/blog/2013/11/10/social-authentication-with-passport-dot-js/) / [working example](https://github.com/mjhea0/passport-examples)
-    - Express v4x - [Tutorial](http://mherman.org/blog/2015/09/26/social-authentication-in-node-dot-js-with-passport) / [working example](https://github.com/mjhea0/passport-social-auth)
-
-## Related Modules
-
-- [Locomotive](https://github.com/jaredhanson/locomotive) — Powerful MVC web framework
-- [OAuthorize](https://github.com/jaredhanson/oauthorize) — OAuth service provider toolkit
-- [OAuth2orize](https://github.com/jaredhanson/oauth2orize) — OAuth 2.0 authorization server toolkit
-- [connect-ensure-login](https://github.com/jaredhanson/connect-ensure-login)  — middleware to ensure login sessions
-
-The [modules](https://github.com/jaredhanson/passport/wiki/Modules) page on the
-[wiki](https://github.com/jaredhanson/passport/wiki) lists other useful modules
-that build upon or integrate with Passport.
-
-## Tests
+// ... using a custom namespace
+//
+// Note: Custom namespaces should be a UUID string specific to your application!
+// E.g. the one here was generated using this modules `uuid` CLI.
+const MY_NAMESPACE = '1b671a64-40d5-491e-99b0-da01ff1f3341';
+uuidv5('Hello, World!', MY_NAMESPACE); // ⇨ '630eb68f-e0fa-5ecc-887a-7c7a62614681'
 
 ```
-$ npm install
-$ make test
+
+## Quickstart - Browser-ready Versions
+
+Browser-ready versions of this module are available via [wzrd.in](https://github.com/jfhbrook/wzrd.in).
+
+For version 1 uuids:
+
+```html
+<script src="http://wzrd.in/standalone/uuid%2Fv1@latest"></script>
+<script>
+uuidv1(); // -> v1 UUID
+</script>
 ```
 
-## Credits
+For version 3 uuids:
 
-  - [Jared Hanson](http://github.com/jaredhanson)
+```html
+<script src="http://wzrd.in/standalone/uuid%2Fv3@latest"></script>
+<script>
+uuidv3('http://example.com/hello', uuidv3.URL); // -> v3 UUID
+</script>
+```
 
-## Supporters
+For version 4 uuids:
 
-This project is supported by ![](http://passportjs.org/images/supported_logo.svg) [Auth0](https://auth0.com) 
+```html
+<script src="http://wzrd.in/standalone/uuid%2Fv4@latest"></script>
+<script>
+uuidv4(); // -> v4 UUID
+</script>
+```
 
-## License
+For version 5 uuids:
 
-[The MIT License](http://opensource.org/licenses/MIT)
+```html
+<script src="http://wzrd.in/standalone/uuid%2Fv5@latest"></script>
+<script>
+uuidv5('http://example.com/hello', uuidv5.URL); // -> v5 UUID
+</script>
+```
 
-Copyright (c) 2011-2015 Jared Hanson <[http://jaredhanson.net/](http://jaredhanson.net/)>
+## API
 
+### Version 1
+
+```javascript
+const uuidv1 = require('uuid/v1');
+
+// Incantations
+uuidv1();
+uuidv1(options);
+uuidv1(options, buffer, offset);
+```
+
+Generate and return a RFC4122 v1 (timestamp-based) UUID.
+
+* `options` - (Object) Optional uuid state to apply. Properties may include:
+
+  * `node` - (Array) Node id as Array of 6 bytes (per 4.1.6). Default: Randomly generated ID.  See note 1.
+  * `clockseq` - (Number between 0 - 0x3fff) RFC clock sequence.  Default: An internally maintained clockseq is used.
+  * `msecs` - (Number) Time in milliseconds since unix Epoch.  Default: The current time is used.
+  * `nsecs` - (Number between 0-9999) additional time, in 100-nanosecond units. Ignored if `msecs` is unspecified. Default: internal uuid counter is used, as per 4.2.1.2.
+
+* `buffer` - (Array | Buffer) Array or buffer where UUID bytes are to be written.
+* `offset` - (Number) Starting index in `buffer` at which to begin writing.
+
+Returns `buffer`, if specified, otherwise the string form of the UUID
+
+Note: The <node> id is generated guaranteed to stay constant for the lifetime of the current JS runtime. (Future versions of this module may use persistent storage mechanisms to extend this guarantee.)
+
+Example: Generate string UUID with fully-specified options
+
+```javascript
+const v1options = {
+  node: [0x01, 0x23, 0x45, 0x67, 0x89, 0xab],
+  clockseq: 0x1234,
+  msecs: new Date('2011-11-01').getTime(),
+  nsecs: 5678
+};
+uuidv1(v1options); // ⇨ '710b962e-041c-11e1-9234-0123456789ab'
+
+```
+
+Example: In-place generation of two binary IDs
+
+```javascript
+// Generate two ids in an array
+const arr = new Array();
+uuidv1(null, arr, 0);  // ⇨ [ 69, 117, 109, 208, 123, 26, 17, 232, 146, 52, 45, 66, 178, 27, 26, 62 ]
+uuidv1(null, arr, 16); // ⇨ [ 69, 117, 109, 208, 123, 26, 17, 232, 146, 52, 45, 66, 178, 27, 26, 62, 69, 117, 109, 209, 123, 26, 17, 232, 146, 52, 45, 66, 178, 27, 26, 62 ]
+
+```
+
+### Version 3
+
+```javascript
+const uuidv3 = require('uuid/v3');
+
+// Incantations
+uuidv3(name, namespace);
+uuidv3(name, namespace, buffer);
+uuidv3(name, namespace, buffer, offset);
+```
+
+Generate and return a RFC4122 v3 UUID.
+
+* `name` - (String | Array[]) "name" to create UUID with
+* `namespace` - (String | Array[]) "namespace" UUID either as a String or Array[16] of byte values
+* `buffer` - (Array | Buffer) Array or buffer where UUID bytes are to be written.
+* `offset` - (Number) Starting index in `buffer` at which to begin writing. Default = 0
+
+Returns `buffer`, if specified, otherwise the string form of the UUID
+
+Example:
+
+```javascript
+uuidv3('hello world', MY_NAMESPACE);  // ⇨ '042ffd34-d989-321c-ad06-f60826172424'
+
+```
+
+### Version 4
+
+```javascript
+const uuidv4 = require('uuid/v4')
+
+// Incantations
+uuidv4();
+uuidv4(options);
+uuidv4(options, buffer, offset);
+```
+
+Generate and return a RFC4122 v4 UUID.
+
+* `options` - (Object) Optional uuid state to apply. Properties may include:
+  * `random` - (Number[16]) Array of 16 numbers (0-255) to use in place of randomly generated values
+  * `rng` - (Function) Random # generator function that returns an Array[16] of byte values (0-255)
+* `buffer` - (Array | Buffer) Array or buffer where UUID bytes are to be written.
+* `offset` - (Number) Starting index in `buffer` at which to begin writing.
+
+Returns `buffer`, if specified, otherwise the string form of the UUID
+
+Example: Generate string UUID with predefined `random` values
+
+```javascript
+const v4options = {
+  random: [
+    0x10, 0x91, 0x56, 0xbe, 0xc4, 0xfb, 0xc1, 0xea,
+    0x71, 0xb4, 0xef, 0xe1, 0x67, 0x1c, 0x58, 0x36
+  ]
+};
+uuidv4(v4options); // ⇨ '109156be-c4fb-41ea-b1b4-efe1671c5836'
+
+```
+
+Example: Generate two IDs in a single buffer
+
+```javascript
+const buffer = new Array();
+uuidv4(null, buffer, 0);  // ⇨ [ 54, 122, 218, 70, 45, 70, 65, 24, 171, 53, 95, 130, 83, 195, 242, 45 ]
+uuidv4(null, buffer, 16); // ⇨ [ 54, 122, 218, 70, 45, 70, 65, 24, 171, 53, 95, 130, 83, 195, 242, 45, 108, 204, 255, 103, 171, 86, 76, 94, 178, 225, 188, 236, 150, 20, 151, 87 ]
+
+```
+
+### Version 5
+
+```javascript
+const uuidv5 = require('uuid/v5');
+
+// Incantations
+uuidv5(name, namespace);
+uuidv5(name, namespace, buffer);
+uuidv5(name, namespace, buffer, offset);
+```
+
+Generate and return a RFC4122 v5 UUID.
+
+* `name` - (String | Array[]) "name" to create UUID with
+* `namespace` - (String | Array[]) "namespace" UUID either as a String or Array[16] of byte values
+* `buffer` - (Array | Buffer) Array or buffer where UUID bytes are to be written.
+* `offset` - (Number) Starting index in `buffer` at which to begin writing. Default = 0
+
+Returns `buffer`, if specified, otherwise the string form of the UUID
+
+Example:
+
+```javascript
+uuidv5('hello world', MY_NAMESPACE);  // ⇨ '9f282611-e0fd-5650-8953-89c8e342da0b'
+
+```
+
+## Command Line
+
+UUIDs can be generated from the command line with the `uuid` command.
+
+```shell
+$ uuid
+ddeb27fb-d9a0-4624-be4d-4615062daed4
+
+$ uuid v1
+02d37060-d446-11e7-a9fa-7bdae751ebe1
+```
+
+Type `uuid --help` for usage details
+
+## Testing
+
+```shell
+npm test
+```
+
+----
+Markdown generated from [README_js.md](README_js.md) by [![RunMD Logo](http://i.imgur.com/h0FVyzU.png)](https://github.com/broofa/runmd)

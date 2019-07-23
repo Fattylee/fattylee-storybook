@@ -19,6 +19,10 @@ const UserSchema =  new Schema({
     type: String,
     required: true,
   },
+  avatar: {
+    type: String,
+    default: 'placeholder.png',
+  },
 }, {usePushEach: true, timestamps: true });
 
 UserSchema.methods.isValidPassword = async function (password) {

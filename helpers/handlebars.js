@@ -15,11 +15,11 @@ module.exports = {
       const formattedDate = dayjs(date).format(format);
       return  formattedDate;
     },
-    isEqual(a, b, options) {
+    isEqual(a, b={}, options) {
       if(a.toString() === b.toString()) return options.fn(this);
       options.inverse(this);
     },
-    isNotEqual(a, b, options) { 
+    isNotEqual(a, b={}, options) { 
       if(a.toString() !== b.toString()) return options.fn(this);
       return options.inverse(this);
     },

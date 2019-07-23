@@ -22,7 +22,13 @@ const Story = mongoose.model('Story', new Schema({
     ref: 'User',
     required: true,
   },
+  allowComments: {
+    type: Boolean,
+  },
+  file: {
+    type: String,
+    default: 'placeholder.png',
+  },
 }, { timestamps: true }));
 
 module.exports = Story;
-

@@ -26,7 +26,10 @@
     "express-session": "1.16.2",
     "express-async-errors": "3.1.1",
     "dayjs": "1.8.15",
-    "joi": "14.3.1"
+    "joi": "14.3.1",
+    "faker": "4.1.0",
+    "express-fileupload": "1.1.5",
+    "uuid": "3.3.1"
   },
   "devDependencies": {
     "jest": "24.1.0",

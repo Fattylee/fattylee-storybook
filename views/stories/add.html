@@ -4,20 +4,30 @@
     
   <div class="row">
     <div class="col-sm-8 mx-auto mb-4">
-<form method="post" action="/stories">
+<form method="post" action="/stories" enctype="multipart/form-data" >
   <div class="form-group">
     <label for="title">Title</label>
-    <input type="text" name="title" value="{{story.title}}" class="form-control" id="title" aria-describedby="titleHelp" placeholder="Enter title" autofocus="">
+    <input type="text" name="title" value="{{story.title}}" class="form-control" id="title" aria-describedby="titleHelp" placeholder="Enter title" autofocus="" required="">
 
   </div>
   <div class="form-group">
     <label for="details">Details</label>
-    <textarea name="details" type="password" class="form-control details-height" id="details" placeholder="Enter details">{{story.details}}</textarea>
+    <textarea name="details" type="password" class="form-control details-height" id="details" placeholder="Enter details" required="">{{story.details}}</textarea>
   </div>
+  <div class="form-group">
+    <label for="file">File upload
+    <input type="file" name="laxy" id="file" class='form-control' multiple="">
+    </label> 
+  </div>
+   <div class="form-check">
+        <label for="allowComments" class="form-check-label">
+        <input name="allowComments" type="checkbox" class="form-check-input" id="allowComments" checked>
+            Allow Comments
+        </label>
+    </div>
   <div class="form-group">
      <label for="status">Status</label>
 <select class="form-control" id="status" name="status">
-   
     <option value="public">Public</option>
     <option value="private">Private</option>
   </select>

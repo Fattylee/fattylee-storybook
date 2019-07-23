@@ -3,7 +3,8 @@ const Story = require('../models/Story');
 const {validateAddFields, validateEditFields} = require('../middlewares/validateFields');
 const debug = require('debug')('active:app');
 const storyError = require('../controllers/errors/storyError');
-
+const faker = require('faker');
+const uuid = require('uuid');
 
 
 // catch all async errors related to stories route
@@ -15,14 +16,21 @@ router.all('/*', (req, res, next) => {
   next();
 });
 
+// add a new story form
+router.get('/add', (req, res) => {
+  res.render('stories/add', {pageTitle: 'Create story'});
+});
+
 // Create a new story action
 router.post('/', validateAddFields, async (req, res, next) => {
   
     const newStory = new Story({
       ...req.storyValue,
       status: req.body.status,
+      allowComments: req.body.allowComments ? true: false,
       user: req.user._id,
     });
+    debug('newStory', newStory); return;
     const story = await newStory.save();
     debug(story)
     req.flash('success_msg', `"${story.title}" was created successfully`);
@@ -40,10 +48,7 @@ router.get('/', async (req, res) => {
   res.render('stories', { stories, pageTitle: 'Stories',  });
 });
 
-// add a new story form
-router.get('/add', (req, res) => {
-  res.render('stories/add', {pageTitle: 'Create story'});
-});
+
 
 // Read full story page
 router.get('/:id', async (req, res) => {
@@ -91,6 +96,13 @@ router.delete('/:id', async (req, res) => {
   res.redirect('/stories');
 });
 
+// fake story generator
+router.post('/faker', (req, res) => {
+  debug('faker', faker, faker.name);
+  
+  const amount = req.body.amount;
+  res.send(amount);
+})
 
 router.all('/*', (req, res, next) => {
   res.send('404 not found, Stories');

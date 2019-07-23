@@ -16,12 +16,15 @@ const debug = require('debug')('active:app');
 const handlebarsConfig = require('./helpers/handlebars');
 const storyError = require('./controllers/errors/storyError');
 const app = express();
+const expressFileupload = require('express-fileupload');
 
 startDB(app);
 require('./config/passport')(passport);
 
 app.use(morgan('dev'));
 app.use(methodOverride('_method'));
+
+app.use(expressFileupload());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
