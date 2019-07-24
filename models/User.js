@@ -23,6 +23,7 @@ const UserSchema =  new Schema({
     type: String,
     default: 'placeholder.png',
   },
+  date: Date,
 }, {usePushEach: true, timestamps: true });
 
 UserSchema.methods.isValidPassword = async function (password) {

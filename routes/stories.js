@@ -5,6 +5,7 @@ const debug = require('debug')('active:app');
 const storyError = require('../controllers/errors/storyError');
 const faker = require('faker');
 const uuid = require('uuid');
+const path = require('path');
 
 
 // catch all async errors related to stories route
@@ -23,18 +24,31 @@ router.get('/add', (req, res) => {
 
 // Create a new story action
 router.post('/', validateAddFields, async (req, res, next) => {
-  
+ const {storyImage} = req.files;
+ let fileName = `${uuid()}-${storyImage.name}`;
+ //const prevFileName = 
+ const storagePath = path.join(__dirname, '../public/img/uploads/stories/');
+ storyImage.mv(storagePath + fileName, async err => {
+   if(err) throw err;
+   
+   // const filePath = storagePath
+ //debug(storyImage, storagePath); return;
+ 
+ //check for mimetype (image/*) and size 2*1000000 bytes 2m
     const newStory = new Story({
       ...req.storyValue,
       status: req.body.status,
-      allowComments: req.body.allowComments ? true: false,
+      allowComments: !!req.body.allowComments,
+      storyImage: fileName,
       user: req.user._id,
     });
-    debug('newStory', newStory); return;
+   // debug('newStory', newStory); return;
     const story = await newStory.save();
-    debug(story)
+   // debug(story)
     req.flash('success_msg', `"${story.title}" was created successfully`);
     res.redirect('/stories');
+ })
+
 });
 
 // come back to this
@@ -109,4 +123,3 @@ router.all('/*', (req, res, next) => {
 });
 
 module.exports = router;
-

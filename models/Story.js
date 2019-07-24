@@ -25,7 +25,7 @@ const Story = mongoose.model('Story', new Schema({
   allowComments: {
     type: Boolean,
   },
-  file: {
+  storyImage: {
     type: String,
     default: 'placeholder.png',
   },

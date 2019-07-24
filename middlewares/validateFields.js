@@ -22,8 +22,14 @@ const storySchema = config.keys({
 const validateAddFields = async (req, res, next) => {
   const { error, value } = Joi.validate(req.body, storySchema);
   const story = value;
+  let errors = [];
+  if(!req.files) {
+    errors.push({error: 'pls pick a cover image'});
+  }
   if(error) {
-    const errors = error.details.map(e => ({error: e.message}));
+     errors = [...errors, ...error.details.map(e => ({error: e.message}))];
+     }
+  if(errors.length) {
     res.render('stories/add', {errors, story, pageTitle: 'Create story'});
   }
   else {

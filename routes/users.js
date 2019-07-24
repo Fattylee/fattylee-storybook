@@ -86,18 +86,13 @@ router.patch('/me', /*isAuthenticated,*/ async (req, res) => {
     babu.mv(avatarPath, (err) => {
        if(err) throw new Error(err);
        
-       // write some codes to clear the uploads dir.
-       fs.readdir(join(avatarPath, '../'), (err, files) => {
-         if(err) throw err;
-         files.forEach(file => {
-           const filePath = join(avatarPath, '../', file);
-           if(avatarPath !== filePath) {
-             fs.unlink(filePath, err => {
+       // write some codes to clear the previous avatar
+       const prevAvatar = join(avatarPath, '../', req.user.avatar);
+       if(prevAvatar !== 'placeholder.png') {
+         fs.unlink(prevAvatar, err => {
                if(err) throw err;
-             })
-           }
-         })
-       })
+             });
+       }
      });
   }
   if(!filename){
@@ -119,3 +114,4 @@ router.all('/*', (req, res, next) => {
 });*/
 
 module.exports = router;
+
