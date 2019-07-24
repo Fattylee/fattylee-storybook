@@ -7,6 +7,8 @@ const faker = require('faker');
 const uuid = require('uuid');
 const path = require('path');
 const util = require('util');
+const fse = require('fs-extra');
+const fs = require('fs');
 
 // catch all async errors related to stories route
 //This will never get called!
@@ -104,7 +106,13 @@ router.put('/:id', validateEditFields, async (req, res) => {
 // Delete a story
 router.delete('/:id', async (req, res) => {
   const story = await Story.findByIdAndRemove(req.params.id);
-  if(!story) return res.redirect('/stories');
+  if(story) {
+    const {storyImage} = story;
+    /* fse-extra module works directly
+    await fs.unlink(path.join(__dirname,'../public/img/uploads/stories', storyImage));
+    */
+    await util.promisify(fs.unlink)(path.join(__dirname,'../public/img/uploads/stories', storyImage));
+  } 
   req.flash('success_msg', 'story was deleted successfully');
   res.redirect('/stories');
 });
