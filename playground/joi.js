@@ -58,4 +58,12 @@ const {error, value } = schema.validate({
 let errors = error || {details: [{message: null}]};
 errors = errors.details.map(e => ({error :e.message}))
 
-console.log('error', JSON.stringify(errors, null, 2), 'value', value);
+//console.log('error', JSON.stringify(errors, null, 2), 'value', value);
+
+const myName = 'Abu Adnaan';
+
+//module.exports = 89;
+//module.exports.sex = 'male';
+//module.exports = 0.00056;
+exports.pap = 'na papa bdis'
+//exports = myName; this has no effect its simply a reference to module.exports

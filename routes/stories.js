@@ -6,7 +6,7 @@ const storyError = require('../controllers/errors/storyError');
 const faker = require('faker');
 const uuid = require('uuid');
 const path = require('path');
-
+const util = require('util');
 
 // catch all async errors related to stories route
 //This will never get called!
@@ -28,8 +28,8 @@ router.post('/', validateAddFields, async (req, res, next) => {
  let fileName = `${uuid()}-${storyImage.name}`;
  //const prevFileName = 
  const storagePath = path.join(__dirname, '../public/img/uploads/stories/');
- storyImage.mv(storagePath + fileName, async err => {
-   if(err) throw err;
+ await util.promisify(storyImage.mv)(storagePath + fileName);
+ 
    
    // const filePath = storagePath
  //debug(storyImage, storagePath); return;
@@ -47,7 +47,6 @@ router.post('/', validateAddFields, async (req, res, next) => {
    // debug(story)
     req.flash('success_msg', `"${story.title}" was created successfully`);
     res.redirect('/stories');
- })
 
 });
 
