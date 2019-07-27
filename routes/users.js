@@ -1,6 +1,7 @@
 const express = require('express');
 const {join} = require('path');
 const fs = require('fs');
+const util = require('util');
 const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
 const router = express.Router();
@@ -75,39 +76,29 @@ router.get('/me', isAuthenticated, async (req, res) => {
 });
 
 // update profile info
-router.patch('/me', /*isAuthenticated,*/ async (req, res) => {
-  
-  let filename = undefined;
+router.patch('/me', isAuthenticated, async (req, res) => {
   if(req.files) {
-    const {babu} = req.files;
-    filename = `${uuid()}-${babu.name}`;
-    const avatarPath = join(__dirname, '../public/img/uploads/avatars', filename);
-    
-    babu.mv(avatarPath, (err) => {
-       if(err) throw new Error(err);
-       
-       // write some codes to clear the previous avatar
-       const prevAvatar = join(avatarPath, '../', req.user.avatar);
-       if(prevAvatar !== 'placeholder.png') {
-         fs.unlink(prevAvatar, err => {
-               if(err) throw err;
-             });
-       }
-     });
-  }
-  if(!filename){
-    
-    req.flash('error_msg', 'pls choose an image');
-    return res.redirect('/users/me');
-  }
-  
-  const update = await User.findByIdAndUpdate(req.user._id, {
-    avatar: filename,
-  }, {new: true});
-   debug('update', update);
+    const {avatar} = req.files;
+    const filename = `${uuid()}-${avatar.name}`;
+    const avatarPath = join(__dirname, '../public/img/uploads/avatars/');
+    const prevAvatar = req.user.avatar;
+    // save avatar to storage
+    await util.promisify(avatar.mv)(avatarPath + filename);
+    // update avater name ref in mongoose
+    const update = await User.findByIdAndUpdate(req.user._id, { avatar: filename,}, {new: true});
+    // delete prevAvatar is not stock
+    if(prevAvatar !== 'avater_placeholder.png') {
+      await util.promisify(fs.unlink)(avatarPath + prevAvatar).catch(debug);
+    }
    req.flash('success_msg', 'profile update was successful');
-   res.redirect('/users/me');
+    res.redirect('/users/me');    
+  }
+  else {
+    req.flash('error_msg', 'no selected picture');
+    res.redirect('/users/me');
+  }
 });
+
 /*
 router.all('/*', (req, res, next) => {
   res.send('404 not found, Users');

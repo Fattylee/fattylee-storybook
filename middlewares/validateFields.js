@@ -15,13 +15,14 @@ const registerSchema = loginSchema.keys({
 })
 
 const storySchema = config.keys({
-    title: Joi.string().min(5).required().label('Title').trim(),
-    details: Joi.string().min(10).required().label('Details').trim(), 
+    title: Joi.string().min(5).max(100).required().label('Title').trim(),
+    details: Joi.string().min(100).required().label('Details').trim(), 
   });
 
 const validateAddFields = async (req, res, next) => {
   const { error, value } = Joi.validate(req.body, storySchema);
   const story = value;
+  debug('value', value); 
   let errors = [];
   if(!req.files) {
     errors.push({error: 'pls pick a cover image'});

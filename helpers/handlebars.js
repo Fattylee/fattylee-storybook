@@ -26,6 +26,9 @@ module.exports = {
     select(status, options) {
       debug('select:', status);
       if(status) return options.fn(this).replace(new RegExp(`(value="${status}")`), '$1 selected');
+    },
+    truncateDetails(words, length) {
+      return words.substr(0, length) + ' . . .';
     }
    },
 };

@@ -11,7 +11,7 @@ const Mango = mongoose.model('Mango', {
 });
 
 //mongoose connection
-mongoose.connect('mongodb://localhost/expert', {useNewUrlParser: true, useCreateIndex: true}).then(res => {
+mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true, useCreateIndex: true}).then(res => {
   console.log('connected to mongodb(test)');
 })
 .catch(err => console.error('Could not connect to db(test)'));
@@ -19,9 +19,9 @@ mongoose.connect('mongodb://localhost/expert', {useNewUrlParser: true, useCreate
 
 const create =  async (obj) => {
   try {
-    const newMango = await  Mango.insertMany(obj);
+    const newMangoes = await  Mango.insertMany(obj);
     
-    console.log('mangoes',JSON.stringify(newMango, null, 2));
+    console.log('mangoes',JSON.stringify(newMangoes, null, 2));
     
     //await User.findByIdAndRemove('5d23b2e8ff4f5322ac5fb8ad');
     
@@ -32,7 +32,7 @@ const create =  async (obj) => {
 }; // end create
 
 const fetch = async () => {
-   const mangoes = await User
+   const mangoes = await Mango
    //.countDocuments();
    .find({
      //name: {$regex: /^\w+ \w+$/i},
@@ -41,6 +41,7 @@ const fetch = async () => {
      //updatedAt: undefined,
      //password: undefined,
        //date: {$regex: /.*/}
+       //name: {$regex: /^\w+ \w+$/},
      })
      .limit(599)
      //.sort({createdAt: -1});
@@ -57,9 +58,11 @@ const obj = {
 };
 
 const deleteMango = async () => {
-  const deleted = await Mango.deleteMany(
+  const deleted = await Mango.remove( //.deleteOne(
   {
-    fileName: null,
+    //_id: "5d38a97e7084dd546dd08d2c"
+   // fileName: null,
+    //name: {$regex: /^\w+ \w+$/},
   });
   console.log('deleted mango', deleted);
   fetch()
@@ -100,16 +103,16 @@ const updateManyUsers = async () => {
     return u.save();
   });
   const newUsers = await Promise.all(users);*/
-  const newUsers = await User.updateMany(
-  {},
+  const newUsers = await Mango.updateMany(
+  {name: {$regex: /^\w+ \w+$/}},
   {
-    //$set: {avatar: 'placeholder.png'},
-    $unset: {date: ''}
+    $set: {fileName: 'aaabbb'},
+    //$unset: {date: ''}
     
     }, {new: true});
   console.log(newUsers);
 }
-const mangoesArr = new Array(100).fill(0).map(m => ({
+const mangoesArr = new Array(10).fill(0).map(m => ({
   name: faker.name.findName(),
   avatar: faker.image.avatar(),
   fileName: faker.system.fileName(),
@@ -122,4 +125,3 @@ fetch();
 //deleteMango();
 //update();
 //updateManyUsers();
-

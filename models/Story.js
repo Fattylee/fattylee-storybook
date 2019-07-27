@@ -6,11 +6,14 @@ const Story = mongoose.model('Story', new Schema({
     type: String,
     required: true,
     trim: true,
+    maxlength: 100,
+    minlength: 5,
   },
   details: {
     type: String,
     required: true,
     trim: true,
+    minlength: 100,
   },
   status: {
     type: String,
@@ -27,7 +30,7 @@ const Story = mongoose.model('Story', new Schema({
   },
   storyImage: {
     type: String,
-    default: 'placeholder.png',
+    default: 'story_placeholder.png',
   },
 }, { timestamps: true }));
 

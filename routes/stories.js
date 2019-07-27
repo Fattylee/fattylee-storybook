@@ -28,13 +28,10 @@ router.get('/add', (req, res) => {
 router.post('/', validateAddFields, async (req, res, next) => {
  const {storyImage} = req.files;
  let fileName = `${uuid()}-${storyImage.name}`;
- //const prevFileName = 
+ 
  const storagePath = path.join(__dirname, '../public/img/uploads/stories/');
  await util.promisify(storyImage.mv)(storagePath + fileName);
- 
    
-   // const filePath = storagePath
- //debug(storyImage, storagePath); return;
  
  //check for mimetype (image/*) and size 2*1000000 bytes 2m
     const newStory = new Story({
@@ -89,15 +86,26 @@ router.put('/:id', validateEditFields, async (req, res) => {
     req.flash('error_msg', 'story not found');
     return res.redirect('/stories');
   }
-  
   if(story.user.toString() !== req.user._id.toString()) {
     req.flash('error_msg', 'Unauthorized, not your story');
   return res.redirect('/');
   }
-  
+  const {storyImage = undefined } = req.files || {};
+  // get current fileName
+  const prevFileName = story.storyImage;
+  const storagePath = path.join(__dirname, '../public/img/uploads/stories/');
+  if(storyImage) {
+    const fileName = `${uuid()}-${storyImage.name}`;
+ // move cover image to public folder
+ await util.promisify(storyImage.mv)(storagePath + fileName);
+ // cleanup prevFileName
+ await util.promisify(fs.unlink)(storagePath + prevFileName);
+ story.storyImage = fileName;
+  }
   story.title = req.body.title;
   story.details = req.body.details;
   story.status = req.body.status;
+  
   await story.save(); 
   req.flash('success_msg', 'story was updated successfully');
   res.redirect('/stories');

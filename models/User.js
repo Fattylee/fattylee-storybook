@@ -21,7 +21,7 @@ const UserSchema =  new Schema({
   },
   avatar: {
     type: String,
-    default: 'placeholder.png',
+    default: 'avatar_placeholder.png',
   },
   date: Date,
 }, {usePushEach: true, timestamps: true });

@@ -17,23 +17,19 @@
         {{#each stories}}
         <div class=" col-sm-6">
           <div class="card mb-3">
-            <img src="/img/uploads/stories/{{storyImage}}" alt="{{storyImage}}" class="mb-2" height="300"/>
+            <div class="text-center">
+            <img src="/img/uploads/stories/{{storyImage}}" alt="{{storyImage}}" class="mb-2" height="200"/>
+            </div>
           <div class="card-body"> 
             <h5 class="card-title text-center">{{title}}</h5>  
-            <p class="card-text">{{details}}
-              <a class="btn btn-secondary " href="/stories/{{id}}">Read More &rarr;</a>
+            <p class="card-text">{{truncateDetails details 100}}
+              <a class="btn text-secondary border-dark bg-white" href="/stories/{{id}}">Read More &rarr;</a>
             </p>
           </div> 
           <div class="card-footer">
-            {{#isEqual  user._id ../user._id}}
-           <a href="/stories/edit/{{id}}" class="btn btn-block btn-dark mb-2">Edit </a> 
-             <form action="/stories/{{_id}}?_method=DELETE" method="post">
-              <button class="btn btn-block btn-danger">Delete </button> 
-            </form>
-            {{/isEqual}}
             <p class="text-muted small mt-2">
             <span class="fas fa-user"></span>     
-           <span class="pl-1"> {{capitalizeEach user.name}}</span> <span class="ml-2 pl-1 fas fa-clock fa-1x"></span> {{displayDate story.updatedAt 'MMM DD[,] YYYY [at] hh:mm a' }} 
+           <span class="pl-1"> {{capitalizeEach user.name}}</span> <span class="ml-2 pl-1 fas fa-clock fa-1x"></span> {{displayDate updatedAt 'MMM DD[,] YYYY [at] hh:mm a' }} 
           </p>
           </div><!-- class="card-footer" -->
         </div><!-- End Card-->
