@@ -9,23 +9,38 @@
     
 <form method="post" action="/users/me?_method=PATCH" enctype="multipart/form-data">
   
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input readonly="" type="text" name="name" value="{{user.name}}" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Enter name" required="" autofocus="">
+  
+  <div class="input-group mb-3"> 
+    <div class="input-group-prepend"> 
+      <span class="input-group-text " id="name">
+        <span class="fas fa-user"></span>
+      </span> 
+    </div> 
+    <input type="text" name="name" value="{{user.name}}"readonly="" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="name"> 
+  </div> 
+  
+  <div class="input-group mb-3"> 
+    <div class="input-group-prepend"> 
+      <span class="input-group-text" id="email">@</span> 
+    </div> 
+    <input type="email" name="email" value="{{user.email}}"readonly="" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email"> 
+  </div> 
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Profile upload</span>
+    </div>
+    <div class="custom-file">
+    <input type="file" class="custom-file-input" id="file" name="avatar" accept="image/*" >
+    <label class="custom-file-label" for="file">Choose image</label>
+    </div>
   </div>
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input readonly="" type="email" name="email" value="{{user.email}}" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" required="">
-  </div>
-  <div class="form-group">
-    <label for="file">Profile upload
-    <input type="file" name="avatar" id="file" class='form-control' accept="image/*">
-    </label> 
-  </div>
-  <input type="submit" class='btn btn-block' value="Update"/>
+  
+  <input type="submit" class='btn btn-secondary btn-block' value="Update"/>
 </form>
   
 </div>
 </div>
 </div>
 </div>
+

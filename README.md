@@ -6,7 +6,7 @@ This is app was created for the brilliant minds to showcase their thoughts for t
 
 [View app](https://fattylee-storybook.herokuapp.com)
 
-### Getting start
+### Getting started
 
 Clone this repo to your computer
 
@@ -15,4 +15,3 @@ $ cd fattylee-storybook
 $ npm i
 $ npm run dev
 ```
-

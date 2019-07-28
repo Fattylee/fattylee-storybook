@@ -77,9 +77,21 @@ router.get('/me', isAuthenticated, async (req, res) => {
 
 // update profile info
 router.patch('/me', isAuthenticated, async (req, res) => {
-  if(req.files) {
+  if(!req.files){
+    req.flash('error_msg', 'no selected picture');
+    return res.redirect('/users/me');
+  }
+  if(req.files.avatar.size > 2 * 1000 * 1000) {
+    req.flash('error_msg', 'Image size cannot exceed 2mb');
+    return res.redirect('/users/me');
+  }
+  if(!/^image\/.*$/i.test(req.files.avatar.mimetype)) {
+    req.flash('error_msg', 'file type not supported, pls use a valid image file (jpeg, png, jpg, gif)');
+    return res.redirect('/users/me');
+  }
+  
     const {avatar} = req.files;
-    const filename = `${uuid()}-${avatar.name}`;
+    const filename = `${new Date()}-${avatar.name}`;
     const avatarPath = join(__dirname, '../public/img/uploads/avatars/');
     const prevAvatar = req.user.avatar;
     // save avatar to storage
@@ -92,11 +104,8 @@ router.patch('/me', isAuthenticated, async (req, res) => {
     }
    req.flash('success_msg', 'profile update was successful');
     res.redirect('/users/me');    
-  }
-  else {
-    req.flash('error_msg', 'no selected picture');
-    res.redirect('/users/me');
-  }
+  
+  
 });
 
 /*

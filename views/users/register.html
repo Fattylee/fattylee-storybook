@@ -6,23 +6,46 @@
   <h3 class="text-center mb-4">Account Register</h3>   
     
 <form method="post" action="/users/register">
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input type="text" name="name" value="{{userValue.name}}" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Enter name" required="" autofocus="">
-  </div>
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input type="email" name="email" value="{{userValue.email}}" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" required="">
-  </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input name="password" type="password" class="form-control" id="password" placeholder="Create password" required=""/>
-  </div>
-   <div class="form-group">
-    <label for="confirmPassword">Confirm password</label>
-    <input name="confirmPassword" type="password" class="form-control" id="confirmPassword" placeholder="Confirm password" required=""/>
-  </div>
 
+ <label for="name">Name</label>
+<div class="input-group mb-3"> 
+    <div class="input-group-prepend"> 
+      <span class="input-group-text" id="name">
+        <span class="fas fa-user-alt"></span>
+      </span> 
+    </div> 
+    <input type="text" name="name" value="{{userValue.name}}"required="" minlength="5" autofocus="" class="form-control" placeholder="Enter name" aria-label="Name" aria-describedby="name"> 
+  </div> {{!-- End Name --}}
+
+  
+<label for="email">Email</label>
+<div class="input-group mb-3"> 
+    <div class="input-group-prepend"> 
+      <span class="input-group-text" id="email">@</span> 
+    </div> 
+    <input type="email" name="email" value="{{userValue.email}}"required="" minlength="5" class="form-control" placeholder="Enter email" aria-label="Email" aria-describedby="email"> 
+  </div> {{!-- End Email --}}
+
+<label for="password">Password</label>
+<div class="input-group mb-3"> 
+    <div class="input-group-prepend"> 
+      <span class="input-group-text " >
+        <span class="fas fa-user-secret"></span>
+      </span> 
+    </div> 
+    <input type="password" name="password" class="form-control" placeholder="Enter password" id="password" required="" minlength="5" aria-label="password" aria-describedby="password"> 
+  </div> {{!-- End Password --}}
+
+<label for="confirmPassword">Password</label>
+<div class="input-group mb-3"> 
+    <div class="input-group-prepend"> 
+      <span class="input-group-text " >
+        <span class="fas fa-user-check"></span>
+      </span> 
+    </div> 
+    <input type="password" class="form-control" placeholder="Confirm password" id="confirmPassword" name="confirmPassword" required="" minlength="5" aria-label="confirmPassword" aria-describedby="confirmPassword"> 
+  </div> {{!-- End Confirm Password --}}
+  
   <button type="submit" class="btn btn-block btn-primary">Register </button>
 </form>
   <p class="text-muted mt-2">Already Have an Account? <a href='/users/login'>Login</a></p>

@@ -27,7 +27,7 @@ router.get('/add', (req, res) => {
 // Create a new story action
 router.post('/', validateAddFields, async (req, res, next) => {
  const {storyImage} = req.files;
- let fileName = `${uuid()}-${storyImage.name}`;
+ let fileName = `${new Date()}-${storyImage.name}`;
  
  const storagePath = path.join(__dirname, '../public/img/uploads/stories/');
  await util.promisify(storyImage.mv)(storagePath + fileName);
@@ -95,12 +95,22 @@ router.put('/:id', validateEditFields, async (req, res) => {
   const prevFileName = story.storyImage;
   const storagePath = path.join(__dirname, '../public/img/uploads/stories/');
   if(storyImage) {
-    const fileName = `${uuid()}-${storyImage.name}`;
+    if(storyImage.size > 2 * 1000 * 1000) {
+    req.flash('error_msg', 'Image size cannot exceed 2mb');
+    return res.redirect('/stories/edit/' + story._id);
+  }
+  if(!/^image\/.*$/i.test(storyImage.mimetype)) {
+    req.flash('error_msg', 'file type not supported, pls use a valid image file (jpeg, png, jpg, gif etc)');
+    return res.redirect('/stories/edit/' + story._id);
+  }
+    const fileName = `${new Date()}-${storyImage.name}`;
  // move cover image to public folder
  await util.promisify(storyImage.mv)(storagePath + fileName);
- // cleanup prevFileName
- await util.promisify(fs.unlink)(storagePath + prevFileName);
  story.storyImage = fileName;
+ // cleanup prevFileName
+ if(prevFileName !== 'story_placeholder.png') {
+   await util.promisify(fs.unlink)(storagePath + prevFileName).catch(debug);
+ }
   }
   story.title = req.body.title;
   story.details = req.body.details;

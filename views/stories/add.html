@@ -5,20 +5,27 @@
   <div class="row">
     <div class="col-sm-8 mx-auto mb-4">
 <form method="post" action="/stories" enctype="multipart/form-data" >
+  
   <div class="form-group">
     <label for="title">Title</label>
-    <input type="text" name="title" value="{{story.title}}" class="form-control" id="title" aria-describedby="titleHelp" placeholder="Enter title" autofocus="" required="">
-
-  </div>
+    <input type="text" name="title" value="{{story.title}}" class="form-control" id="title" aria-describedby="titleHelp" placeholder="Enter title" autofocus="" required="" maxlength="100" minlength="5">
+  </div> {{!-- End title --}}
+  
   <div class="form-group">
     <label for="details">Details</label>
-    <textarea name="details" type="password" class="form-control details-height" id="details" placeholder="Enter details" required="">{{story.details}}</textarea>
-  </div>
-  <div class="form-group">
-    <label for="file">Pick a story image
-    <input type="file" name="storyImage" id="file" class='form-control' accept="image/*" />
-    </label> 
-  </div>
+    <textarea name="details" type="password" class="form-control details-height" id="details" placeholder="Enter details" required="" minlength="100">{{story.details}}</textarea>
+  </div> {{!-- End details --}}
+  
+   <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Upload</span>
+    </div>
+    <div class="custom-file">
+    <input type="file" class="custom-file-input" id="file" name="storyImage" accept="image/*" required="" >
+    <label class="custom-file-label" for="file">Choose a story image</label>
+    </div>
+  </div> {{!-- End File upload --}}
+  
    <div class="form-check">
         <label for="allowComments" class="form-check-label">
         <input name="allowComments" type="checkbox" class="form-check-input" id="allowComments" checked>
