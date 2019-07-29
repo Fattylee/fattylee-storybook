@@ -7,7 +7,7 @@
         </div>
         <div class="card border-0 my-3"> 
           <div class=""> 
-            <h5 class="card-title text-center mb-3">{{story.title}}</h5>  
+            <h4 class="card-title text-center mb-3">{{story.title}}</h4>  
             <p class="card-text px-2">{{story.details}}</p>
           </div> 
         <div class="card-footer mt-3">
@@ -24,12 +24,86 @@
           </p>
           </div><!-- class="card-footer" -->
         </div><!-- End Card-->
+        <hr>
+          <h5>Recent comments:</h1>
       </div><!-- End col -->
            {{else}}
          <div class="col">
            <p class="jumbotron">Story not found <a href="/stories/add" class="btn btn-primary"><span class="fas fa-plus"></span> Add story</a></p>
+           
+           <hr />
+           
          </div>
     {{/if}}
+    
+    <!-- comments section -->
+   
+    {{#each story.comments}}
+
+        <!-- Single Comment -->
+         <div class="col-sm-9 mx-auto">
+<div class="card-body">
+                 <p class="text-muted small mt-2">
+                  <span class="fas fa-user"></span>     
+           <span class="pl-1"> {{capitalizeEach owner.name}}</span> <span class="ml-2 pl-1 fas fa-clock fa-1x"></span> {{displayDate updatedAt 'MMM DD[,] YYYY [at] hh:mm a' }}
+               </p>
+                <p>
+                {{body}}
+                </p>
+            </div> <!--div class="card-body"-->
+             <hr>
+        </div>  <!--div class="col-sm-9 mx-auto"-->
+        
+       
+        {{/each}}
+          
+    
+    
+    <div class="col-sm-9 mx-auto">
+       <!--  Content -->
+
+    {{#if user}}
+
+     {{#if story.allowComments}}
+
+        <!-- Comments Form -->
+        <div class="card my-4">
+            <h5 class="card-header">Leave a Comment:</h5>
+            <div class="card-body">
+                <form action="/stories/comments/" method="post">
+                    <div class="form-group">
+                        <textarea name="body" class="form-control" rows="3" placeholder="Enter comment"></textarea>
+
+                        <input type="hidden" value="{{story._id}}" name="id">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+
+        {{else}}
+
+        <h2>Comments not allowed for this</h2>
+
+            <br>
+            <hr>
+
+
+        {{/if}}
+
+
+    {{else}}
+
+        You need to login to comment <a href="/users/login">Login</a>
+
+        <br>
+        <hr>
+
+    {{/if}}
+
+
+    </div><!-- End col-sm-9 mx-auto  -->
+    
   </div><!-- End row  -->
 </div><!-- End container -->
       

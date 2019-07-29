@@ -23,8 +23,7 @@ module.exports = {
       if(a.toString() !== b.toString()) return options.fn(this);
       return options.inverse(this);
     },
-    select(status, options) {
-      debug('select:', status);
+    select(status, options) { 
       if(status) return options.fn(this).replace(new RegExp(`(value="${status}")`), '$1 selected');
     },
     truncateDetails(words, length) {

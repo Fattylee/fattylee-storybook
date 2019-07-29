@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Story = require('../models/Story');
+const Comment = require('../models/Comment');
 const {validateAddFields, validateEditFields} = require('../middlewares/validateFields');
 const debug = require('debug')('active:app');
 const storyError = require('../controllers/errors/storyError');
@@ -31,9 +32,7 @@ router.post('/', validateAddFields, async (req, res, next) => {
  
  const storagePath = path.join(__dirname, '../public/img/uploads/stories/');
  await util.promisify(storyImage.mv)(storagePath + fileName);
-   
  
- //check for mimetype (image/*) and size 2*1000000 bytes 2m
     const newStory = new Story({
       ...req.storyValue,
       status: req.body.status,
@@ -56,7 +55,6 @@ router.get('/', async (req, res) => {
   const stories = await Story.find({user: req.user._id, })
   .sort('-updatedAt');
   
-  debug('stories', stories);
   res.render('stories', { stories, pageTitle: 'Stories',  });
 });
 
@@ -65,7 +63,20 @@ router.get('/', async (req, res) => {
 // Read full story page
 router.get('/:id', async (req, res) => {
 
-  const story = await Story.findOne({_id: req.params.id }).populate('user');
+  const story = await Story.findOne({_id: req.params.id })
+  .populate('user')
+  .populate({
+    path: 'comments',
+    populate: {
+      path: 'owner', 
+      select: 'name',
+      model: 'User',
+      
+      }
+  })
+  .sort({'comments': 0});
+  
+  debug('full_story',JSON.stringify(story, undefined, 2));
   
   res.render('stories/full_story', { story, pageTitle: 'Full Story',  });
 });
@@ -115,7 +126,7 @@ router.put('/:id', validateEditFields, async (req, res) => {
   story.title = req.body.title;
   story.details = req.body.details;
   story.status = req.body.status;
-  
+  story.allowComments = !!req.body.allowComments,
   await story.save(); 
   req.flash('success_msg', 'story was updated successfully');
   res.redirect('/stories');
@@ -126,13 +137,38 @@ router.delete('/:id', async (req, res) => {
   const story = await Story.findByIdAndRemove(req.params.id);
   if(story) {
     const {storyImage} = story;
-    /* fse-extra module works directly
-    await fs.unlink(path.join(__dirname,'../public/img/uploads/stories', storyImage));
-    */
+  
     await util.promisify(fs.unlink)(path.join(__dirname,'../public/img/uploads/stories', storyImage));
   } 
   req.flash('success_msg', 'story was deleted successfully');
   res.redirect('/stories');
+});
+
+// comments action
+router.post('/comments/', async (req, res) => {
+   debug('comments', req.body, 'params:', req.params.id,  );
+  const story = await Story.findOne({_id: req.body.id});
+  if(!story) {
+    req.flash('error_msg', 'cannot find with the given ID');
+    return res.redirect('/');
+  }
+  const newComment = new Comment({
+    owner: req.user.id,
+    body: req.body.body,
+  });
+  // save comment to comment collection
+  const { _id } = await newComment.save();
+  if(!_id) {
+    req.flash('error_msg', 'cannot create a comment, pls try again');
+    return res.redirect('/stories/' + req.body.id);
+  }
+  
+  story.comments = [...story.comments, _id ];
+  // save comment id to story collection
+  const updatedComment = await story.save();
+  debug('updatedStory', updatedComment);
+  req.flash('success_msg', 'comment posted successfully!')
+  res.redirect('/stories/' + req.body.id);
 });
 
 // fake story generator
@@ -141,10 +177,10 @@ router.post('/faker', (req, res) => {
   
   const amount = req.body.amount;
   res.send(amount);
-})
-
-router.all('/*', (req, res, next) => {
-  res.send('404 not found, Stories');
 });
+
+/*router.all('/*', (req, res, next) => {
+  res.send('404 not found, Stories');
+});*/
 
 module.exports = router;

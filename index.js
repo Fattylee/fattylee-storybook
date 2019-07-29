@@ -21,7 +21,7 @@ const expressFileupload = require('express-fileupload');
 startDB(app);
 require('./config/passport')(passport);
 
-app.use(morgan('dev'));
+app.use(morgan('tiny'));
 app.use(methodOverride('_method'));
 
 app.use(expressFileupload());

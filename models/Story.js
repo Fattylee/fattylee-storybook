@@ -27,11 +27,17 @@ const Story = mongoose.model('Story', new Schema({
   },
   allowComments: {
     type: Boolean,
+    default: true,
   },
   storyImage: {
     type: String,
     default: 'story_placeholder.png',
   },
+  comments: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Comment',
+    required: true,
+  }],
 }, { timestamps: true }));
 
 module.exports = Story;
