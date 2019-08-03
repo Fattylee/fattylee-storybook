@@ -63,7 +63,7 @@ router.get('/', async (req, res) => {
 // Read full story page
 router.get('/:id', async (req, res) => {
 
-  const story = await Story.findOne({_id: req.params.id })
+  let story = await Story.findOne({_id: req.params.id })
   .populate('user')
   .populate({
     path: 'comments',
@@ -71,13 +71,17 @@ router.get('/:id', async (req, res) => {
       path: 'owner', 
       select: 'name',
       model: 'User',
-      
       }
-  })
-  .sort({'comments': 0});
+  });
+  //.sort({'comments': -1});
+  //story.comments = 
+  const obj = {
+    ...story,
+  }
+ // obj.comments.sort((a,b) => b.createdAt - a.createdAt);
   
-  debug('full_story',JSON.stringify(story, undefined, 2));
-  
+ //debug('full_story obj',JSON.stringify(obj, undefined, 2)); debug('full_story story',JSON.stringify(story, undefined, 2));
+  //return;
   res.render('stories/full_story', { story, pageTitle: 'Full Story',  });
 });
 

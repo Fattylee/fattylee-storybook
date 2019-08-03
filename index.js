@@ -6,8 +6,19 @@ const exphbs = require('express-handlebars');
 const path = require('path');
 const flash = require('connect-flash');
 const session = require('express-session');
+
+/*
+Or use this
+const cookieSession = require('cookie-session');
+
+app.use(cookieSession({
+  maxAge: 24 * 60 * 60 * 1000, // a day
+  keys: ['hshshsysghshshshsu'],
+}))
+*/
 const stories = require('./routes/stories');
 const users = require('./routes/users');
+const auth = require('./routes/auth');
 const index = require('./routes');
 const startDB = require('./startups/db');
 const passport = require('passport');
@@ -33,6 +44,7 @@ app.set('view engine', 'html');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+// cookieSession can also be used in place of this, see above
 app.use(session({
   secret: 'keyboard cat',
   saveUninitialized: true,
@@ -41,8 +53,10 @@ app.use(session({
   
 app.use(flash());
 
+// initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 // set global variables
 app.use((req, res, next) => {
@@ -58,6 +72,7 @@ app.use((req, res, next) => {
 app.use('/', index);
 app.use('/stories', isAuthenticated, stories);
 app.use('/users', users);
+app.use('/auth', auth);
 
 app.use((err, req, res, next) => {
   debug('Async error', err);

@@ -5,8 +5,10 @@ const util = require('util');
 const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
 const router = express.Router();
-const User = require('../models/User')
-const {validateAddFields, validateEditFields, validateLoginFields, validateRegisterFields} = require('../middlewares/validateFields');
+const User = require('../models/User');
+const Story = require('../models/Story');
+const Comment = require('../models/Comment');
+const {validateAddFields, validateEditFields, validateLoginFields, validateRegisterFields, validateProfileFields} = require('../middlewares/validateFields');
 const passport = require('passport');
 const authLogout = require('../middlewares/authLogout');
 const debug = require('debug')('active:app');
@@ -76,36 +78,65 @@ router.get('/me', isAuthenticated, async (req, res) => {
 });
 
 // update profile info
-router.patch('/me', isAuthenticated, async (req, res) => {
-  if(!req.files){
-    req.flash('error_msg', 'no selected picture');
-    return res.redirect('/users/me');
-  }
-  if(req.files.avatar.size > 2 * 1000 * 1000) {
+router.patch('/me', isAuthenticated, validateProfileFields, async (req, res) => {
+  let filename = undefined;
+   const avatarPath = join(__dirname, '../public/img/uploads/avatars/');
+  const prevAvatar = req.user.avatar;
+  
+  if(req.files){
+    const {avatar} = req.files;
+     if(avatar.size > 2 * 1000 * 1000) {
     req.flash('error_msg', 'Image size cannot exceed 2mb');
     return res.redirect('/users/me');
   }
-  if(!/^image\/.*$/i.test(req.files.avatar.mimetype)) {
+    if(!/^image\/.*$/i.test(avatar.mimetype)) {
     req.flash('error_msg', 'file type not supported, pls use a valid image file (jpeg, png, jpg, gif)');
     return res.redirect('/users/me');
   }
-  
-    const {avatar} = req.files;
-    const filename = `${new Date()}-${avatar.name}`;
-    const avatarPath = join(__dirname, '../public/img/uploads/avatars/');
-    const prevAvatar = req.user.avatar;
+    
+    filename = `${uuid()}-${avatar.name}`;
     // save avatar to storage
     await util.promisify(avatar.mv)(avatarPath + filename);
+    
+  }
+    // encrypt password
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(req.userValue.password, salt);
+    
     // update avater name ref in mongoose
-    const update = await User.findByIdAndUpdate(req.user._id, { avatar: filename,}, {new: true});
-    // delete prevAvatar is not stock
-    if(prevAvatar !== 'avater_placeholder.png') {
+    const update = await User.findByIdAndUpdate(req.user._id, { 
+    avatar: filename ? filename : prevAvatar,
+    password: hash,
+    }, {new: true});
+    // delete prevAvatar if not stock
+    if(prevAvatar !== 'avatar_placeholder.png') {
       await util.promisify(fs.unlink)(avatarPath + prevAvatar).catch(debug);
     }
    req.flash('success_msg', 'profile update was successful');
     res.redirect('/users/me');    
+});
+
+// delete account
+router.delete('/me', isAuthenticated, async (req, res) => {
+  const { _id: id } = req.user;
   
+  // get all users stories
+  const stories = await Story.find({user: id});
   
+  let allStoryComments = [];
+  stories.forEach(({comments}) => {
+    allStoryComments = [...allStoryComments, ...comments.map( id => Comment.findByIdAndRemove(id) )];
+  });
+  
+  const result = await Promise.all([
+  Story.deleteMany({user: id}),
+  allStoryComments,
+  Comment.deleteMany({owner: id}),
+  User.findByIdAndRemove(id),
+  ]);
+  
+  req.flash('success_msg', 'your account was deleted successfully')
+  res.redirect('/users/login');
 });
 
 /*
@@ -114,4 +145,3 @@ router.all('/*', (req, res, next) => {
 });*/
 
 module.exports = router;
-

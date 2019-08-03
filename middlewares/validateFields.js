@@ -12,7 +12,9 @@ const registerSchema = loginSchema.keys({
   name: Joi.string().min(5).required().label('Name').trim(),
   confirmPassword: Joi.string().valid(Joi.ref('password')).required().label('Confirm password').options({ language: { any: { allowOnly: 'must match Password' } } }).trim(),
  
-})
+});
+
+const profileSchema = registerSchema;
 
 const storySchema = config.keys({
     title: Joi.string().min(5).max(100).required().label('Title').trim(),
@@ -79,7 +81,28 @@ const validateRegisterFields = async (req, res, next) => {
   }
 }
 
+const validateProfileFields = async (req, res, next) => {
+  const { error, value } = Joi.validate(req.body, profileSchema);
+  
+  if(error) {
+    const errors = error.details.map(e => ({error: e.message}));
+    res.render('users/profile', {
+      errors, 
+      userValue: value, 
+      pageTitle: 'Profile', 
+      user: req.user,
+    });
+  }
+  else {
+    req.userValue = value;
+    next();
+  }
+}
+
+
 exports.validateEditFields = validateEditFields;
 exports.validateAddFields = validateAddFields;
 exports.validateLoginFields = validateLoginFields;
 exports.validateRegisterFields = validateRegisterFields;
+exports.validateProfileFields = validateProfileFields;
+

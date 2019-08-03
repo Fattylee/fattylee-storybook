@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const faker = require('faker');
 const User = require('../models/User');
-
+const Story = require('../models/Story');
+const debug = require('debug')('debugger');
 //console.log(faker);
 // model and schema definition
 const Mango = mongoose.model('Mango', {
@@ -11,11 +12,12 @@ const Mango = mongoose.model('Mango', {
 });
 
 //mongoose connection
-mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true, useCreateIndex: true}).then(res => {
+//mongoose.connect('mongodb://localhost/test',
+mongoose.connect('mongodb://localhost/expert',
+ {useNewUrlParser: true, useCreateIndex: true}).then(res => {
   console.log('connected to mongodb(test)');
 })
 .catch(err => console.error('Could not connect to db(test)'));
-
 
 const create =  async (obj) => {
   try {
@@ -32,28 +34,43 @@ const create =  async (obj) => {
 }; // end create
 
 const fetch = async () => {
-   const mangoes = await Mango
+  /*
+   const stories = await Story
    //.countDocuments();
    .find({
      //name: {$regex: /^\w+ \w+$/i},
-     //avatar:  {$regex: /.*/}, // 
-     //fileName:  {$regex: /.*/i},
+     //avatar:  {$regex: /.}, // 
+     //fileName:  {$regex: /.i},
      //updatedAt: undefined,
      //password: undefined,
-       //date: {$regex: /.*/}
+       //date: {$regex: /.}
        //name: {$regex: /^\w+ \w+$/},
      })
+     .select('comments')
      .limit(599)
      //.sort({createdAt: -1});
      
      //mangoes[0].photo = undefined;
      //await mangoes[0].save();
-      console.log('mangoes',JSON.stringify(mangoes, null, 2), 'Counts: ', mangoes.length);
+     
+      console.log('Stories',JSON.stringify(stories, null, 2), 'Counts: ', stories.length);
+      */
+      
+      const story = await Story.findById("5d34b37ceb09cb558aa63662");
+      
+      debug('isFrozen:', Object.isFrozen(story));
+      debug('isSealed:', Object.isSealed(story));
+    debug(typeof story, 'typeof story');
+      story.nextLevel = 'zero and zero next level \n again level Promise 1234567';
+      story.play = 2345;
+      console.log('story',JSON.stringify(story, null, 2));
+
+
 };
 
 
 
-const obj = {
+let obj = {
   name: 'black mango',
 };
 
@@ -121,7 +138,32 @@ const mangoesArr = new Array(10).fill(0).map(m => ({
 
 
 //create(mangoesArr);
-fetch();
+//fetch();
 //deleteMango();
 //update();
 //updateManyUsers();
+
+
+/*
+const o = {};
+debug(o);
+o.name = 'hi guys';
+debug('b4: ', o);
+
+Object.defineProperty(o, 'sex', {
+  value: 'male',
+  writable: true,
+  enumerable: true,
+});
+
+o.sex = 'female';
+o.name = 'new'
+debug(o, o.sex)
+*/
+
+obj = {name: 'abu'};
+const obj1 = obj;
+debug(obj, obj1)
+
+obj1.name = 'fake';
+debug(obj, obj1)

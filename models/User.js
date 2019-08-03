@@ -15,15 +15,13 @@ const UserSchema =  new Schema({
     lowercase: true,
     trim: true,
   },
-  password: {
-    type: String,
-    required: true,
-  },
+  password: String,
   avatar: {
     type: String,
     default: 'avatar_placeholder.png',
   },
-  date: Date,
+  facebookId: String,
+  googleId: String,
 }, {usePushEach: true, timestamps: true });
 
 UserSchema.methods.isValidPassword = async function (password) {

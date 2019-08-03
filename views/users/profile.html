@@ -24,7 +24,26 @@
       <span class="input-group-text" id="email">@</span> 
     </div> 
     <input type="email" name="email" value="{{user.email}}"readonly="" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email"> 
-  </div> 
+  </div> <!-- end email -->
+  
+<div class="input-group mb-3"> 
+    <div class="input-group-prepend"> 
+      <span class="input-group-text " >
+        <span class="fas fa-user-secret"></span>
+      </span> 
+    </div> 
+    <input type="password" name="password" class="form-control" placeholder="New password" id="password" required="" minlength="5" aria-label="password" aria-describedby="password"> 
+  </div> {{!-- End Password --}}
+
+<div class="input-group mb-3"> 
+    <div class="input-group-prepend"> 
+      <span class="input-group-text " >
+        <span class="fas fa-user-check"></span>
+      </span> 
+    </div> 
+    <input type="password" class="form-control" placeholder="Confirm password" id="confirmPassword" name="confirmPassword" required="" minlength="5" aria-label="confirmPassword" aria-describedby="confirmPassword"> 
+  </div> {{!-- End Confirm Password --}}
+  
 
   <div class="input-group mb-3">
     <div class="input-group-prepend">
@@ -35,12 +54,15 @@
     <label class="custom-file-label" for="file">Choose image</label>
     </div>
   </div>
-  
+ 
   <input type="submit" class='btn btn-secondary btn-block' value="Update"/>
 </form>
+
+  <form action="/users/me?_method=DELETE" method="post">
+    <button type="submit" class="btn btn-block btn-danger mt-2">Delete Account</button>
+  </form>
   
 </div>
 </div>
 </div>
 </div>
-
