@@ -1,6 +1,6 @@
 const dayjs = require('dayjs');
 const debug = require('debug')('active:app');
-
+const path = require('path');
 
 module.exports = {
   // optional config goes here
@@ -28,6 +28,10 @@ module.exports = {
     },
     truncateDetails(words, length) {
       return words.substr(0, length) + ' . . .';
-    }
+    },
+    imagePath(baseName, imageName) {
+      const fullPath = path.join('/img/uploads/', baseName, '/', imageName);
+      return /https?:\/\//i.test(imageName) ? imageName : fullPath;
+    },
    },
 };

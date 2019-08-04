@@ -49,6 +49,7 @@ function Conc(name) {
   
 };// end Conc contructor function
 
+/*
 // public func exist on __proto__ obj
 Conc.prototype.prop = function() {
 
@@ -98,3 +99,4 @@ const alert = (msg) => {
 const arr = document.cookie.match(/(?<=\w+=)\w+/ig)
 console.log(document.cookie);
 console.log(arr)
+*/

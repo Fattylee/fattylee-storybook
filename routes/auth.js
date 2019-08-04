@@ -33,7 +33,20 @@ passport.authenticate('facebook',
     failureFlash: 'Invalid email or password', 
     successFlash: 'Your login was successful',
   })
-);
+); // end facebook authentication
+
+router.get('/google', passport.authenticate('google', {scope: ['profile', 'email']})); 
+
+
+router.get('/google/redirect',
+passport.authenticate('google',
+  {
+    successRedirect: '/stories/', 
+    failureRedirect: '/users/login',
+    failureFlash: 'Invalid email or password', 
+    successFlash: 'Your login was successful',
+  })
+); // end google authentication
  
 
 module.exports = router;

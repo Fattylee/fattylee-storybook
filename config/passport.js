@@ -1,8 +1,11 @@
 const LocalStrategy = require('passport-local').Strategy;
-FacebookStrategy = require('passport-facebook').Strategy; 
+const FacebookStrategy = require('passport-facebook').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../models/User');
 const { facebook, google } = require('./dev');
 const debug = require('debug')('active:app');
+
+
 
 module.exports = (passport) => {
   
@@ -22,7 +25,7 @@ module.exports = (passport) => {
   passport.use(new FacebookStrategy({
     clientID: facebook.clientID, 
     clientSecret: facebook.clientSecret, 
-    callbackURL: "http://localhost:4000/auth/facebook/redirect",
+    callbackURL: facebook.callbackURL,
     profileFields: ['id', 'displayName', 'photos', 'email', 'gender', 'name'],
      }, 
    async (accessToken, refreshToken, profile, done) => {
@@ -32,24 +35,61 @@ module.exports = (passport) => {
      // change avatar size
      const newStr = avatar.replace(/(?<=(&height=|&width=))50/ig, '100');
      debug('newStr', newStr);
-     //return;
      const currentUser = await User.findOne({email});
      if(currentUser) {
        debug('existed');
        if(currentUser.avatar === 'avatar_placeholder.png') {
          // update avatar of iser using the social media link
+         currentUser.avatar = avatar;
+         const updatedUser = await currentUser.save();
+         debug('updatedUser:', updatedUser);
+         done(null, currentUser); 
        }
-       done(null, currentUser); 
+       else {
+         done(null, currentUser); 
+       }
      }
      else {
-       debug('does not exist, create one');
        const user = new User({
          facebookId, name, email, avatar
        });
        const newUser = await user.save();
+       debug('does not exist, create one', newUser);
        done(null, newUser);
      }
    })); // end FacebookStrategy
+  
+  passport.use(new GoogleStrategy({
+    clientID: google.clientID, 
+    clientSecret: google.clientSecret, 
+    callbackURL: google.callbackURL,
+     }, 
+   async (accessToken, refreshToken, profile, done) => {
+     const {sub: googleId, name, email, picture: avatar } = profile._json;
+     
+     const currentUser = await User.findOne({email});
+     if(currentUser) {
+       debug('existed', currentUser);
+       if(currentUser.avatar === 'avatar_placeholder.png') {
+         // update avatar of user using the social media link
+         currentUser.avatar = avatar;
+         const updatedUser = await currentUser.save();
+         debug('updatedUser:', updatedUser);
+         done(null, currentUser); 
+       }
+       else {
+         done(null, currentUser); 
+       }
+     }
+     else {
+       const user = new User({
+         googleId, name, email, avatar
+       });
+       const newUser = await user.save();
+       debug('does not exist, create one', newUser);
+       done(null, newUser);
+     }
+   })); // end GoogleStrategy
   
   passport.serializeUser((user, done) => {
     done(null, user.id);

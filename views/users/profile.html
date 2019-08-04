@@ -2,17 +2,15 @@
   <div class="row">    
   <div class="col-md-8 mx-auto my-4 ">
     <div class="card card-body">
-      <h3 class="text-center mb-4">Profile info</h3>
+      <h3 class="text-center mb-4">Profile</h3>
       <div class="text-center">
-         <img src="/img/uploads/avatars/{{user.avatar}}" alt="" class="img-fluid mb-4" width="">
+         <img src="{{imagePath 'avatars' user.avatar}}" alt="" class="img-fluid rounded-circle mb-4" width="">
       </div>
     
 <form method="post" action="/users/me?_method=PATCH" enctype="multipart/form-data">
-  
-  
   <div class="input-group mb-3"> 
     <div class="input-group-prepend"> 
-      <span class="input-group-text " id="name">
+      <span class="input-group-text" id="name">
         <span class="fas fa-user"></span>
       </span> 
     </div> 
@@ -32,7 +30,7 @@
         <span class="fas fa-user-secret"></span>
       </span> 
     </div> 
-    <input type="password" name="password" class="form-control" placeholder="New password" id="password" required="" minlength="5" aria-label="password" aria-describedby="password"> 
+    <input type="password" name="password" class="form-control" placeholder="Existing or new password" id="password" required="" minlength="5" aria-label="password" aria-describedby="password"> 
   </div> {{!-- End Password --}}
 
 <div class="input-group mb-3"> 

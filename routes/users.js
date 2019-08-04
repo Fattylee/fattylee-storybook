@@ -103,7 +103,7 @@ router.patch('/me', isAuthenticated, validateProfileFields, async (req, res) => 
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(req.userValue.password, salt);
     
-    // update avater name ref in mongoose
+    // update avatar name ref in mongoose
     const update = await User.findByIdAndUpdate(req.user._id, { 
     avatar: filename ? filename : prevAvatar,
     password: hash,
@@ -145,3 +145,4 @@ router.all('/*', (req, res, next) => {
 });*/
 
 module.exports = router;
+
