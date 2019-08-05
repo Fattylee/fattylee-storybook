@@ -3,7 +3,7 @@ const {join} = require('path');
 const fs = require('fs');
 const util = require('util');
 const bcrypt = require('bcryptjs');
-const uuid = require('uuid');
+const uuid = require('uuid/v3');
 const router = express.Router();
 const User = require('../models/User');
 const Story = require('../models/Story');
@@ -14,6 +14,7 @@ const authLogout = require('../middlewares/authLogout');
 const debug = require('debug')('active:app');
 const { redirectToLogin } = require('../helpers/redirect');
 const isAuthenticated = require('../middlewares/auth');
+const isAdmin = require('../middlewares/isAdmin');
 
 
 router.use((req, res, next) => {
@@ -21,8 +22,8 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get('/', async (req, res) => {
-  
+// display the first 20 stories
+router.get('/', isAuthenticated, isAdmin, async (req, res) => {
   const users = await User.find().sort('-createdAt').select('email name').limit(20);
   
   res.status(200).json(users);
@@ -145,4 +146,3 @@ router.all('/*', (req, res, next) => {
 });*/
 
 module.exports = router;
-

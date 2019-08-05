@@ -22,6 +22,7 @@ const UserSchema =  new Schema({
   },
   facebookId: String,
   googleId: String,
+  isAdmin: Boolean,
 }, {usePushEach: true, timestamps: true });
 
 UserSchema.methods.isValidPassword = async function (password) {

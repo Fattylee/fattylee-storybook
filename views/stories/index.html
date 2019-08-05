@@ -15,9 +15,14 @@
         <div class="card-footer">
           <div class="row">
             <div class="col-6">
-              <form action="/stories/{{id}}/{{status}}?_method=PUT" method="post">
-                <label>Status: </label>
-                <button class="btn btn-primary mb-2">{{status}}</button>
+              <form action="/stories/{{id}}/{{status}}?_method=PATCH" method="post">
+                <div class="input-group mb-3"> 
+                <div class="input-group-append" > 
+                <button class="btn btn-outline-secondary text-white bg-dark" disabled="" type="button" id="button-addon2">Status</button> 
+                <button class="btn btn-outline-secondary text-dark"  type="submit" id="button-addon2">{{status}}</button> 
+                </div> 
+                </div>
+               
               </form>
             </div>
             <div class="col">

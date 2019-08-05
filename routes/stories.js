@@ -170,10 +170,16 @@ router.post('/comments/', async (req, res) => {
   story.comments = [...story.comments, _id ];
   // save comment id to story collection
   const updatedComment = await story.save();
-  debug('updatedStory', updatedComment);
   req.flash('success_msg', 'comment posted successfully!')
   res.redirect('/stories/' + req.body.id);
-});
+}); // end comments action
+
+// toggle user status
+router.patch('/:id/:status', async (req, res) => {
+  const updatedStory = await  Story.findByIdAndUpdate(req.params.id, {status: req.params.status === 'public' ? 'private': 'public'}, {new: true}); 
+  res.redirect('/stories');
+}); // end toggle user status
+
 
 // fake story generator
 router.post('/faker', (req, res) => {
@@ -181,7 +187,7 @@ router.post('/faker', (req, res) => {
   
   const amount = req.body.amount;
   res.send(amount);
-});
+});// end fake story generator
 
 /*router.all('/*', (req, res, next) => {
   res.send('404 not found, Stories');
