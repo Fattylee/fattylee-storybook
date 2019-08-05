@@ -22,31 +22,34 @@ router.use((req, res, next) => {
   next();
 });
 
-// display the first 20 stories
+// get user only admin can perform action
 router.get('/', isAuthenticated, isAdmin, async (req, res) => {
   const users = await User.find().sort('-createdAt').select('email name').limit(20);
   
   res.status(200).json(users);
-});
+});// end get user only admin can perform action
 
+// login page
 router.get('/login', redirectToLogin, async (req, res) => {
   
   res.render('users/login', {pageTitle: 'Login'});
 }, async function (req, res) {
   res.send('last route after login');
-});
+});// end login page
 
+// logout user 
 router.get('/logout', authLogout, (req, res) => {
   req.logout();
   req.flash('success_msg', 'Your logout was successful')
   res.redirect('login');
-});
+}); // end logout user
 
+// display register form
 router.get('/register', redirectToLogin, (req, res) => {
   res.render('users/register', {pageTitle: 'Register'});
-});
+});// end display register form
 
-
+// create new user
 router.post('/register', validateRegisterFields, async (req, res, next) => {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(req.body.password, salt);
@@ -57,8 +60,9 @@ router.post('/register', validateRegisterFields, async (req, res, next) => {
     const newUser = await user.save();
     req.flash('success_msg', 'You are now registered, pls login');
     res.redirect('/users/login');
-});
+});// end create new user
 
+// login user using passport
 router.post(
   '/login', 
   validateLoginFields, 
@@ -71,12 +75,12 @@ router.post(
       successRedirect: '/stories',
       //session: false, //default option is true, session can be turned off by allow this line of code
     })
-);
+);// end login user using passport
 
 // show profile page
 router.get('/me', isAuthenticated, async (req, res) => {
   res.render('users/profile', {pageTitle: 'Profile', user: req.user});
-});
+});// end show profile page
 
 // update profile info
 router.patch('/me', isAuthenticated, validateProfileFields, async (req, res) => {
@@ -115,7 +119,7 @@ router.patch('/me', isAuthenticated, validateProfileFields, async (req, res) => 
     }
    req.flash('success_msg', 'profile update was successful');
     res.redirect('/users/me');    
-});
+});// end update profile info
 
 // delete account
 router.delete('/me', isAuthenticated, async (req, res) => {
@@ -138,7 +142,7 @@ router.delete('/me', isAuthenticated, async (req, res) => {
   
   req.flash('success_msg', 'your account was deleted successfully')
   res.redirect('/users/login');
-});
+});// end delete account
 
 /*
 router.all('/*', (req, res, next) => {

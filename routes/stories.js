@@ -5,7 +5,7 @@ const {validateAddFields, validateEditFields} = require('../middlewares/validate
 const debug = require('debug')('active:app');
 const storyError = require('../controllers/errors/storyError');
 const faker = require('faker');
-const uuid = require('uuid');
+const uuid = require('uuid/v1');
 const path = require('path');
 const util = require('util');
 const fse = require('fs-extra');
@@ -28,7 +28,7 @@ router.get('/add', (req, res) => {
 // Create a new story action
 router.post('/', validateAddFields, async (req, res, next) => {
  const {storyImage} = req.files;
- let fileName = `${new Date()}-${storyImage.name}`;
+ let fileName = `${uuid()}-${storyImage.name}`;
  
  const storagePath = path.join(__dirname, '../public/img/uploads/stories/');
  await util.promisify(storyImage.mv)(storagePath + fileName);
@@ -78,10 +78,7 @@ router.get('/:id', async (req, res) => {
   const obj = {
     ...story,
   }
- // obj.comments.sort((a,b) => b.createdAt - a.createdAt);
   
- //debug('full_story obj',JSON.stringify(obj, undefined, 2)); debug('full_story story',JSON.stringify(story, undefined, 2));
-  //return;
   res.render('stories/full_story', { story, pageTitle: 'Full Story',  });
 });
 
@@ -136,17 +133,20 @@ router.put('/:id', validateEditFields, async (req, res) => {
   res.redirect('/stories');
 });
 
-// Delete a story
+// Delete a story and related comments
 router.delete('/:id', async (req, res) => {
   const story = await Story.findByIdAndRemove(req.params.id);
+  if(story.comments.length) {
+    const allComments = story.comments.map(id => Comment.findByIdAndRemove(id));
+    const deletedComments = await Promise.all(allComments);
+  }
   if(story) {
     const {storyImage} = story;
-  
     await util.promisify(fs.unlink)(path.join(__dirname,'../public/img/uploads/stories', storyImage));
   } 
   req.flash('success_msg', 'story was deleted successfully');
   res.redirect('/stories');
-});
+});// end Delete a story and related comments
 
 // comments action
 router.post('/comments/', async (req, res) => {

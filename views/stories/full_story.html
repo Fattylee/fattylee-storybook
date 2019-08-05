@@ -14,11 +14,11 @@
           {{#isEqual  story.user._id user._id}}
            <a href="/stories/edit/{{story._id}}" class="btn btn-block btn-dark mb-2">Edit </a> 
              <form action="/stories/{{story._id}}?_method=DELETE" method="post">
-              <button class="btn btn-block btn-danger">Delete </button> 
+              <button class="btn btn-block btn-danger mb-2">Delete </button> 
             </form>
             {{/isEqual}}
             
-         <small class="text-muted mt-2">
+         <small class="text-muted">
            <span class="fas fa-user"></span>     
            <span class="pl-1"> {{capitalizeEach story.user.name}}</span> <span class="ml-2 pl-1 fas fa-clock fa-1x"></span> {{displayDate story.updatedAt 'MMM DD[,] YYYY [at] hh:mm a' }} 
           </small>
