@@ -1,9 +1,10 @@
+const {Storage} = require('@google-cloud/storage');
 const express = require('express');
 const {join} = require('path');
 const fs = require('fs');
 const util = require('util');
 const bcrypt = require('bcryptjs');
-const uuid = require('uuid/v3');
+const uuid = require('uuid/v1');
 const router = express.Router();
 const User = require('../models/User');
 const Story = require('../models/Story');
@@ -84,13 +85,15 @@ router.get('/me', isAuthenticated, async (req, res) => {
 
 // update profile info
 router.patch('/me', isAuthenticated, validateProfileFields, async (req, res) => {
+  
   let filename = undefined;
    const avatarPath = join(__dirname, '../public/img/uploads/avatars/');
   const prevAvatar = req.user.avatar;
   
   if(req.files){
     const {avatar} = req.files;
-     if(avatar.size > 2 * 1000 * 1000) {
+    debug(avatar)
+     if(avatar.size > 2 * 1024 * 1024) {
     req.flash('error_msg', 'Image size cannot exceed 2mb');
     return res.redirect('/users/me');
   }
@@ -101,9 +104,56 @@ router.patch('/me', isAuthenticated, validateProfileFields, async (req, res) => 
     
     filename = `${uuid()}-${avatar.name}`;
     // save avatar to storage
-    await util.promisify(avatar.mv)(avatarPath + filename);
+    const mv = await util.promisify(avatar.mv)(avatarPath + filename);
+    debug('mv', mv)
+    
+    // save to google-cloud storage
+   // const file = await bucket.upload(filename, {public: true});
+
+// instanstiate gcs
+  const gc = new Storage({
+    keyFilename: join(__dirname, '../config/fattylee-storybook-img-458bbee95310.json'),
+    projectId: 'fattylee-storybook-img',
+  });
+  
+  // create a bucket
+  const bucket = gc.bucket('storybook-uploads');
+	// Create a new blob in the bucket and upload the file data.
+	const blob = bucket.file(avatar.data);
+	
+	// Make sure to set the contentType metadata for the browser to be able
+	// to render the image instead of downloading the file (default behavior)
+	const blobStream = blob.createWriteStream({
+	metadata: {
+	contentType: avatar.mimetype
+	}
+	});
+	
+	blobStream.on("error", err => {
+	next(err);
+	return;
+	});
+	
+	blobStream.on("finish", () => {
+	// The public URL can be used to directly access the file via HTTP.
+	const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+	
+	// Make the image public to the web since we'll be displaying it in browser
+	blob.makePublic().then(() => {
+	res.status(200).send(`Success!\n Image uploaded to ${publicUrl}`);
+	});
+	
+});	
+
+	blobStream.end(avatar.data);
+
+	
+	
+    debug('google-cloud file upload');
+    
     
   }
+  /*
     // encrypt password
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(req.userValue.password, salt);
@@ -119,12 +169,12 @@ router.patch('/me', isAuthenticated, validateProfileFields, async (req, res) => 
     }
    req.flash('success_msg', 'profile update was successful');
     res.redirect('/users/me');    
+    */
 });// end update profile info
 
 // delete account
 router.delete('/me', isAuthenticated, async (req, res) => {
-  const { _id: id } = req.user;
-  
+  const { id } = req.user;
   // get all users stories
   const stories = await Story.find({user: id});
   

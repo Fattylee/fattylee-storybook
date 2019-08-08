@@ -8,7 +8,7 @@
         <div class="card border-0 my-3"> 
           <div class=""> 
             <h4 class="card-title text-center mb-3">{{story.title}}</h4>  
-            <p class="card-text px-2">{{story.details}}</p>
+            <p class="card-text px-2">{{{story.details}}}</p>
           </div> 
         <div class="card-footer mt-3">
           {{#isEqual  story.user._id user._id}}
@@ -72,7 +72,7 @@
             <div class="card-body">
                 <form action="/stories/comments/" method="post">
                     <div class="form-group">
-                        <textarea name="body" class="form-control" rows="3" placeholder="Enter comment"></textarea>
+                        <textarea name="body" class="form-control" rows="3" placeholder="Write a comment.."></textarea>
 
                         <input type="hidden" value="{{story._id}}" name="id">
                     </div>

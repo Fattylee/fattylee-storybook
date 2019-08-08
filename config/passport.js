@@ -29,20 +29,16 @@ module.exports = (passport) => {
     profileFields: ['id', 'displayName', 'photos', 'email', 'gender', 'name'],
      }, 
    async (accessToken, refreshToken, profile, done) => {
-     debug('profile', profile._json);
-     const {id: facebookId, name, email, picture: {data: {url: avatar}} } = profile._json;
-     debug(facebookId, name, email, avatar);
+     const { id: facebookId, name, email } = profile._json;
      // change avatar size
-     const newStr = avatar.replace(/(?<=(&height=|&width=))50/ig, '100');
-     debug('newStr', newStr);
+     const avatar = `https://graph.facebook.com/${facebookId}/picture?type=large`;
+     
      const currentUser = await User.findOne({email});
      if(currentUser) {
-       debug('existed');
        if(currentUser.avatar === 'avatar_placeholder.png') {
-         // update avatar of iser using the social media link
+         // update avatar of user using the social media link
          currentUser.avatar = avatar;
-         const updatedUser = await currentUser.save();
-         debug('updatedUser:', updatedUser);
+         const updatedUser = await currentUser.save(); 
          done(null, currentUser); 
        }
        else {
@@ -53,8 +49,7 @@ module.exports = (passport) => {
        const user = new User({
          facebookId, name, email, avatar
        });
-       const newUser = await user.save();
-       debug('does not exist, create one', newUser);
+       const newUser = await user.save();  
        done(null, newUser);
      }
    })); // end FacebookStrategy
@@ -69,12 +64,10 @@ module.exports = (passport) => {
      
      const currentUser = await User.findOne({email});
      if(currentUser) {
-       debug('existed', currentUser);
        if(currentUser.avatar === 'avatar_placeholder.png') {
          // update avatar of user using the social media link
          currentUser.avatar = avatar;
          const updatedUser = await currentUser.save();
-         debug('updatedUser:', updatedUser);
          done(null, currentUser); 
        }
        else {
@@ -86,7 +79,6 @@ module.exports = (passport) => {
          googleId, name, email, avatar
        });
        const newUser = await user.save();
-       debug('does not exist, create one', newUser);
        done(null, newUser);
      }
    })); // end GoogleStrategy

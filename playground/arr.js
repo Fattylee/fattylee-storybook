@@ -61,6 +61,14 @@ str = '23-06-1987 23-06-2087';
 reg = /(\d{1,2})-(\d{1,2})-(\d{4})u/ig;
 str = 'b';
 reg = /b|a*/i
+
+str = 'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=2587783127908341&height=50&width=50&ext=1567457491&hash=AeTfqe87yyRq5wF8';
+
+
+
+reg = /(?<=\?asid=)[0-9]+/ig;
+reg = /.*\?asid=(\d+).*/ig;
+
 console.log(str, ' ======= ', reg)
 //const res = [...str.matchAll(reg)];
 //const res = str.replace(reg, '<a href="$1$2">$2<\/a>\n')
@@ -69,6 +77,9 @@ console.log(str, ' ======= ', reg)
 //const res = [...str.matchAll(reg)];
 let res = str.search(reg);
 res = [...str.matchAll(reg)];
-res = str.match(reg);
+res = [...str.matchAll(reg)];
 
-console.log(res, new Date(1987,16,1,5,45,34))
+console.log(res);
+console.log(`https://graph.facebook.com/${res[0][1]}/picture?type=large`)
+
+//console.log(res, new Date(1987,16,1,5,45,34))
