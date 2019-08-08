@@ -16,7 +16,14 @@ const debug = require('debug')('active:app');
 const { redirectToLogin } = require('../helpers/redirect');
 const isAuthenticated = require('../middlewares/auth');
 const isAdmin = require('../middlewares/isAdmin');
+const Multer = require('multer');
 
+const m = Multer({
+storage: Multer.MemoryStorage,
+limits: {
+fileSize: 2 * 1024 * 1024 // no larger than 2mb
+}
+});
 
 router.use((req, res, next) => {
   //req.app.locals.layout = 'container';
@@ -84,8 +91,69 @@ router.get('/me', isAuthenticated, async (req, res) => {
 });// end show profile page
 
 // update profile info
-router.patch('/me', isAuthenticated, validateProfileFields, async (req, res) => {
+router.patch('/me', isAuthenticated, /*validateProfileFields, */ async (req, res, next) => {
+  /*if (!req.file) {
+  res.status(400).send("No file uploaded.");
+  return;
+  }*/
   
+  debug('req. files', req. files);
+  
+  
+  // save to google-cloud storage
+   // const file = await bucket.upload(filename, {public: true});
+
+// instanstiate gcs
+  const gc = new Storage({
+    keyFilename: join(__dirname, '../config/fattylee-storybook-img-458bbee95310.json'),
+    projectId: 'fattylee-storybook-img',
+  });
+  
+  
+  // create a bucket
+  const bucket = gc.bucket('storybook-uploads');
+  
+  
+	// Create a new blob in the bucket and upload the file data.
+	const blob = bucket.file('stories/' + req.files.avatar.name);
+	
+//bucket.file(req.file.originalname);
+	
+	// Make sure to set the contentType metadata for the browser to be able
+	// to render the image instead of downloading the file (default behavior)
+	const blobStream = blob.createWriteStream({
+	metadata: {
+	contentType: req.files.avatar.mimetype, //req.file.mimetype
+	}
+	});
+	
+	
+	blobStream.on("error", err => {
+	next(err);
+	return;
+	});
+	
+	blobStream.on("finish", () => {
+	// The public URL can be used to directly access the file via HTTP.
+	const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+	
+	// Make the image public to the web since we'll be displaying it in browser
+	
+	/*blob.makePublic().then(() => {
+	res.status(200).send(`Success!\n Image uploaded to ${publicUrl}`);
+	});*/
+	res.redirect('/users/me');
+});	
+
+ blobStream.end(req.files.avatar.data /*req.file.buffer*/);
+
+ debug('google-cloud file upload');
+    
+  
+  
+  
+  
+  /*
   let filename = undefined;
    const avatarPath = join(__dirname, '../public/img/uploads/avatars/');
   const prevAvatar = req.user.avatar;
@@ -106,53 +174,9 @@ router.patch('/me', isAuthenticated, validateProfileFields, async (req, res) => 
     // save avatar to storage
     const mv = await util.promisify(avatar.mv)(avatarPath + filename);
     debug('mv', mv)
+   
     
-    // save to google-cloud storage
-   // const file = await bucket.upload(filename, {public: true});
-
-// instanstiate gcs
-  const gc = new Storage({
-    keyFilename: join(__dirname, '../config/fattylee-storybook-img-458bbee95310.json'),
-    projectId: 'fattylee-storybook-img',
-  });
-  
-  // create a bucket
-  const bucket = gc.bucket('storybook-uploads');
-	// Create a new blob in the bucket and upload the file data.
-	const blob = bucket.file(avatar.data);
-	
-	// Make sure to set the contentType metadata for the browser to be able
-	// to render the image instead of downloading the file (default behavior)
-	const blobStream = blob.createWriteStream({
-	metadata: {
-	contentType: avatar.mimetype
-	}
-	});
-	
-	blobStream.on("error", err => {
-	next(err);
-	return;
-	});
-	
-	blobStream.on("finish", () => {
-	// The public URL can be used to directly access the file via HTTP.
-	const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
-	
-	// Make the image public to the web since we'll be displaying it in browser
-	blob.makePublic().then(() => {
-	res.status(200).send(`Success!\n Image uploaded to ${publicUrl}`);
-	});
-	
-});	
-
-	blobStream.end(avatar.data);
-
-	
-	
-    debug('google-cloud file upload');
-    
-    
-  }
+  }*/
   /*
     // encrypt password
     const salt = await bcrypt.genSalt(10);

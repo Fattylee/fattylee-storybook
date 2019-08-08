@@ -10,3 +10,4 @@
 h5 a.btn.btn-danger.social-link {
   color: black ;
 }
+#sticky-footer { flex-shrink: none; }
