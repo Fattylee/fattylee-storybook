@@ -16,14 +16,7 @@ const debug = require('debug')('active:app');
 const { redirectToLogin } = require('../helpers/redirect');
 const isAuthenticated = require('../middlewares/auth');
 const isAdmin = require('../middlewares/isAdmin');
-const Multer = require('multer');
 
-const m = Multer({
-storage: Multer.MemoryStorage,
-limits: {
-fileSize: 2 * 1024 * 1024 // no larger than 2mb
-}
-});
 
 router.use((req, res, next) => {
   //req.app.locals.layout = 'container';
