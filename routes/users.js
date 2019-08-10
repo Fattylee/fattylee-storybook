@@ -91,11 +91,13 @@ router.get('/me', isAuthenticated, async (req, res) => {
 });// end show profile page
 
 // update profile info
-router.patch('/me', isAuthenticated, /*validateProfileFields, */ async (req, res, next) => {
+router.patch('/me', isAuthenticated, validateProfileFields, async (req, res, next) => {
+  
   /*if (!req.file) {
   res.status(400).send("No file uploaded.");
   return;
   }*/
+  /*
   
   debug('req. files', req. files);
   
@@ -141,27 +143,27 @@ router.patch('/me', isAuthenticated, /*validateProfileFields, */ async (req, res
 	
 	/*blob.makePublic().then(() => {
 	res.status(200).send(`Success!\n Image uploaded to ${publicUrl}`);
-	});*/
+	}); /
 	res.redirect('/users/me');
 });	
 
- blobStream.end(req.files.avatar.data /*req.file.buffer*/);
+ blobStream.end(req.files.avatar.data //req.file.buffer
+ );
 
  debug('google-cloud file upload');
-    
+ */
   
   
   
   
-  /*
+  
   let filename = undefined;
    const avatarPath = join(__dirname, '../public/img/uploads/avatars/');
   const prevAvatar = req.user.avatar;
   
   if(req.files){
-    const {avatar} = req.files;
-    debug(avatar)
-     if(avatar.size > 2 * 1024 * 1024) {
+    const {avatar} = req.files;   
+    if(avatar.size > 2 * 1024 * 1024) {
     req.flash('error_msg', 'Image size cannot exceed 2mb');
     return res.redirect('/users/me');
   }
@@ -173,17 +175,14 @@ router.patch('/me', isAuthenticated, /*validateProfileFields, */ async (req, res
     filename = `${uuid()}-${avatar.name}`;
     // save avatar to storage
     const mv = await util.promisify(avatar.mv)(avatarPath + filename);
-    debug('mv', mv)
-   
-    
-  }*/
-  /*
+  }
+  
     // encrypt password
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(req.userValue.password, salt);
     
     // update avatar name ref in mongoose
-    const update = await User.findByIdAndUpdate(req.user._id, { 
+    const update = await User.findByIdAndUpdate(req.user.id, { 
     avatar: filename ? filename : prevAvatar,
     password: hash,
     }, {new: true});
@@ -193,7 +192,7 @@ router.patch('/me', isAuthenticated, /*validateProfileFields, */ async (req, res
     }
    req.flash('success_msg', 'profile update was successful');
     res.redirect('/users/me');    
-    */
+    
 });// end update profile info
 
 // delete account

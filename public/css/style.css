@@ -1,13 +1,15 @@
 .details-height {
   height: 300px !important;
 }
-.footer-copy {
-  
+
+.bg-black {
+  background: black;
+  opacity: 1;
 }
-.footer-copy  .col-6{
-  border: 1px solid whiteh;
+.text-black {
+  color: #BCBCB1 !important;
 }
-h5 a.btn.btn-danger.social-link {
-  color: black ;
+
+.off {
+  opacity: 0;
 }
-#sticky-footer { flex-shrink: none; }

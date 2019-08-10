@@ -21,7 +21,10 @@
     <script src="/js/eruda-code.min.js"></script>
     <script>eruda.add(erudaCode)</script>
     <script src="/js/eruda-dom.min.js"></script>
-    <script>eruda.add(erudaDom)</script> 
+    <script>eruda.add(erudaDom)</script>
+    <!-- ckeditor basic-->
+  <script src="//cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
+    
   </head>
   <body>
    <!-- navbar partials -->
@@ -32,12 +35,10 @@
    
     {{{body}}}
     
-    <br><br><br>
     
-    <p class="text-center bg-dark text-white py-4 mb-0" id="fixed-bottom">&copy; Storybook 
-    <script>document.write(new Date().getFullYear())</script>
-    </p>
-
+   {{> _footer }}
+   
+   
    <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="/bootstrap-4.3.1/js/jquery-3.3.1.slim.min.js" type="text/javascript"></script>
@@ -45,10 +46,8 @@
   <script src="/bootstrap-4.3.1/js/bootstrap-4.3.1.min.js" type="text/javascript"></script>
    
    <script src="/bootstrap-4.3.1/js/bs-custom-file-input.min.js" type="text/javascript"></script>
-    <!-- ckeditor -->
-  <script src="//cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
-  
-   <!-- main js/jQuery -->
+    
+   <!-- main js -->
   <script src="/js/main.js"></script>
   </body>
 </html>

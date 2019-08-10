@@ -48,7 +48,7 @@
            <span class="pl-1"> {{capitalizeEach owner.name}}</span> <span class="ml-2 pl-1 fas fa-clock fa-1x"></span> {{displayDate updatedAt 'MMM DD[,] YYYY [at] hh:mm a' }}
                </small>
                 <p>
-                {{body}}
+               {{{body}}}
                 </p>
             </div> <!--div class="card-body"-->
              <hr>
@@ -72,7 +72,7 @@
             <div class="card-body">
                 <form action="/stories/comments/" method="post">
                     <div class="form-group">
-                        <textarea name="body" class="form-control" rows="3" placeholder="Write a comment.."></textarea>
+                        <textarea name="body" id="details" class="form-control" rows="3" placeholder="Write a comment.."></textarea>
 
                         <input type="hidden" value="{{story._id}}" name="id">
                     </div>
@@ -108,5 +108,5 @@
     
   </div><!-- End row  -->
 </div><!-- End container -->
-      
-      
+ 
+ 
