@@ -8,6 +8,7 @@ const exphbs = require('express-handlebars');
 const path = require('path');
 const flash = require('connect-flash');
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 if(app.get('env') === 'development' || app.get('env') === 'staging') {
   app.use('/xyz', require('./routes/comments'));
@@ -24,6 +25,7 @@ const isAuthenticated = require('./middlewares/auth');
 const handlebarsConfig = require('./helpers/handlebars');
 const storyError = require('./controllers/errors/storyError');
 const expressFileupload = require('express-fileupload');
+const mongoose = require('mongoose');
 
 
 startDB(app);
@@ -46,6 +48,8 @@ app.use(session({
   secret: 'keyboard cat',
   saveUninitialized: true,
   resave: true,
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+
 }));
   
 app.use(flash());

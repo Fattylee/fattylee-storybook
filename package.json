@@ -36,7 +36,8 @@
     "passport-facebook": "3.0.0",
     "passport-google-oauth20": "2.0.0",
     "@google-cloud/storage": "3.0.4",
-    "mongoose-url-slugs": "1.0.2"
+    "mongoose-url-slugs": "1.0.2",
+    "connect-mongo": "3.0.0"
   },
   "devDependencies": {
     "jest": "24.1.0",
