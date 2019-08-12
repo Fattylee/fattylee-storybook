@@ -1,146 +1,118 @@
-[//]: # "This README.md file is auto-generated, all changes to this file will be lost."
-[//]: # "To regenerate it, use `python -m synthtool`."
-<img src="https://avatars2.githubusercontent.com/u/2810941?v=3&s=96" alt="Google Cloud Platform logo" title="Google Cloud Platform" align="right" height="96" width="96"/>
+[![Build Status](https://travis-ci.org/talha-asad/mongoose-url-slugs.svg?branch=master)](https://travis-ci.org/talha-asad/mongoose-url-slugs)
+[![NPM version](https://badge.fury.io/js/mongoose-url-slugs.svg)](http://badge.fury.io/js/mongoose-url-slugs)
 
-# [Google Cloud Storage: Node.js Client](https://github.com/googleapis/nodejs-storage)
+[![NPM stats](https://nodei.co/npm/mongoose-url-slugs.png?downloads=true)](https://www.npmjs.org/package/mongoose-url-slugs)
 
-[![release level](https://img.shields.io/badge/release%20level-general%20availability%20%28GA%29-brightgreen.svg?style=flat)](https://cloud.google.com/terms/launch-stages)
-[![npm version](https://img.shields.io/npm/v/@google-cloud/storage.svg)](https://www.npmjs.org/package/@google-cloud/storage)
-[![codecov](https://img.shields.io/codecov/c/github/googleapis/nodejs-storage/master.svg?style=flat)](https://codecov.io/gh/googleapis/nodejs-storage)
+# Mongoose URL Slugs
 
+A simple URL based slug generator for mongoose models.
 
 
+## Installation
 
-> Node.js idiomatic client for [Cloud Storage][product-docs].
+```
+$ npm install mongoose-url-slugs
+```
+## V1 Breaking Changes
 
-[Cloud Storage](https://cloud.google.com/storage/docs) allows world-wide
-storage and retrieval of any amount of data at any time. You can use Google
-Cloud Storage for a range of scenarios including serving website content,
-storing data for archival and disaster recovery, or distributing large data
-objects to users via direct download.
+Option keys are now all Camel case, as opposed to previously.
+
+## What is a Slug?
+
+A slug is a human-readable unique identifier that can be used in a URL instead of an ID or hash. This is common in content sites where the title of the article is "slugified" to turn this ugly URL
+
+> http://example.com/a12Qv09b4
+
+into this pretty one
+
+> http://example.com/your-article-title-here
+
+## How Slugs are Formatted
+
+When supplied with a string, the following steps are taken to transform it into a slug.
+
+- Accented characters are converted to regular equivalent characters.
+- Converted to lower case
+- All punctuation is removed
+- All spaces are replaced with dashes
+- Add a number to the end if the slug isn't unique (eg: `my-cool-slug` and `my-cool-slug-2`)
+
+## Example Usage
 
 
-* [Google Cloud Storage Node.js Client API Reference][client-docs]
-* [Google Cloud Storage Documentation][product-docs]
-* [github.com/googleapis/nodejs-storage](https://github.com/googleapis/nodejs-storage)
+### Example 1: Using default options and using 2 fields for slug generation.
 
-Read more about the client libraries for Cloud APIs, including the older
-Google APIs Client Libraries, in [Client Libraries Explained][explained].
+```js
+var mongoose = require('mongoose'),
+    Schema = mongoose.Schema,
+    URLSlugs = require('mongoose-url-slugs');
 
-[explained]: https://cloud.google.com/apis/docs/client-libraries-explained
+var testSchema = new Schema({
+  first_name: {type: String, default: '', trim: true},
+  last_name: {type: String, default: '', trim: true},
+  rev: {type: String, default: '', trim: true}
+});
 
-**Table of contents:**
+testSchema.plugin(URLSlugs('first_name last_name'));
+```
 
+### Example 2: Using 'myslug' key for storing slug.
 
-* [Quickstart](#quickstart)
-  * [Before you begin](#before-you-begin)
-  * [Installing the client library](#installing-the-client-library)
-  * [Using the client library](#using-the-client-library)
-* [Samples](#samples)
-* [Versioning](#versioning)
-* [Contributing](#contributing)
-* [License](#license)
+```js
+var mongoose = require('mongoose'),
+    Schema = mongoose.Schema,
+    URLSlugs = require('mongoose-url-slugs');
 
-## Quickstart
+var testSchema = new Schema({
+  first_name: {type: String, default: '', trim: true},
+  last_name: {type: String, default: '', trim: true},
+  rev: {type: String, default: '', trim: true}
+});
 
-### Before you begin
-
-1.  [Select or create a Cloud Platform project][projects].
-1.  [Enable billing for your project][billing].
-1.  [Enable the Google Cloud Storage API][enable_api].
-1.  [Set up authentication with a service account][auth] so you can access the
-    API from your local workstation.
-
-### Installing the client library
-
-```bash
-npm install @google-cloud/storage
+// Save slugs to 'myslug' field.
+testSchema.plugin(URLSlugs('first_name last_name', {field: 'myslug'}));
 ```
 
 
-### Using the client library
+## Options and defaults
 
-```javascript
-  // Imports the Google Cloud client library
-  const {Storage} = require('@google-cloud/storage');
-
-  // Creates a client
-  const storage = new Storage();
-
-  /**
-   * TODO(developer): Uncomment these variables before running the sample.
-   */
-  // const bucketName = 'bucket-name';
-
-  async function createBucket() {
-    // Creates the new bucket
-    await storage.createBucket(bucketName);
-    console.log(`Bucket ${bucketName} created.`);
-  }
-
-  createBucket();
-
-```
-
-
-
-## Samples
-
-Samples are in the [`samples/`](https://github.com/googleapis/nodejs-storage/tree/master/samples) directory. The samples' `README.md`
-has instructions for running the samples.
-
-| Sample                      | Source Code                       | Try it |
-| --------------------------- | --------------------------------- | ------ |
-| Acl | [source code](https://github.com/googleapis/nodejs-storage/blob/master/samples/acl.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-storage&page=editor&open_in_editor=samples/acl.js,samples/README.md) |
-| Bucket Lock | [source code](https://github.com/googleapis/nodejs-storage/blob/master/samples/bucketLock.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-storage&page=editor&open_in_editor=samples/bucketLock.js,samples/README.md) |
-| Buckets | [source code](https://github.com/googleapis/nodejs-storage/blob/master/samples/buckets.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-storage&page=editor&open_in_editor=samples/buckets.js,samples/README.md) |
-| Encryption | [source code](https://github.com/googleapis/nodejs-storage/blob/master/samples/encryption.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-storage&page=editor&open_in_editor=samples/encryption.js,samples/README.md) |
-| Files | [source code](https://github.com/googleapis/nodejs-storage/blob/master/samples/files.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-storage&page=editor&open_in_editor=samples/files.js,samples/README.md) |
-| Iam | [source code](https://github.com/googleapis/nodejs-storage/blob/master/samples/iam.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-storage&page=editor&open_in_editor=samples/iam.js,samples/README.md) |
-| Notifications | [source code](https://github.com/googleapis/nodejs-storage/blob/master/samples/notifications.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-storage&page=editor&open_in_editor=samples/notifications.js,samples/README.md) |
-| Quickstart | [source code](https://github.com/googleapis/nodejs-storage/blob/master/samples/quickstart.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-storage&page=editor&open_in_editor=samples/quickstart.js,samples/README.md) |
-| Requester Pays | [source code](https://github.com/googleapis/nodejs-storage/blob/master/samples/requesterPays.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/nodejs-storage&page=editor&open_in_editor=samples/requesterPays.js,samples/README.md) |
-
-
-
-The [Google Cloud Storage Node.js Client API Reference][client-docs] documentation
-also contains samples.
-
-## Versioning
-
-This library follows [Semantic Versioning](http://semver.org/).
-
-
-This library is considered to be **General Availability (GA)**. This means it
-is stable; the code surface will not change in backwards-incompatible ways
-unless absolutely necessary (e.g. because of critical security issues) or with
-an extensive deprecation period. Issues and requests against **GA** libraries
-are addressed with the highest priority.
-
-
-
-
-
-More Information: [Google Cloud Platform Launch Stages][launch_stages]
-
-[launch_stages]: https://cloud.google.com/terms/launch-stages
-
-## Contributing
-
-Contributions welcome! See the [Contributing Guide](https://github.com/googleapis/nodejs-storage/blob/master/CONTRIBUTING.md).
+* **field** (Default: 'slug') - Slug field to use for storage.
+* **addField** (Default: True) - Add slug field to mongoose schema.
+* **separator** (Default: '-') - Separator to use for invalid characters.
+* **generator(text, separator)** (Default: lowercases and replaces all non alphanumeric to seperator) - Function to generate slug.
+* **undefinedVal** (Default: 'undefined') - Uses this string when slug dependent fields don't exist.
+* **maxLength** (Default: null) - If set, restricts slug length to specified value.
+* **update** (Default: False) - Update slug when dependent fields change.
+* **alwaysRecreate** (Default: False) - If true, will recreate slug regardless of change on dependent fields.
+* **index** (Default: True) - Mark slug field as an index in mongoose schema.
+* **indexType** (Default: String) - Mongoose schema slug index type.
+* **indexDefault** (Default: '') - Mongoose schema slug index default value.
+* **indexTrim** (Default: True) - Mongoose schema slug index trim value.
+* **indexUnique** (Default: True) - Mongoose schema slug index unique value.
+* **indexRequired** (Default: True) - Mongoose schema slug index required value.
+* **indexSparse** (Default: False) - Mongoose schema slug index sparse value.
+* **onHook** (Default: 'validate') - Mongoose document hook to create/update slug.
 
 ## License
 
-Apache Version 2.0
+The MIT License (MIT)
 
-See [LICENSE](https://github.com/googleapis/nodejs-storage/blob/master/LICENSE)
+Copyright (c) 2014 - 2017 Talha Asad
 
-[client-docs]: https://googleapis.dev/nodejs/storage/latest#reference
-[product-docs]: https://cloud.google.com/storage
-[shell_img]: https://gstatic.com/cloudssh/images/open-btn.png
-[projects]: https://console.cloud.google.com/project
-[billing]: https://support.google.com/cloud/answer/6293499#enable-billing
-[enable_api]: https://console.cloud.google.com/flows/enableapi?apiid=storage-api.googleapis.com
-[auth]: https://cloud.google.com/docs/authentication/getting-started
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-<a name="reference"></a>
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

@@ -42,7 +42,7 @@ router.post('/', validateAddFields, async (req, res, next) => {
     });
    // debug('newStory', newStory); return;
     const story = await newStory.save();
-   // debug(story)
+    debug('newStory', story)
     req.flash('success_msg', `"${story.title}" was created successfully`);
     res.redirect('/stories');
 
@@ -61,9 +61,9 @@ router.get('/', async (req, res) => {
 
 
 // Read full story page
-router.get('/:id', async (req, res) => {
+router.get('/:slug', async (req, res) => {
 
-  let story = await Story.findOne({_id: req.params.id })
+  let story = await Story.findOne({slug: req.params.slug })
   .populate('user')
   .populate({
     path: 'comments',
@@ -83,8 +83,8 @@ router.get('/:id', async (req, res) => {
 });
 
 // Edit story page
-router.get('/edit/:id', async (req, res) => {
-  const story = await Story.findById(req.params.id); 
+router.get('/edit/:slug', async (req, res) => {
+  const story = await Story.findOne({slug: req.params.slug}); 
   res.render('stories/edit', {
     story, 
     pageTitle: 'Edit'}); 
@@ -142,18 +142,18 @@ router.delete('/:id', async (req, res) => {
   }
   if(story) {
     const {storyImage} = story;
-    await util.promisify(fs.unlink)(path.join(__dirname,'../public/img/uploads/stories', storyImage));
+    await util.promisify(fs.unlink)(path.join(__dirname,'../public/img/uploads/stories', storyImage)).catch(console.error);
   } 
   req.flash('success_msg', 'story was deleted successfully');
   res.redirect('/stories');
 });// end Delete a story and related comments
 
 // comments action
-router.post('/comments/', async (req, res) => {
-   debug('comments', req.body, 'params:', req.params.id,  );
-  const story = await Story.findOne({_id: req.body.id});
+router.post('/:id/comments/', async (req, res) => {
+  
+  const story = await Story.findOne({_id: req.params.id});
   if(!story) {
-    req.flash('error_msg', 'cannot find with the given ID');
+    req.flash('error_msg', 'cannot find comment with the given ID');
     return res.redirect('/');
   }
   const newComment = new Comment({
@@ -164,14 +164,14 @@ router.post('/comments/', async (req, res) => {
   const { _id } = await newComment.save();
   if(!_id) {
     req.flash('error_msg', 'cannot create a comment, pls try again');
-    return res.redirect('/stories/' + req.body.id);
+    return res.redirect('/stories/' + story.slug);
   }
   
   story.comments = [...story.comments, _id ];
   // save comment id to story collection
   const updatedComment = await story.save();
   req.flash('success_msg', 'comment posted successfully!')
-  res.redirect('/stories/' + req.body.id);
+  res.redirect('/stories/' + story.slug);
 }); // end comments action
 
 // toggle user status

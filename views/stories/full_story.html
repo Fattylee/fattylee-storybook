@@ -12,7 +12,7 @@
           </div> 
         <div class="card-footer mt-3">
           {{#isEqual  story.user._id user._id}}
-           <a href="/stories/edit/{{story._id}}" class="btn btn-block btn-dark mb-2">Edit </a> 
+           <a href="/stories/edit/{{story.slug}}" class="btn btn-block btn-dark mb-2">Edit </a> 
              <form action="/stories/{{story._id}}?_method=DELETE" method="post">
               <button class="btn btn-block btn-danger mb-2">Delete </button> 
             </form>
@@ -70,11 +70,10 @@
         <div class="card my-4">
             <h5 class="card-header">Leave a Comment:</h5>
             <div class="card-body">
-                <form action="/stories/comments/" method="post">
+                <form action="/stories/{{story.id}}/comments/" method="post">
                     <div class="form-group">
-                        <textarea name="body" id="details" class="form-control" rows="3" placeholder="Write a comment.."></textarea>
-
-                        <input type="hidden" value="{{story._id}}" name="id">
+                        <textarea name="body" id="body" class="form-control" rows="3" placeholder="Write a comment.."></textarea>
+                        
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>

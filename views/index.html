@@ -17,14 +17,14 @@
       <div class="row">
         {{#each stories}}
         <div class=" col-sm-6">
-          <div class="card mb-3">
+          <div class="card mb-3 shadow-sm">
             <div class="text-center">
             <img src="/img/uploads/stories/{{storyImage}}" alt="{{storyImage}}" class="mb-2" height="150" width="100%"/>
             </div>
           <div class="card-body"> 
             <h5 class="card-title text-center">{{title}}</h5>  
             <p class="card-text">{{{truncateDetails details 100}}}
-              <a class="btn text-secondary border-dark bg-white" href="/stories/{{id}}">Read More &rarr;</a>
+              <a class="btn text-secondary border-dark bg-white" href="/stories/{{slug}}">Read More &rarr;</a>
             </p>
           </div> 
           <div class="card-footer">

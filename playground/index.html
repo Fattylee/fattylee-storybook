@@ -4,24 +4,34 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+      
+<script src="/js/eruda.min.js"></script>
+    <script>eruda.init();</script>
+    <script src="/js/eruda-code.min.js"></script>
+    <script>eruda.add(erudaCode)</script>
+    <script src="/js/eruda-dom.min.js"></script>
+    <script>eruda.add(erudaDom)</script>
+    <!-- ckeditor basic-->
+  <script src="//cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <title>Hello, world!</title>
   </head>
   <body>
-    <div class="input-group mb-3"> 
+    <form action="/" method="post" enctype="multipart/form-data">
+       <div class="input-group mb-3"> 
       <div class="input-group-prepend"> 
       <span class="input-group-text" id="inputGroupFileAddon01">Upload</span> 
       </div> <div class="custom-file"> 
-      <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" name="first"> 
+      <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" name="file" accept="image/*"> 
       <label class="custom-file-label"  for="inputGroupFile01">Choose file</label> 
       </div> 
     </div>
+    <input type="submit" value="Submit">
+    </form>
+   
     
-    <h1>Hello, world!</h1>
-<div class="input-group mb-3"> <div class="custom-file"> <input type="file" class="custom-file-input" id="inputGroupFile02"> <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Choose file</label> </div> <div class="input-group-append"> <span class="input-group-text" id="inputGroupFileAddon02">Upload</span> </div> </div>
 
 
     <!-- Optional JavaScript -->
@@ -31,8 +41,13 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     
     <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+    
     <script>
-      $(document).ready(function () { bsCustomFileInput.init() })
+      $(document)
+      .ready(function () { 
+        bsCustomFileInput.init();
+    });
     </script>
+    
   </body>
 </html>

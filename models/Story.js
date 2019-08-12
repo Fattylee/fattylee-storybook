@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const URLSlugs = require('mongoose-url-slugs');
 
-const Story = mongoose.model('Story', new Schema({
+const StorySchema = new Schema({
   title: {
     type: String,
     required: true,
@@ -38,6 +39,12 @@ const Story = mongoose.model('Story', new Schema({
     ref: 'Comment',
     required: true,
   }],
-}, { timestamps: true }));
+}, { timestamps: true });
+
+// slug field
+StorySchema.plugin(URLSlugs('title'));
+
+const Story = mongoose.model('Story', StorySchema);
 
 module.exports = Story;
+

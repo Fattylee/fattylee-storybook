@@ -1,5 +1,7 @@
 require('express-async-errors');
 const express = require('express');
+const app = express();
+const debug = require('debug')('active:app');
 const methodOverride = require('method-override');
 const morgan = require('morgan');
 const exphbs = require('express-handlebars');
@@ -7,15 +9,11 @@ const path = require('path');
 const flash = require('connect-flash');
 const session = require('express-session');
 
-/*
-Or use this
-const cookieSession = require('cookie-session');
+if(app.get('env') === 'development' || app.get('env') === 'staging') {
+  app.use('/xyz', require('./routes/comments'));
+  debug('comments routes loaded')
+}
 
-app.use(cookieSession({
-  maxAge: 24 * 60 * 60 * 1000, // a day
-  keys: ['hshshsysghshshshsu'],
-}))
-*/
 const stories = require('./routes/stories');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
@@ -23,10 +21,8 @@ const index = require('./routes');
 const startDB = require('./startups/db');
 const passport = require('passport');
 const isAuthenticated = require('./middlewares/auth');
-const debug = require('debug')('active:app');
 const handlebarsConfig = require('./helpers/handlebars');
 const storyError = require('./controllers/errors/storyError');
-const app = express();
 const expressFileupload = require('express-fileupload');
 
 
@@ -74,6 +70,7 @@ app.use('/', index);
 app.use('/stories', isAuthenticated, stories);
 app.use('/users', users);
 app.use('/auth', auth);
+
 
 app.use((err, req, res, next) => {
   debug('Async error', err);

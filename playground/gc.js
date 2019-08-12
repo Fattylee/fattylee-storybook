@@ -1,3 +1,20 @@
+const express = require('express');
+const app = express();
+const debug = require('debug')('gc');
+const expressFileupload = require('express-fileupload');
+const path = require('path');
+app.use('/', express.static(__dirname));
+app.use(expressFileupload());
+
+app.post('/', (req, res) => {
+  const file = req.files;
+  debug('req.files', file);
+  res.send(file);
+});
+ 
+app.listen(5000, console.log('Gcloud server running on port 5000'));
+
+/*
 const {Storage} = require('@google-cloud/storage');
 const path = require('path');
 
@@ -34,3 +51,4 @@ var getPublicThumbnailUrlForItem = file_name => {
   }
 };
 run();
+*/
