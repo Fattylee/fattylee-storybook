@@ -21,6 +21,10 @@ router.get('/about', (req, res) => {
   res.render('about', {pageTitle: 'About'});
 });
 
+router.get('/privacy', (req, res) => {
+  res.render('privacy', {pageTitle: 'Privacy'});
+});
+
 router.all('/*', (error, req, res, next) => {
   res.send('ASYNC ERROR FOR INDEX: ' + error);
 });
