@@ -4,10 +4,24 @@
     <div class="card card-body">
       <h3 class="text-center mb-4">Profile</h3>
       <div class="text-center">
-         <img src="{{imagePath 'avatars' user.avatar}}" alt="" class="img-fluid rounded-circle mb-4" />
+         <img src="{{imagePath 'avatars' user.avatar}}" width="300" alt="" class="img-fluid rounded-circle mb-4" />
       </div>
     
-<form method="post" action="/users/me?_method=PATCH" enctype="multipart/form-data">
+<!--form method="post" action="/users/me?_method=PATCH" uuenctype="multipart/form-data"-->
+  <form action="/xyz/abu?_method=PUT" method="post" enctype="multipart/form-data">
+  <!-- Profile upload -->
+  <!--input type="file"  id="file2" name="avatar2" accept="image/*" -->
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Profile upload</span>
+    </div>
+    <div class="custom-file">
+    <input type="file" class="custom-file-input" id="file" name="avatar" accept="image/*" >
+    <label class="custom-file-label" for="file">Choose image</label>
+    </div>
+  </div>
+  <!-- End Profile upload -->
+  
   <div class="input-group mb-3"> 
     <div class="input-group-prepend"> 
       <span class="input-group-text" id="name">
@@ -43,15 +57,7 @@
   </div> {{!-- End Confirm Password --}}
   
 
-  <div class="input-group mb-3">
-    <div class="input-group-prepend">
-      <span class="input-group-text">Profile upload</span>
-    </div>
-    <div class="custom-file">
-    <input type="file" class="custom-file-input" id="file" name="avatar" accept="image/*" >
-    <label class="custom-file-label" for="file">Choose image</label>
-    </div>
-  </div>
+  
  
   <input type="submit" class='btn btn-secondary btn-block' value="Update"/>
 </form>
@@ -64,3 +70,4 @@
 </div>
 </div>
 </div>
+

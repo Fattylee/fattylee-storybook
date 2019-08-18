@@ -11,9 +11,11 @@
     
     <ul class="navbar-nav ml-auto">
    {{#if user}}
+   
      <div class="dropdown">
     <a class="btn btn-primary dropdown-toggle nav-link text-left" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     <i class="fas fa-book"></i>  Story </a>
+     
     
      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
        
@@ -30,16 +32,17 @@
       </div>
     </form>
     </div> <!-- end dropdown-menu -->
-    </div>
-  
+    </div><!-- end dropdown -->
+ 
    
     <li class="nav-item">
-        <a class="nav-link " href="/users/me"><i class='fas fa-user'></i> {{capitalizeEach user.name}} </a>
-      </li>
-       <li class="nav-item ">
+        <a class="nav-link " href="/users/me"> <img src="{{imagePath 'avatars' user.avatar}}" width="20" height="25" alt="" class="img-fluid rounded-circle " /> <span>{{capitalizeEach user.name}}</span> </a>
+    </li>
+    <li class="nav-item ">
         <a class="nav-link" href="/users/logout"><i class='fas fa-sign-out-alt'></i> Logout</a>
-      </li>
-      
+    </li>
+    
+    
       {{else}}
       <li class="nav-item ">
         <a class="nav-link" href="/users/login"><i class='fas fa-user-lock'></i> Login</a>

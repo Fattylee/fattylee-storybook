@@ -5,11 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       
-<script src="/js/eruda.min.js"></script>
+<script src="js/eruda.min.js"></script>
     <script>eruda.init();</script>
-    <script src="/js/eruda-code.min.js"></script>
+    <script src="js/eruda-code.min.js"></script>
     <script>eruda.add(erudaCode)</script>
-    <script src="/js/eruda-dom.min.js"></script>
+    <script src="js/eruda-dom.min.js"></script>
     <script>eruda.add(erudaDom)</script>
     <!-- ckeditor basic-->
   <script src="//cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
@@ -19,15 +19,25 @@
     <title>Hello, world!</title>
   </head>
   <body>
-    <form action="/" method="post" enctype="multipart/form-data">
+    
+    <form action="/api/upload" method="post" enctype="multipart/form-data">
        <div class="input-group mb-3"> 
       <div class="input-group-prepend"> 
       <span class="input-group-text" id="inputGroupFileAddon01">Upload</span> 
       </div> <div class="custom-file"> 
-      <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" name="file" accept="image/*"> 
+      <input type="file" class="custom-file-input" id="file" aria-describedby="inputGroupFileAddon01" name="file-avatar" accept="image/*"> 
       <label class="custom-file-label"  for="inputGroupFile01">Choose file</label> 
       </div> 
     </div>
+    
+     <!--div class="input-group mb-3"> 
+      <div class="input-group-prepend"> 
+      <span class="input-group-text" id="inputGroupFileAddon01">Upload</span> 
+      </div> <div class="custom-file"> 
+      <input type="file" class="custom-file-input" id="file2" aria-describedby="inputGroupFileAddon01" name="file2" accept="image/*"> 
+      <label class="custom-file-label"  for="inputGroupFile01">Choose file2</label> 
+      </div> 
+    </div-->
     <input type="submit" value="Submit">
     </form>
    
@@ -41,13 +51,67 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     
     <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
-    
+    <script src="js/axios.min.js"></script>
     <script>
       $(document)
       .ready(function () { 
         bsCustomFileInput.init();
     });
     </script>
-    
+    <script>
+      $('form  [name=file-avatar]').on('change', function(){
+        const form = new FormData();
+        
+        
+        //form.append('file1', $('#file')[0].files[0]);
+        const file = this.files[0];
+        form.append('file-avatar', file);
+        //console.log('typeof', typeof file, typeof file.arrayBuffer());
+        form.append('random', 'randValue');
+        
+       // console.log('form.entries iterator', [...form.entries()]);
+        // for(const prop in form)
+        //console.log(prop, ': ', form[prop] )
+      
+        console.log('onchange', file, 'type', file.type);
+        
+      //  for(const prop in file)
+        //console.log(prop, ': ', file[prop]);
+      //return;
+      let url = '/api/upload';
+      //url = 'http://localhost:5000/api/upload/'
+       
+      axios.post(url, form, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
+      .then(async res => {
+        console.log('res', res);
+        const {url, buffer} = res.data;
+        //const stream = file.stream();
+        
+        //const buffer = await file.arrayBuffer();
+        console.log('res.data', url, buffer);
+      axios.put(
+        url,
+        buffer, 
+        /*{ 
+          headers: {'Content-Type': file.type}
+       }*/
+    ) 
+   .then((response) => { //handle success 
+   console.log('response', response, 'status', response.status);
+   })
+   .catch((error) => { //handle error 
+   console.log('something went wrong:', error);
+   });
+        
+      })
+      .catch(err => {
+         console.log('err', err)
+      });
+      
+   }); //end onchange
+      
+    </script>
   </body>
 </html>

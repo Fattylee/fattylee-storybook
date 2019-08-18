@@ -41,13 +41,132 @@
    
    <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="/bootstrap-4.3.1/js/jquery-3.3.1.slim.min.js" type="text/javascript"></script>
+  <script src="/bootstrap-4.3.1/js/jquery-3.4.1.min.js" type="text/javascript"></script>
+
   <script src="/bootstrap-4.3.1/js/popper.min.js" type="text/javascript"></script>
   <script src="/bootstrap-4.3.1/js/bootstrap-4.3.1.min.js" type="text/javascript"></script>
    
    <script src="/bootstrap-4.3.1/js/bs-custom-file-input.min.js" type="text/javascript"></script>
-    
+    <!-- axios -->
+    <!--script src="https://unpkg.com/axios/dist/axios.min.js"></script-->
+     <script src="/bootstrap-4.3.1/js/axios.min.js" type="text/javascript"></script>
    <!-- main js -->
   <script src="/js/main.js"></script>
+  
+  <script>
+    $(  function(){
+      console.log('onload')
+      
+      const url = 'http://jsonplaceholder.typicode.com/todos/1';
+      
+      /*
+      axios.put(
+        axiosUrl, 
+        
+        { 
+          //id: 1, 
+          title: 'fooBaaaaa', 
+          body: 'ba  hhggr', 
+          userId: 1 
+         }, 
+        
+        {
+          
+        }
+      )*/
+      /*
+      axios({ 
+        method: 'pUt', 
+        url, //: '/user/12345', 
+        data: { 
+          firstName: 'Fred', 
+          lastName: 'Flintstone',
+        },
+      })
+      .then(res => {
+        console.log('res.data:', res)
+      })
+      .catch(err => {
+        console.log('err', err)
+      });
+      */
+    $('form #file').on('change', async function(e) {
+      const form = new FormData();
+      const file = $('#file')[0].files[0];
+     // const file = 'data file';
+     
+     form.append('bobo', file, file.name)
+    // form.append('avatar2', $('#file2')[0].files[0]);
+      console.log('on change', file.name, file.type, 'form', form, 'form type', form.type);
+      let url = '';
+      
+      
+      url = 'https://storage.googleapis.com/storybook_uploads/bobo?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=uploads-966%40fattylee-storybook-img.iam.gserviceaccount.com%2F20190816%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190816T233131Z&X-Goog-Expires=7200&X-Goog-SignedHeaders=content-type%3Bhost&X-Goog-Signature=a58eff24cf5c6ed7f994d5442e68ed6f17ca18b7000232581df45233a6d3f13f6594c5f27c294a74da1cff56ff5483152d63d0628ff0815ea6c9a24024dc2b9ad57254cb5100076b5c9e818ad3af307465200491604326d2dcb7bbbe339f7e63aa9f40f883577b68309faf6d8260e10e0894382bb2ff9dc76ca7c0cd99680922badc35dcaefe19050060875a79ff8c341344764fb6c14c50746b5d2d6dcc152283f23d567239f0fa934db0ff21eab923c7ce98f9d619adc10a9303046f74dfc9030f6f72951794b5aabf1910bea99c9e4ce51748d840120468e58db91461fcf38cd02d500051f80f515b97f4cea897ad58ebc136a2b730075747755d684a276d';
+     // url = '/xyz/abu';
+      url = 'http://localhost:5000/xyz/upload';
+      url = '/api/upload';
+      
+      axios.post(url, {name: 'abu'}, { 
+        //method: 'put', 
+       // url, //: '/user/12345', 
+       // data: file,
+        headers: { 'Content-Type': 'image/png'  },
+      })
+      .then(res => {
+        console.log('res.data:', res)
+      })
+      .catch(err => {
+        console.log('err', err)
+      });
+      
+      
+      
+      /*$.ajax({
+        method: "PosT",
+        url,
+        data: {abu:'abdillah'},
+        //processData: false,
+        //contentType: 'application/x-www-form-urlencoded',
+        headers: {'Content-Type': 'application/json'},
+    })
+    .then(function(msg) {
+        console.log("Data Saved: ", msg);
+    })
+    .catch(err => {
+      console.log("Error: ", err);
+    });*/
+      
+      
+      /*
+      const res = await $.ajax({ 
+        url, 
+        method: 'put', 
+        data: file, //{name: 'abu', age: 'lulu', file},
+        processData: false,
+        contentType: false,
+      })
+     
+      .catch(console.error);
+      
+      console.log('await res', res);
+      */
+      
+      /*$.ajax({
+        url,
+        data: file,
+        method: 'POST',
+       // contentType: false,
+       // processData: false,
+        //headers: {contentType: ''},
+        success(res) {
+          console.log('success 0ne', res);
+        },
+        error(err) {
+          console.log('err', JSON.stringify(err));
+        }
+      }); // end $.ajax*/
+    }); // end submit
+    }); // onload
+  </script>
   </body>
 </html>

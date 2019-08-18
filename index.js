@@ -9,12 +9,6 @@ const path = require('path');
 const flash = require('connect-flash');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-
-if(app.get('env') === 'development' || app.get('env') === 'staging') {
-  app.use('/xyz', require('./routes/comments'));
-  debug('comments routes loaded')
-}
-
 const stories = require('./routes/stories');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
@@ -85,7 +79,13 @@ app.use((err, req, res, next) => {
   res.status(500).render('errors/500');
 });
 
+// disable in production
+if(app.get('env') === 'development' || app.get('env') === 'staging') {
+  app.use('/xyz', require('./routes/comments'));
+  debug('comments routes loaded')
+}
 
 app.all('*', (req, res, next) => {
-  res.render('errors/404');
+  res.render('errors/404', {pageTitle: '404'});
 });
+

@@ -1,0 +1,29 @@
+{
+  "name": "google-cloud-playground",
+  "version": "1.0.0",
+  "description": "this app is used for managing stories of all kinds",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+   "scripts": {
+     "start": "nodemon gc -w gc.js"
+  },
+  "dependencies": {
+    "express": "4.16.4",
+    "method-override": "3.0.0",
+    "connect-flash": "0.1.1",
+    "express-session": "1.16.2",
+    "express-fileupload": "1.1.5",
+    "uuid": "3.3.2"  
+  },
+  "devDependencies": {
+   
+  },
+  "engines": {
+    "node": "12.1.0"
+  },
+  "keywords": ["express", "nodejs", "passportjs", "express-handlebars", "stories"],
+  "author": "fatai balogun",
+  "license": "ISC"
+}

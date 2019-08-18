@@ -10,5 +10,9 @@ module.exports = {
     clientSecret: process.env.google_clientSecret,
     callbackURL: process.env.google_callbackURL,
   },
+  googleCloudStorage: {
+    GOOGLE_PROJECT_ID: process.env.GOOGLE_PROJECT_ID,
+    GOOGLE_CLIENT_EMAIL: process.env.GOOGLE_CLIENT_EMAIL,
+    GOOGLE_PRIVATE_KEY: process.env.GOOGLE_PRIVATE_KEY
+  },
 }
-
