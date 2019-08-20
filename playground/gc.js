@@ -1,5 +1,3 @@
-const {googleCloudStorage: {GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY, GOOGLE_PROJECT_ID}} = require('../config/keys');
-
 const express = require('express');
 const app = express();
 const debug = require('debug')('gc');
@@ -7,22 +5,15 @@ const expressFileupload = require('express-fileupload');
 const path = require('path');
 const axios = require('axios');
 const cors = require('cors');
-const uuid = require('uuid/v1')
+const uuid = require('uuid/v1');
+const google = require('../helpers/googleCloudService');
 
 app.use('/api/upload', express.static(__dirname));
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
-const {Storage} = require('@google-cloud/storage');
 
-const storage = new Storage({
-    credentials: {
-      client_email: GOOGLE_CLIENT_EMAIL,
-      private_key: GOOGLE_PRIVATE_KEY,
-    },
-    projectId: GOOGLE_PROJECT_ID,
-});
 
 app.use(expressFileupload());
 
@@ -53,7 +44,7 @@ debug(file);
 
   
 // create a bucket
- const bucket = storage.bucket('storybook_uploads');
+ const bucket = google.bucket('storybook_uploads');
   
  
 	// Create a new blob in the bucket and upload the file data.
@@ -97,7 +88,7 @@ const bucketName = 'storybook_uploads';
 //const res = await storage.bucket('storybook_uploads').file(file_name).delete()//.catch(debug);
 //debug('file deleted', res, res.statusMessage, file_name);
 
-const [files] = await storage.bucket(bucketName).getFiles();
+const [files] = await google.bucket(bucketName).getFiles();
 debug('Files:'); files.forEach(file => { debug(file.name); });
 }catch(ex) {
   debug(ex)
@@ -114,7 +105,7 @@ const file = '';
 
 async function downloadFile(bucketName, filename) {
   const destination = path.join(__dirname, 'public/ajax-loader.gif',  );
-  const res = await storage
+  const res = await google
     .bucket(bucketName)
     .file(filename)
     .download({destination});
@@ -144,7 +135,7 @@ async function generateSignedUrl(bucketName, filename) {
   };
 
   // Get a v2 signed URL for the file
-  const [url] = await storage
+  const [url] = await google
     .bucket(bucketName)
     .file(filename)
     //.download({destination: './public/' + filename})
@@ -163,7 +154,8 @@ async function generateV4UploadSignedUrl(bucketName, filename, file) {
     version: 'v4',
     action: 'write',
     expires: Date.now() + 120 * 60 * 1000, // 2hrs ,
-    contentType: file.mimetype, 
+    //contentType: file.mimetype, 
+    contentType: 'multipart/form-data', 
   };
 
   // Get a v4 signed URL for uploading file
@@ -178,9 +170,9 @@ async function generateV4UploadSignedUrl(bucketName, filename, file) {
   console.log('You can use this URL with any user agent, for example:');
   console.log('\n\n\n\n');
   
-  console.log(
+  /*console.log(
     `curl -X PUT -H 'Content-Type: ${file.mimetype}' -T ./uploads/files/${filename} '${url}'`
-  );
+  );*/
   //debug('typeof', typeof file, typeof file.data)
   return url;
   // [END storage_generate_upload_signed_url_v4]
@@ -221,3 +213,4 @@ async function generateV4UploadSignedUrl(bucketName, filename, file) {
    
    */
 }
+

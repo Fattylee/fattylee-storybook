@@ -18,7 +18,8 @@
     "start:stag": "export NODE_ENV=\"staging\" && DEBUG=active:app nodemon index.js",
     "deploy": "echo 'i am ready for a deployment'",
     "bab": "babel  playground/api.test.js --out-file=playground/api.res.js --presets=env",
-    "babel:node": "nodemon -w playground/uuid.js --exec babel-node playground/uuid.js"
+    "babel:node": "nodemon -w playground/uuid.js --exec babel-node playground/uuid.js",
+    "gc": "npm run start --prefix playground/"
   },
   "dependencies": {
     "mongoose": "5.4.16",
