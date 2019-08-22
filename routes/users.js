@@ -18,6 +18,7 @@ const isAuthenticated = require('../middlewares/auth');
 const isAdmin = require('../middlewares/isAdmin');
 
 
+
 router.use((req, res, next) => {
   //req.app.locals.layout = 'container';
   next();
@@ -86,78 +87,14 @@ router.get('/me', isAuthenticated, async (req, res) => {
 // update profile info
 router.patch('/me', isAuthenticated, validateProfileFields, async (req, res, next) => {
   
-  /*if (!req.file) {
-  res.status(400).send("No file uploaded.");
-  return;
-  }*/
-  /*
-  
-  debug('req. files', req. files);
-  
-  
-  // save to google-cloud storage
-   // const file = await bucket.upload(filename, {public: true});
-
-// instanstiate gcs
-  const gc = new Storage({
-    keyFilename: join(__dirname, '../config/fattylee-storybook-img-458bbee95310.json'),
-    projectId: 'fattylee-storybook-img',
-  });
-  
-  
-  // create a bucket
-  const bucket = gc.bucket('storybook-uploads');
-  
-  
-	// Create a new blob in the bucket and upload the file data.
-	const blob = bucket.file('stories/' + req.files.avatar.name);
-	
-//bucket.file(req.file.originalname);
-	
-	// Make sure to set the contentType metadata for the browser to be able
-	// to render the image instead of downloading the file (default behavior)
-	const blobStream = blob.createWriteStream({
-	metadata: {
-	contentType: req.files.avatar.mimetype, //req.file.mimetype
-	}
-	});
-	
-	
-	blobStream.on("error", err => {
-	next(err);
-	return;
-	});
-	
-	blobStream.on("finish", () => {
-	// The public URL can be used to directly access the file via HTTP.
-	const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
-	
-	// Make the image public to the web since we'll be displaying it in browser
-	
-	/*blob.makePublic().then(() => {
-	res.status(200).send(`Success!\n Image uploaded to ${publicUrl}`);
-	}); /
-	res.redirect('/users/me');
-});	
-
- blobStream.end(req.files.avatar.data //req.file.buffer
- );
-
- debug('google-cloud file upload');
- */
-  
-  
-  
-  
-  
   let filename = undefined;
    const avatarPath = join(__dirname, '../public/img/uploads/avatars/');
   const prevAvatar = req.user.avatar;
   
   if(req.files){
     const {avatar} = req.files;   
-    if(avatar.size > 2 * 1024 * 1024) {
-    req.flash('error_msg', 'Image size cannot exceed 2mb');
+    if(avatar.size > 5 * 1024 * 1024) {
+    req.flash('error_msg', 'Image size cannot exceed 5mb');
     return res.redirect('/users/me');
   }
     if(!/^image\/.*$/i.test(avatar.mimetype)) {

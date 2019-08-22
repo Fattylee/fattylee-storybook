@@ -14,7 +14,7 @@
     <!-- ckeditor basic-->
   <script src="//cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="js/bootstrap-4.3.1.min.css">
 
     <title>Hello, world!</title>
   </head>
@@ -30,14 +30,7 @@
       </div> 
     </div>
     
-     <!--div class="input-group mb-3"> 
-      <div class="input-group-prepend"> 
-      <span class="input-group-text" id="inputGroupFileAddon01">Upload</span> 
-      </div> <div class="custom-file"> 
-      <input type="file" class="custom-file-input" id="file2" aria-describedby="inputGroupFileAddon01" name="file2" accept="image/*"> 
-      <label class="custom-file-label"  for="inputGroupFile01">Choose file2</label> 
-      </div> 
-    </div-->
+   
     <input type="submit" value="Submit">
     </form>
    
@@ -46,11 +39,11 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap-4.3.1.min.js"></script>
     
-    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+    <script src="js/bs-custom-file-input.min.js"></script>
     <script src="js/axios.min.js"></script>
     <script>
       $(document)
@@ -59,56 +52,46 @@
     });
     </script>
     <script>
-      $('form  [name=file-avatar]').on('change', function(){
+      $('form  [name=file-avatar]').on('change', async function(){
         const form = new FormData();
         
         
-        //form.append('file1', $('#file')[0].files[0]);
         const file = this.files[0];
         form.append('file-avatar', file);
-        //console.log('typeof', typeof file, typeof file.arrayBuffer());
+       
         form.append('random', 'randValue');
         
-       // console.log('form.entries iterator', [...form.entries()]);
-        // for(const prop in form)
-        //console.log(prop, ': ', form[prop] )
+      
       
         console.log('onchange', file, 'type', file.type);
         
-      //  for(const prop in file)
-        //console.log(prop, ': ', file[prop]);
-      //return;
-      let url = '/api/upload';
+    
+    
+      let url = 'http://localhost:4000';
+      const instance = axios.create({
+        baseURL: url, 
+        //timeout: 1000, 
+        //headers: {'X-Custom-Header': 'foobar'},
+      });
+      
+      url = '/uploads'
+      
       //url = 'http://localhost:5000/api/upload/'
        
-      axios.post(url, form, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+      const res = await instance.get(url, {
+        params: {
+          filename: file.name, type: file.type
+        }
       })
-      .then(async res => {
-        console.log('res', res);
-        const {url, buffer} = res.data;
-        //const stream = file.stream();
-        
-        //const buffer = await file.arrayBuffer();
-        console.log('res.data', url, buffer);
-      axios.put(
-        url,
-        buffer, 
-        /*{ 
-          headers: {'Content-Type': file.type}
-       }*/
-    ) 
-   .then((response) => { //handle success 
-   console.log('response', response, 'status', response.status);
-   })
-   .catch((error) => { //handle error 
-   console.log('something went wrong:', error);
-   });
-        
-      })
-      .catch(err => {
+       .catch(err => {
          console.log('err', err)
-      });
+      });;
+      
+  console.log('res', res);
+  //const {url, buffer} = res.data;
+        
+ // console.log('es.data', url, buffer);      
+     
       
    }); //end onchange
       

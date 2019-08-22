@@ -15,7 +15,8 @@
     "connect-flash": "0.1.1",
     "express-session": "1.16.2",
     "express-fileupload": "1.1.5",
-    "uuid": "3.3.2"  
+    "uuid": "3.3.2",
+    "cors": "2.8.5"
   },
   "devDependencies": {
    
@@ -25,5 +26,10 @@
   },
   "keywords": ["express", "nodejs", "passportjs", "express-handlebars", "stories"],
   "author": "fatai balogun",
-  "license": "ISC"
+  "license": "ISC",
+  "proxy": {
+  "/uploads" : {
+   "target" : "http://localhost:4000"
+} 
+  }
 }

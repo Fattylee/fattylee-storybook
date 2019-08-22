@@ -6,10 +6,10 @@ const path = require('path');
 const axios = require('axios');
 const cors = require('cors');
 const uuid = require('uuid/v1');
-const google = require('../helpers/googleCloudService');
+const storage = require('../helpers/googleCloudService');
 
 app.use('/api/upload', express.static(__dirname));
-app.use(cors())
+//app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
@@ -88,7 +88,7 @@ const bucketName = 'storybook_uploads';
 //const res = await storage.bucket('storybook_uploads').file(file_name).delete()//.catch(debug);
 //debug('file deleted', res, res.statusMessage, file_name);
 
-const [files] = await google.bucket(bucketName).getFiles();
+const [files] = await storage.bucket(bucketName).getFiles();
 debug('Files:'); files.forEach(file => { debug(file.name); });
 }catch(ex) {
   debug(ex)
@@ -105,7 +105,7 @@ const file = '';
 
 async function downloadFile(bucketName, filename) {
   const destination = path.join(__dirname, 'public/ajax-loader.gif',  );
-  const res = await google
+  const res = await storage
     .bucket(bucketName)
     .file(filename)
     .download({destination});
@@ -135,7 +135,7 @@ async function generateSignedUrl(bucketName, filename) {
   };
 
   // Get a v2 signed URL for the file
-  const [url] = await google
+  const [url] = await storage
     .bucket(bucketName)
     .file(filename)
     //.download({destination: './public/' + filename})
@@ -213,4 +213,3 @@ async function generateV4UploadSignedUrl(bucketName, filename, file) {
    
    */
 }
-

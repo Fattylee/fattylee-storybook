@@ -13,6 +13,7 @@ const stories = require('./routes/stories');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
 const index = require('./routes');
+const uploads = require('./routes/uploads');
 const startDB = require('./startups/db');
 const passport = require('passport');
 const isAuthenticated = require('./middlewares/auth');
@@ -20,11 +21,12 @@ const handlebarsConfig = require('./helpers/handlebars');
 const storyError = require('./controllers/errors/storyError');
 const expressFileupload = require('express-fileupload');
 const mongoose = require('mongoose');
-
+const cors = require('cors');
 
 startDB(app);
 require('./config/passport')(passport);
 
+app.use(cors());
 app.use(morgan('tiny'));
 app.use(methodOverride('_method'));
 
@@ -68,7 +70,7 @@ app.use('/', index);
 app.use('/stories', isAuthenticated, stories);
 app.use('/users', users);
 app.use('/auth', auth);
-
+app.use('/uploads', /*isAuthenticated,*/ uploads);
 
 app.use((err, req, res, next) => {
   debug('Async error', err);
@@ -88,4 +90,3 @@ if(app.get('env') === 'development' || app.get('env') === 'staging') {
 app.all('*', (req, res, next) => {
   res.render('errors/404', {pageTitle: '404'});
 });
-

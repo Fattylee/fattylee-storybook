@@ -67,11 +67,23 @@
      
      
      form.append('avatar', file, file.name);
-     //form.append('lost', 'abu adnaan');
-    // form.append('avatar2', $('#file2')[0].files[0]);
+    
       console.log('on change', file.name, file.type, );
       // return;
       let url = '';
+      
+      url = '/uploads';
+     
+      const res = await axios.get(url, {
+        params: {
+          filename: file.name, 
+          type: file.type,
+          }
+        });
+        
+        const img = $('#profile-img');
+        console.log('res url', res, 'attr', img.attr('src'));
+      return;
       
       
      // url = '/xyz/abu';
@@ -98,8 +110,8 @@
         file, 
         {
           headers: {'Content-Type': file.type,
-           "Access-Control-Allow-Origin": "*", 
-           'Accept': '*',
+           //"Access-Control-Allow-Origin": "*", 
+           //'Accept': '*',
            
           }, 
         })
