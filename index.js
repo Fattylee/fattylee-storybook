@@ -26,7 +26,7 @@ const cors = require('cors');
 startDB(app);
 require('./config/passport')(passport);
 
-app.use(cors());
+//app.use(cors());
 app.use(morgan('tiny'));
 app.use(methodOverride('_method'));
 

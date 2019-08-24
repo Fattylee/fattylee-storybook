@@ -36,7 +36,8 @@
  
    
     <li class="nav-item">
-        <a class="nav-link " href="/users/me"> <img src="{{imagePath 'avatars' user.avatar}}" width="20" height="25" alt="" class="img-fluid rounded-circle " /> <span>{{capitalizeEach user.name}}</span> </a>
+        <a class="nav-link " href="/users/me"> <img src='https://storage.cloud.google.com/storybook_uploads/{{user.avatar }}'
+        width="20" height="25" alt="" class="img-fluid rounded-circle " /> <span>{{capitalizeEach user.name}}</span> </a>
     </li>
     <li class="nav-item ">
         <a class="nav-link" href="/users/logout"><i class='fas fa-sign-out-alt'></i> Logout</a>

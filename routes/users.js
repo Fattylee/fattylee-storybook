@@ -1,4 +1,3 @@
-const {Storage} = require('@google-cloud/storage');
 const express = require('express');
 const {join} = require('path');
 const fs = require('fs');
@@ -16,7 +15,7 @@ const debug = require('debug')('active:app');
 const { redirectToLogin } = require('../helpers/redirect');
 const isAuthenticated = require('../middlewares/auth');
 const isAdmin = require('../middlewares/isAdmin');
-
+const storage = require('../helpers/googleCloudService');
 
 
 router.use((req, res, next) => {
@@ -86,26 +85,12 @@ router.get('/me', isAuthenticated, async (req, res) => {
 
 // update profile info
 router.patch('/me', isAuthenticated, validateProfileFields, async (req, res, next) => {
+  debug('body', req.body,);
+
   
-  let filename = undefined;
-   const avatarPath = join(__dirname, '../public/img/uploads/avatars/');
+  let filename = req.body.avatar;
+   
   const prevAvatar = req.user.avatar;
-  
-  if(req.files){
-    const {avatar} = req.files;   
-    if(avatar.size > 5 * 1024 * 1024) {
-    req.flash('error_msg', 'Image size cannot exceed 5mb');
-    return res.redirect('/users/me');
-  }
-    if(!/^image\/.*$/i.test(avatar.mimetype)) {
-    req.flash('error_msg', 'file type not supported, pls use a valid image file (jpeg, png, jpg, gif)');
-    return res.redirect('/users/me');
-  }
-    
-    filename = `${uuid()}-${avatar.name}`;
-    // save avatar to storage
-    const mv = await util.promisify(avatar.mv)(avatarPath + filename);
-  }
   
     // encrypt password
     const salt = await bcrypt.genSalt(10);
@@ -117,9 +102,15 @@ router.patch('/me', isAuthenticated, validateProfileFields, async (req, res, nex
     password: hash,
     }, {new: true});
     // delete prevAvatar if not stock
-    if(prevAvatar !== 'avatar_placeholder.png') {
-      await util.promisify(fs.unlink)(avatarPath + prevAvatar).catch(debug);
+    if(filename){
+      storage
+    .bucket('storybook_uploads')
+    .file(prevAvatar)
+    .delete();
     }
+    
+    debug('update', update);
+    
    req.flash('success_msg', 'profile update was successful');
     res.redirect('/users/me');    
     

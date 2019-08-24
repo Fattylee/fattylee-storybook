@@ -10,11 +10,12 @@ router.get('/', async (req, res) => {
   debug(filename, type);
   
   const imageName = createSlug(filename, req.user.id);
+  debug('imageName', imageName)
   
   const options = {
     version: 'v4',
     action: 'write',
-    expires: Date.now() + 15 * 60 * 1000, // 15 MIN ,
+    expires: Date.now() + 120 * 60 * 1000, // 15 MIN ,
     contentType: type,
   };
    
@@ -23,12 +24,12 @@ router.get('/', async (req, res) => {
    .file(imageName)
    .getSignedUrl(options);
    
-  res.status(200).send({
-    uploadPayload: {
+   const uploadPayload = {
       url,
       imageName,
-    }
-  })
+    };
+    debug(uploadPayload);
+  res.status(200).send(uploadPayload)
 });
    
 module.exports = router;

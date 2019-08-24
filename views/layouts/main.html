@@ -32,9 +32,9 @@
     {{> _msg }}
     {{> _errors }}
    
-   
+   <div class="body">
     {{{body}}}
-    
+    </div>
     
    {{> _footer }}
    
@@ -54,145 +54,124 @@
   <script src="/js/main.js"></script>
   
   <script>
-    $(  function(){
+    $(function(){
       console.log('onload')
       
-      const url = 'http://jsonplaceholder.typicode.com/todos/1';
+       
+      let res = '';
       
+   $('form input#profile-image') && $('form input#profile-image').on('change', async function(e) {
+     
+      const file = $('#profile-image')[0].files[0];
+      console.log('on change', file);
+      if(!file){
+        const the_url = $('#prevAvatar').val();
+        display(the_url, 'Profile');
+        return;
+      } 
+     // grab the first image in the FileList object and pass it to the function
+     
+       renderImage(this.files[0])
+     
+       
       
-    $('form #file').on('change', async function(e) {
-      const form = new FormData();
-      const file = $('#file')[0].files[0];
-     // const file = 'data file';
      
      
-     form.append('avatar', file, file.name);
-    
-      console.log('on change', file.name, file.type, );
-      // return;
-      let url = '';
-      
-      url = '/uploads';
+        
+        
+       // render the image in our view and get presignedUrl
+       function renderImage(file) {
+       
+       // generate a new FileReader object
+       var reader = new FileReader();
+       
+       // inject an image with the src url
+       reader.onload = async function(event) {
+       the_url = event.target.result;
+       display(the_url, 'Preview');
+       
+       
+        const url = '/uploads';
      
-      const res = await axios.get(url, {
+     // getPresignedUrl
+       res = await axios.get(url, {
         params: {
           filename: file.name, 
           type: file.type,
           }
         });
+        console.log(res)
         
-        const img = $('#profile-img');
-        console.log('res url', res, 'attr', img.attr('src'));
-      return;
+       } // end reader.onload
+       
+       // when the file is read it triggers the onload event above.
+       reader.readAsDataURL(file);
+       }
       
-      
-     // url = '/xyz/abu';
-      url = 'http://localhost:5000/xyz/upload';
-      url = '/xyz/abu';
-      
-      axios.put(url, form, { 
-        //method: 'put', 
-       // url, //: '/user/12345', 
-       // data: file,
+    }); // end change
+    
+    
+    // on submit
+ document.querySelector('form#update') && document.querySelector('form#update')
+ .addEventListener('submit', function(e){
+        e.preventDefault();
+        console.log('submit');
+        
+        
+        let imageName='', url='';
+        
+        // no presignedUrl
+        if(!res){
+          e.target.submit();
+          return;
+        }
+        
+         ({imageName, url: imageUrl } = res.data);
+        
+        
+        const file = $('#profile-image')[0].files[0];
+         if(!file){
+           e.target.submit();
+          return;
+         }
+         
+         const elem = $(this).find('[type=hidden][name=avatar]');
+        elem.val(imageName);
+        
+        console.log('elem', elem[0], 'file', file)
+        console.log('res submit', imageUrl, imageName, );
+        
+        
+        
+        
+        //const html = loading();
+        
+        // upload to google buckets
+         axios.put(imageUrl, file, { 
         headers: {
-           'Content-Type': 'multipart/form-data',  
-           //'Content-Type': 'image/*' , 
+           'Content-Type': file.type,
            },
       })
-      .then(async res => {
-        console.log('axios res:', res,);
-        const { data, url} = res.data;
+      .then( res => {
+        console.log('axios gcp resPre:', res);
         
         
-        // send to gcs
-        const result = await axios.put(
-        url, 
-        file, 
-        {
-          headers: {'Content-Type': file.type,
-           //"Access-Control-Allow-Origin": "*", 
-           //'Accept': '*',
-           
-          }, 
-        })
-        .catch(err => {
-     console.log('err gcp', err);
-   });
-   
-   console.log('result', result);
-   
-       /* $.ajax(url, data, (data, status) => {
-          console.log('data', data, 'status', status);
-        });*/
-        
-       /* $.ajax({
-        method: "PUT",
-        url,
-        data,
-        //processData: false,
-        //contentType: 'application/x-www-form-urlencoded',
-        headers: {'Content-Type': file.type},
-    })
-    .then(function(msg) {
-        console.log("Data Saved: ", msg);
-    })
-    .catch(err => {
-      console.log("Error: ", err);
-    });*/
-        
+        e.target.submit();
         
       })
       .catch(err => {
-        console.log('err getPresignedUrl:', err)
+        console.log('err getPresignedUrl:', err);
+        
+        //restore(html)
+        
       });
       
-      
-      
-      /*$.ajax({
-        method: "PUT",
-        url,
-        data,
-        //processData: false,
-        //contentType: 'application/x-www-form-urlencoded',
-        headers: {'Content-Type': 'application/json'},
-    })
-    .then(function(msg) {
-        console.log("Data Saved: ", msg);
-    })
-    .catch(err => {
-      console.log("Error: ", err);
-    });*/
-      
-      
-      /*
-      const res = await $.ajax({ 
-        url, 
-        method: 'put', 
-        data: file, //{name: 'abu', age: 'lulu', file},
-        processData: false,
-        contentType: false,
-      })
+        
+      }); // end submit
      
-      .catch(console.error);
-      
-      console.log('await res', res);
-      */
-      
-      /*$.ajax({
-        url,
-        data: file,
-        method: 'POST',
-       // contentType: false,
-       // processData: false,
-        //headers: {contentType: ''},
-        success(res) {
-          console.log('success 0ne', res);
-        },
-        error(err) {
-          console.log('err', JSON.stringify(err));
-        }
-      }); // end $.ajax*/
-    }); // end submit
+     
+     
+    
     }); // onload
   </script>
   </body>

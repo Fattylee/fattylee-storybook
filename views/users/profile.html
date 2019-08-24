@@ -2,26 +2,20 @@
   <div class="row">    
   <div class="col-md-10 mx-auto my-4">
     <div class="card card-body">
+      
       <h3 class="text-center mb-4">Profile</h3>
       <div class="text-center">
-         <img src="{{imagePath 'avatars' user.avatar}}" width="300" alt="" class="img-fluid rounded-circle mb-4" id="profile-img"/>
+         <img
+         src='https://storage.cloud.google.com/storybook_uploads/{{user.avatar }}'
+         width="200" alt="" class="img-fluid rounded mb-4" id="profile-img"/>
       </div>
     
 
-  <form action="/xyz/abu?_method=PUT" method="post" enctype="multipart/form-data">
+  <form id="update" action="/users/me?_method=PATCH" method="post" >
  
-  <!-- Profile upload -->
-  <!--input type="file"  id="file2" name="avatar2" accept="image/*" -->
-  <div class="input-group mb-3">
-    <div class="input-group-prepend">
-      <span class="input-group-text">Profile upload</span>
-    </div>
-    <div class="custom-file">
-    <input type="file" class="custom-file-input" id="file" name="avatar" accept="image/*" >
-    <label class="custom-file-label" for="file">Choose image</label>
-    </div>
-  </div>
-  <!-- End Profile upload -->
+ <input type="hidden" name="avatar" value=""/>
+ <input type="hidden" id="prevAvatar" value="https://storage.cloud.google.com/storybook_uploads/{{user.avatar }}">
+  
   
   <div class="input-group mb-3"> 
     <div class="input-group-prepend"> 
@@ -58,7 +52,17 @@
   </div> {{!-- End Confirm Password --}}
   
 
-  
+  <!-- Profile upload --> 
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Profile upload</span>
+    </div>
+    <div class="custom-file">
+    <input type="file" class="custom-file-input" id="profile-image"  accept="image/*" />
+    <label class="custom-file-label" for="file">Choose image</label>
+    </div>
+  </div>
+  <!-- End Profile upload -->
  
   <input type="submit" class='btn btn-secondary btn-block' value="Update"/>
 </form>

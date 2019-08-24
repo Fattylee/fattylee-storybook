@@ -6,14 +6,9 @@
   "directories": {
     "test": "tests"
   },
-  "proxy": {
-   "api/*": {
-      "target": "http://localhost:5000"
-   }
-  },
    "scripts": {
     "test": "jest --watchAll",
-    "dev": "export NODE_ENV=\"development\" || set \"NODE_ENV=deployment\" && DEBUG=active:app nodemon index.js -e 'js'",
+    "dev": "export NODE_ENV=\"development\" || set \"NODE_ENV=deployment\" && DEBUG=active:app nodemon index.js -e 'js' -i public",
     "start": "node index.js",
     "start:stag": "export NODE_ENV=\"staging\" && DEBUG=active:app nodemon index.js",
     "deploy": "echo 'i am ready for a deployment'",
