@@ -22,80 +22,154 @@ $(function(){
     $('.add-light').addClass('text-black');
   })() ;
  
- 
- 
- 
- 
- 
- function display(url, caption){
+      
+       
+      let presignedUrlRes = '';
+      
+   $('form input#profile-image') && $('form input#profile-image').on('change', async function(e) {
+     
+      const file = $('#profile-image')[0].files[0];
+    
+      if(!file){
+        const the_url = $('#prevAvatar').val();
+        display(the_url, 'Profile');
+        return;
+      } 
+     // grab the first image in the FileList object and pass it to the function
+     
+       renderImage(this.files[0]);
+        
+       // render the image in our view and get presignedUrl
+       function renderImage(file) {
+       
+       // generate a new FileReader object
+       var reader = new FileReader();
+       
+       // inject an image with the src url
+       reader.onload = async function(event) {
+       the_url = event.target.result;
+       display(the_url, 'Preview');
+       
+        const url = '/uploads';
+     
+     // getPresignedUrl
+       presignedUrlRes = await axios.get(url, {
+        params: {
+          filename: file.name, 
+          type: file.type,
+          }
+        });
+        
+       } // end reader.onload
+       
+       // when the file is read it triggers the onload event above.
+       reader.readAsDataURL(file);
+       }
+      
+    }); // end change
+    
+    
+    // on submit
+$('form#update')
+ .on('submit', function(e){
+        e.preventDefault();
+        
+        let imageName='', url='';
+        
+        // no presignedUrl
+        if(!presignedUrlRes){
+          e.target.submit();
+          return;
+        }
+        
+         ({imageName, url: imageUrl } = presignedUrlRes.data);
+        const file = $('#profile-image')[0].files[0];
+        
+        // no selected file
+         if(!file){
+           e.target.submit();
+          return;
+         }
+         
+         // update avatar name 
+         const elem = $(this).find('[type=hidden][name=avatar]');
+        elem.val(imageName);
+        
+        const loadingHandler =  loading('#updateProfileBtn', 'Updating...');
+        
+        // upload to google buckets
+         axios.put(imageUrl, file, { 
+        headers: {
+           'Content-Type': file.type,
+           },
+      })
+      .then( res => {
+        e.target.submit();
+      })
+      .catch(err => {
+        loadingHandler();
+        alertBox();
+      });
+        
+      }); // end submit
+      
+      
+     
+     function display(url, caption){
        $('#profile-img').attr('src', url).parent().prev().text(caption);
-       }// end display
-       loading()
-    function loading(){
-       const initialBodyHtml = $('.body').html();
-       const initialBodyHeight = $('.body').height();
+       };// end display
+      
+    function loading(selector, text){
+      const initialText = $(selector).text();
+       const loader = $(selector)
+       .empty()
+       .append('<span class="spinner-border spinner-border-sm"></span> ' + text)
+       .attr('disabled', '');
        
-       
-       let loader = $('<h1>Loding...</h1>')//.css({backgroundColor: 'chocolate'});
-       const size = '250px';
-       loader = $(`
-       <div class="spinner-border text-primary"></div>`).height(initialBodyHeight).css({
-         fontSize: '10rem',
-         width: size,
-         height: size
-         });
-         
-       const wrapLoader = $('<h1>')
-       .css({
-         height: innerHeight ,
-         backgroundColor: 'pink',
-         color: 'red',
-         //textAlign: 'center'
-         })
-         .addClass('d-flex justify-content-center align-items-center'); 
-         
-         
-         
-         
-       $('.body').fadeOut('fast').after(loader.fadeIn(1000, function(){
-         $(this).wrap(wrapLoader);
-       }));
-       return initialBodyHtml;
-    }// end loading
+       return () => {
+         $(selector).
+         text(initialText)
+         .removeAttr('disabled');
+       };
+    };// end loading
     
     
     function restore(html){
       $('.body').html(html);
     }// end restore
     
-    console.log( 
-      $(window).height(),
-      $(window).innerHeight(), 
-      $(window).outerHeight()
-    );
     
-    console.log(
-      $(document).height(),
-      $(document).innerHeight(), 
-      $(document).outerHeight()
-    );
+    function alertBox(options = {}){
+      const {
+        type = 'danger',
+        duration = 3000,
+        speed = 400,
+        message = 'Network error pls.try again',
+      } = options;
+      
+    const alertMsgHandler = $(`<div class="container" id='alert'>
+      <div class='row justify-content-md-center'>
+        <div class='col-md-12 mt-4'>
+          
+  <div class="alert alert-${type} fade show" role="alert">${message}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span> 
+    </button>
+  </div>
+
+        </div>
+      </div>
+    </div>`).hide().fadeIn(400);
     
+    $('nav').after(alertMsgHandler);
+    setTimeout(() => {
+      alertMsgHandler.fadeOut(speed, () => alertMsgHandler.remove())
+    }, duration);
     
-    function alertBox(){
-    const div = $('<h1>Abu</h1>').slideUp('slow');
-        $('.body')
-        .before(
-        div
-        .fadeIn(2000, function(){
-          $(this).click(function(){
-            $(this).toggle(2000, function(){
-              $(this).remove()
-            })
-          })
-        })
-        );
     }; // end alertBox
     
+    
+  
     
     
     
