@@ -13,7 +13,7 @@
         <div class="card-footer mt-3">
           {{#isEqual  story.user._id user._id}}
            <a href="/stories/edit/{{story.slug}}" class="btn btn-block btn-dark mb-2">Edit </a> 
-             <form action="/stories/{{story._id}}?_method=DELETE" method="post">
+             <form action="/stories/{{story._id}}?_method=DELETE" method="post" class="delete-stories">
               <button class="btn btn-block btn-danger mb-2">Delete </button> 
             </form>
             {{/isEqual}}

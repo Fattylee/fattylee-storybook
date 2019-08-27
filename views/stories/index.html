@@ -29,8 +29,8 @@
               <a href="/stories/edit/{{slug}}" class="btn btn-block btn-dark mb-2">Edit </a> 
             </div>
           </div>
-          <form action="/stories/{{_id}}?_method=DELETE" method="post">
-            <button class="btn btn-block btn-danger">Delete </button> 
+          <form action="/stories/{{_id}}?_method=DELETE" method="post" class="delete-stories">
+            <button class="btn btn-block btn-danger">Delete story</button> 
           </form>
           </div><!-- class="card-footer" -->
         </div><!-- End Card-->
@@ -44,11 +44,13 @@
 </div><!-- End container -->
       
 <script>
- window.onload =  function(e){ 
+  window.onload =  function(e){ 
  if (window.location.href.includes('#')) {
 window.location.hash = ''; // for older browsers, leaves a # behind
 history.pushState('', document.title, window.location.pathname); // nice and clean
 e.preventDefault(); // no page reload 
 } 
+
+
 };
 </script>

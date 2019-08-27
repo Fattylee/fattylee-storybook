@@ -113,22 +113,65 @@ $('form#update')
         
       }); // end submit
       
-        // DELETE account modalBox
+     
+    // submit event for each delete story
+$('.delete-stories').submit(function(e){
+  
+  const dynamicId = 'delete-story-' + Math.ceil(10000 * Math.random());
+  
+  const launcherSelector = '#' + dynamicId + 'y';
+  
+  // add dynamicId to launcherButton
+  $(e.target).attr('id', dynamicId + 'y');
+  
+   // DELETE story modalBox
     modalBox({
-      id: 'later',
+      modalID: dynamicId,
+      actionButton: `
+     <form action="${$(launcherSelector).attr('action')}" method="post">
+    <button type="submit" class="btn btn-block btn-danger">Delete story</button>
+  </form>
+    `, 
+    launcherSelector, 
+    launcherClasses: 'btn-block',
+    title: 'Delete  story',
+    body: `Are you sure you want to delete this story "${$(launcherSelector).closest('.card-footer').prev().find('h4').text()}"?`,
+    launcherText: 'Delete story'
+    }); // end DELETE story modalBox   
+ 
+    $(`[data-target="#${dynamicId}"]`)[0].click();
+   
+}); // end submit event for each delete story
+    
+   
+    
+// submit event for each delete account   
+$('#delete-profile').submit(function(e){
+   const dynamicId = 'delete-account-' + Math.ceil(10000 * Math.random());
+  
+  const launcherSelector = '#' + dynamicId + 'y';
+  
+  // add dynamicId to launcherButton
+  $(e.target).attr('id', dynamicId + 'y');
+  // DELETE account modalBox
+    modalBox({
+      modalID: dynamicId,
       actionButton: `
      <form action="/users/me?_method=DELETE" method="post">
     <button type="submit" class="btn btn-block btn-danger">Delete Account</button>
   </form>
     `, 
-    launcherSelector: '#delete-profile', 
+    launcherSelector, 
     launcherClasses: 'btn-block btn-danger',
     title: 'Delete account',
     body: 'Are you sure you want to delete your account?',
     launcherText: 'Delete account'
-    }); // end DELETE account modalBox
-      
-     
+    }); // end DELETE account modalBox   
+    
+     $(`[data-target="#${dynamicId}"]`)[0].click();
+});// end submit event for each delete account
+    
+    
      function display(url, caption){
        $('#profile-img').attr('src', url).parent().prev().text(caption);
        };// end display
@@ -148,9 +191,6 @@ $('form#update')
     };// end loading
     
     
-    function restore(html){
-      $('.body').html(html);
-    }// end restore
     
     
     function alertBox(options = {}){
@@ -186,7 +226,7 @@ $('form#update')
     
     function modalBox(options) {
       const {
-        id = 'unique',
+        modalID = 'unique',
         title = 'Modal title',
         body = '...',
         actionButton = '<button type="button" class="btn btn-primary">Save changes</button> ',
@@ -197,17 +237,17 @@ $('form#update')
       
       const buttonTrigger = `
       <!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary btn-info ${launcherClasses}" data-toggle="modal" data-target="#${id}">
+      <button type="button" class="btn btn-danger ${launcherClasses}" data-toggle="modal" data-target="#${modalID}">
       ${launcherText}
       </button>`;
       
       const modalTemplate = `
       <!-- Modal -->
-      <div class="modal fade" id="${id}" tabindex="-1" role="dialog" aria-labelledby="${id}Label" aria-hidden="true">
+      <div class="modal fade" id="${modalID}" tabindex="-1" role="dialog" aria-labelledby="${modalID}Label" aria-hidden="true">
       <div class="modal-dialog" role="document">
       <div class="modal-content">
       <div class="modal-header">
-      <h5 class="modal-title" id="${id}Label">${title}</h5>
+      <h5 class="modal-title" id="${modalID}Label">${title}</h5>
      
       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
@@ -229,13 +269,14 @@ $('form#update')
      // inject after .body class
      $('.body')
      .after(modalTemplate);
-     
+    
      $(launcherSelector).before(buttonTrigger).remove();
-     
+    
     }// end modalBox
     
     
   
+    
     
     
     // jquery effects
