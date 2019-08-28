@@ -18,7 +18,7 @@ const UserSchema =  new Schema({
   password: String,
   avatar: {
     type: String,
-    default: 'avatar_placeholder.png',
+    default: 'images.png',
   },
   facebookId: String,
   googleId: String,

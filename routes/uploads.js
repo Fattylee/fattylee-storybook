@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
   const options = {
     version: 'v4',
     action: 'write',
-    expires: Date.now() + 120 * 60 * 1000, // 15 MIN ,
+    expires: Date.now() + 15 * 60 * 1000, // 15 MIN ,
     contentType: type,
   };
    
@@ -33,3 +33,4 @@ router.get('/', async (req, res) => {
 });
    
 module.exports = router;
+

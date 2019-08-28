@@ -1,10 +1,16 @@
 <div class="container">
   
-  <h3 class="text-center mt-4">Add your next story</h3>
-    
+  <h3 class="text-center mt-4" id="story-title">Add your next story</h3>
+  <div class="text-center">
+    <img src="" width="200" class="img-fluid mb-4 rounded" id="story-img"/>
+    </div>
   <div class="row">
     <div class="col-sm-8 mx-auto mb-4">
-<form method="post" action="/stories" enctype="multipart/form-data" >
+<form method="post" action="/stories" id="add-story">
+  
+  
+   <input type="hidden" name="storyImage" value=""/>
+ <!--input type="hidden" id="prevAvatar" value="https://storage.cloud.google.com/storybook_uploads/{{user.avatar }}"-->
   
   <div class="form-group">
     <label for="title">Title</label>
@@ -21,7 +27,7 @@
       <span class="input-group-text">Upload</span>
     </div>
     <div class="custom-file">
-    <input type="file" class="custom-file-input" id="file" name="storyImage" accept="image/*" required="" >
+    <input type="file" class="custom-file-input" id="file" accept="image/*" required="" >
     <label class="custom-file-label" for="file">Choose a story image</label>
     </div>
   </div> {{!-- End File upload --}}
@@ -39,7 +45,7 @@
     <option value="private">Private</option>
   </select>
   </div>
-  <button type="submit" class="btn btn-block btn-primary">Add story</button>
+  <button type="submit" class="btn btn-block btn-primary" id="add-story-btn">Add story</button>
 </form>
 </div>
 </div>

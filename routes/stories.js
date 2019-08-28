@@ -27,20 +27,16 @@ router.get('/add', (req, res) => {
 
 // Create a new story action
 router.post('/', validateAddFields, async (req, res, next) => {
- const {storyImage} = req.files;
- let fileName = `${uuid()}-${storyImage.name}`;
- 
- const storagePath = path.join(__dirname, '../public/img/uploads/stories/');
- await util.promisify(storyImage.mv)(storagePath + fileName);
- 
+  debug('body', req.body, );
+  
     const newStory = new Story({
       ...req.storyValue,
       status: req.body.status,
       allowComments: !!req.body.allowComments,
-      storyImage: fileName,
+      storyImage: req.body.storyImage,
       user: req.user._id,
     });
-   // debug('newStory', newStory); return;
+   
     const story = await newStory.save();
     debug('newStory', story)
     req.flash('success_msg', `"${story.title}" was created successfully`);

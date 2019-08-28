@@ -25,17 +25,9 @@ const validateAddFields = async (req, res, next) => {
   const { error, value } = Joi.validate(req.body, storySchema);
   const story = value;
   let errors = [];
-  if(!req.files) {
-    errors.push({error: 'pls pick a cover image'});
-  }
-  if(req.files.storyImage.size > 2 * 1000 * 1000) {
-    errors.push({error: 'Image size cannot exceed 2mb'});
-  }
-  if(!/^image\/.*$/i.test(req.files.storyImage.mimetype)) {
-    errors.push({error: 'file type not supported, pls use a valid image file (jpeg, png, jpg, gif etc)'});
-  }
+  
   if(error) {
-     errors = [...errors, ...error.details.map(e => ({error: e.message}))];
+     errors = [...error.details.map(e => ({error: e.message}))];
      }
   if(errors.length) {
     res.render('stories/add', {errors, story, pageTitle: 'Create story'});
@@ -105,4 +97,3 @@ exports.validateAddFields = validateAddFields;
 exports.validateLoginFields = validateLoginFields;
 exports.validateRegisterFields = validateRegisterFields;
 exports.validateProfileFields = validateProfileFields;
-

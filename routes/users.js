@@ -85,8 +85,6 @@ router.get('/me', isAuthenticated, async (req, res) => {
 
 // update profile info
 router.patch('/me', isAuthenticated, validateProfileFields, async (req, res, next) => {
-  debug('body', req.body,);
-
   
   let filename = req.body.avatar;
    
@@ -101,8 +99,8 @@ router.patch('/me', isAuthenticated, validateProfileFields, async (req, res, nex
     avatar: filename ? filename : prevAvatar,
     password: hash,
     }, {new: true});
-    // delete prevAvatar if not stock
-    if(filename){
+    // delete prevAvatar if not default
+    if(filename && prevAvatar !== 'images.png'){
       storage
     .bucket('storybook_uploads')
     .file(prevAvatar)
