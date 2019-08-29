@@ -70,7 +70,6 @@ $(function(){
 $('form#story')
  .on('submit', function(e){
         e.preventDefault();
-        console.log('working!', $(e.target).attr('data-name'));
         const key = $(e.target).attr('data-name');
         const control = {
           add: {
@@ -85,7 +84,6 @@ $('form#story')
         
         // no presignedUrl
         if(!presignedUrlRes){
-          console.log('no presignedUrl')
           e.target.submit();
           return;
         }
@@ -95,7 +93,6 @@ $('form#story')
         
         // no selected file
          if(!file){
-           console.log('no fil3')
            e.target.submit();
           return;
          } 
@@ -116,8 +113,7 @@ $('form#story')
       })
       .catch(err => {
         loadingHandler();
-        alertBox();
-        console.log('err', err);
+        alertBox(); 
       });
         
       }); // end submit story image upload
@@ -315,7 +311,7 @@ $('#delete-profile').submit(function(e){
         type = 'danger',
         duration = 3000,
         speed = 400,
-        message = 'Network error pls.try again',
+        message = 'Network error. Please try again later',
       } = options;
       
     const alertMsgHandler = $(`<div class="container" id='alert'>
