@@ -180,6 +180,43 @@ async function generateV4UploadSignedUrl(bucketName, filename, file) {
   // upload file to gcp
  // const filePath = path.join(__dirname, '../public/img/', filename);
   
+  (async function(){
+const [files] = await storage.bucket('storybook_uploads').getFiles()
+files.map(file => {
+  if(file.name.startsWith('im')){
+    debug(file.name)
+  }
+});
+
+const slugsa = ['a-b-2', 'a-b','by','sd', 'aa-b'];
+
+const createSlug = (title, slugs) => {
+  let slugName = title.toLowerCase().replace(/\W+/g, '-');
+  slugName = (slugName[slugName.length - 1] === '-') ? slugName.slice(0, slugName.length -1 ) : slugName;
+  const originalSlug = slugName;
+  let appendVersion = 0, count = 0;
+ 
+   for (const zen in slugs) {
+    debug('loop round: ', ++count, slugName);
+     if(!slugs.includes(slugName)) {
+    slugs.push(slugName);
+    debug('slug added');
+    return slugName;
+  }
+     else {
+       debug('else:', slugName)
+    const index = slugs.indexOf(originalSlug);
+    slugName = `${originalSlug}-${++appendVersion}`;
+    debug('slug already exist at index:', index);
+  }
+}
+ 
+}; // end createSlug
+
+
+//debug(files)
+
+})//()
   /*
   axios.put(
     url,

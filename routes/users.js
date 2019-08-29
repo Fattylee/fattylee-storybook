@@ -132,6 +132,14 @@ router.delete('/me', isAuthenticated, async (req, res) => {
   User.findByIdAndRemove(id),
   ]);
   
+  const [files] = await storage.bucket('storybook_uploads').getFiles();
+  
+   files.forEach(file => {
+     if(file.name.startsWith(id)){
+       file.delete();
+     }
+   }); // [END 
+  
   req.flash('success_msg', 'your account was deleted successfully')
   res.redirect('/users/login');
 });// end delete account
@@ -141,4 +149,6 @@ router.all('/*', (req, res, next) => {
   res.send('404 not found, Users');
 });*/
 
+
 module.exports = router;
+

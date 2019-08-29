@@ -10,6 +10,7 @@ const path = require('path');
 const util = require('util');
 const fse = require('fs-extra');
 const fs = require('fs');
+const storage = require('../helpers/googleCloudService');
 
 // catch all async errors related to stories route
 //This will never get called!
@@ -27,7 +28,6 @@ router.get('/add', (req, res) => {
 
 // Create a new story action
 router.post('/', validateAddFields, async (req, res, next) => {
-  debug('body', req.body, );
   
     const newStory = new Story({
       ...req.storyValue,
@@ -38,7 +38,7 @@ router.post('/', validateAddFields, async (req, res, next) => {
     });
    
     const story = await newStory.save();
-    debug('newStory', story)
+    
     req.flash('success_msg', `"${story.title}" was created successfully`);
     res.redirect('/stories');
 
@@ -88,7 +88,6 @@ router.get('/edit/:slug', async (req, res) => {
 
 // Edit a story action
 router.put('/:id', validateEditFields, async (req, res) => {
-  
   const story = await Story.findById(req.params.id);
   if(!story){
     req.flash('error_msg', 'story not found');
@@ -98,28 +97,17 @@ router.put('/:id', validateEditFields, async (req, res) => {
     req.flash('error_msg', 'Unauthorized, not your story');
   return res.redirect('/');
   }
-  const {storyImage = undefined } = req.files || {};
-  // get current fileName
+  
   const prevFileName = story.storyImage;
-  const storagePath = path.join(__dirname, '../public/img/uploads/stories/');
-  if(storyImage) {
-    if(storyImage.size > 2 * 1000 * 1000) {
-    req.flash('error_msg', 'Image size cannot exceed 2mb');
-    return res.redirect('/stories/edit/' + story._id);
-  }
-  if(!/^image\/.*$/i.test(storyImage.mimetype)) {
-    req.flash('error_msg', 'file type not supported, pls use a valid image file (jpeg, png, jpg, gif etc)');
-    return res.redirect('/stories/edit/' + story._id);
-  }
-    const fileName = `${new Date()}-${storyImage.name}`;
- // move cover image to public folder
- await util.promisify(storyImage.mv)(storagePath + fileName);
- story.storyImage = fileName;
  // cleanup prevFileName
- if(prevFileName !== 'story_placeholder.png') {
-   await util.promisify(fs.unlink)(storagePath + prevFileName).catch(debug);
+ if(req.body.storyImage) {
+   storage
+    .bucket('storybook_uploads')
+    .file(prevFileName)
+    .delete();
  }
-  }
+  
+  story.storyImage = req.body.storyImage || prevFileName;
   story.title = req.body.title;
   story.details = req.body.details;
   story.status = req.body.status;
@@ -138,7 +126,10 @@ router.delete('/:id', async (req, res) => {
   }
   if(story) {
     const {storyImage} = story;
-    await util.promisify(fs.unlink)(path.join(__dirname,'../public/img/uploads/stories', storyImage)).catch(console.error);
+  storage
+    .bucket('storybook_uploads')
+    .file(storyImage)
+    .delete();
   } 
   req.flash('success_msg', 'story was deleted successfully');
   res.redirect('/stories');

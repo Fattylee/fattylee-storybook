@@ -1,11 +1,14 @@
 <div class="container">
-  <h3 class="text-center mt-4">Edit story</h3>
+  <h3 class="text-center mt-4" id="story-title">Edit story</h3>
 
  <div class="row">
     <div class="col-sm-8 mx-auto mb-4">    
-<form method="post" action="/stories/{{story._id}}?_method=PUT" enctype="multipart/form-data">
+<form method="post" action="/stories/{{story._id}}?_method=PUT" data-name="edit" id="story">
+  
+   <input type="hidden" name="storyImage" value=""/>
+   
    <div class="text-center">
-        <img src="/img/uploads/stories/{{story.storyImage}}" alt="{{story.storyImage}}" class="img-fluid mb-4" />
+        <img src="https://storage.cloud.google.com/storybook_uploads/{{story.storyImage}}" alt="{{story.storyImage}}" class="img-fluid mb-4" id="story-img" width="200" height="150" />
         </div>
   <div class="form-group">
     <label for="title">Title</label>
@@ -22,7 +25,7 @@
       <span class="input-group-text">Upload</span>
     </div>
     <div class="custom-file">
-    <input type="file" class="custom-file-input" id="file" name="storyImage" accept="image/*" >
+    <input type="file" class="custom-file-input" id="file" accept="image/*" >
     <label class="custom-file-label" for="file">Choose image</label>
     </div>
   </div> {{!-- End File upload --}}
@@ -51,7 +54,7 @@
   </select>
   </div>
   
-  <button type="submit" class="btn btn-block  btn-primary">Edit story</button>
+  <button type="submit" class="btn btn-block  btn-primary" data-name='edit'>Edit story</button>
   <a href="/stories" class="btn btn-block  btn-secondary">Cancel</a>
 </form></div>
 </div>

@@ -22,10 +22,8 @@ $(function(){
     $('.add-light').addClass('text-black');
   })() ;
  
-      
        
       let presignedUrlRes = '';
-      
   $('#file').on('change', async function(e) {
       const file = $('#file')[0].files[0];
     
@@ -68,12 +66,21 @@ $(function(){
     }); // end change story upload
 
     
-    // on submit story image upload 
-$('form#add-story')
+    // on submit story image upload for add and edit
+$('form#story')
  .on('submit', function(e){
         e.preventDefault();
-        console.log('working!')
-        
+        console.log('working!', $(e.target).attr('data-name'));
+        const key = $(e.target).attr('data-name');
+        const control = {
+          add: {
+            loadingMessage: 'Creating story...',
+          },
+          edit: {
+            loadingMessage: 'Editing story...',
+          }
+        };
+         
         let imageName='', url='';
         
         // no presignedUrl
@@ -88,16 +95,15 @@ $('form#add-story')
         
         // no selected file
          if(!file){
+           console.log('no fil3')
            e.target.submit();
           return;
-         }
-         
+         } 
          // update avatar name 
          const elem = $(this).find('[type=hidden][name=storyImage]');
         elem.val(imageName);
-        //console.log('stop')
         
-        const loadingHandler =  loading('#add-story-btn', 'Creating story...');
+        const loadingHandler =  loading(`button[data-name='${key}']`, control[key].loadingMessage);
         
         // upload to google buckets
          axios.put(imageUrl, file, { 
@@ -111,6 +117,7 @@ $('form#add-story')
       .catch(err => {
         loadingHandler();
         alertBox();
+        console.log('err', err);
       });
         
       }); // end submit story image upload
