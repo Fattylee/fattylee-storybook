@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="utf-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <link rel="stylesheet" href="/styles.css">
+<style>
+.flex-container {
+  display: flex;
+  background-color: DodgerBlue;
+  flex-direction: -webkit-column  ;
+ width :400px ;
+ height : 300px;
+}
+
+.flex-container > div {
+  background-color: #f1f1f1;
+  margin: 10px;
+  padding: 20px;
+  font-size: 30px;
+  width : 50px ;
+  height : 40px;
+}
+</style>
+
+ <script src="/js/eruda.min.js"></script>
+    <script>eruda.init();</script>
+    <script src="/js/eruda-code.min.js"></script>
+    <script>eruda.add(erudaCode)</script>
+    <script src="/js/eruda-dom.min.js"></script>
+    <script>eruda.add(erudaDom)</script>
+</head>
+<body>
+
+<div class="flex-container">
+  <div>1</div>
+  <div>2</div>
+  <div>3</div>  
+</div>
+
+<p>
+  A Flexible Layout must have a parent element with the <em>display</em> property set to <em>flex</em>.
+</p>
+
+<p>Direct child elements(s) of the flexible container automatically becomes flexible items.</p>
+<div id="loadMe"></div>
+
+<script src="/bundle.js"></script>
+</body>
+</html>

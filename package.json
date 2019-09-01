@@ -15,7 +15,10 @@
     "deploy": "echo 'i am ready for a deployment'",
     "bab": "babel  playground/api.test.js --out-file=playground/api.res.js --presets=env",
     "babel:node": "nodemon -w playground/uuid.js --exec babel-node playground/uuid.js",
-    "gc": "npm run start --prefix playground/"
+    "gc": "npm run start --prefix playground/",
+    "webpack": "webpack -p --env production",
+    "webpack:dev": "webpack-dev-server",
+    "fat-heroku-postbuild": "npm run webpack"
   },
   "dependencies": {
     "mongoose": "5.4.16",
@@ -40,7 +43,8 @@
     "@google-cloud/storage": "3.0.4",
     "mongoose-url-slugs": "1.0.2",
     "connect-mongo": "3.0.0",
-    "cors": "2.8.5"
+    "cors": "2.8.5",
+    "jquery": "3.4.1"
   },
   "devDependencies": {
     "jest": "24.1.0",
