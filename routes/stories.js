@@ -170,7 +170,7 @@ router.patch('/:id/:status', async (req, res) => {
 
 // fake story generator
 router.post('/faker', (req, res) => {
-  debug('faker', faker, faker.name);
+ // debug('faker', faker, faker.name);
   
   const amount = req.body.amount;
   res.send(amount);

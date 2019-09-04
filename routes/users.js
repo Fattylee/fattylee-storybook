@@ -107,7 +107,7 @@ router.patch('/me', isAuthenticated, validateProfileFields, async (req, res, nex
     .delete();
     }
     
-    debug('update', update);
+    //debug('update', update);
     
    req.flash('success_msg', 'profile update was successful');
     res.redirect('/users/me');    
@@ -151,4 +151,3 @@ router.all('/*', (req, res, next) => {
 
 
 module.exports = router;
-

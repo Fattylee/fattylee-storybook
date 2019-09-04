@@ -1,0 +1,12 @@
+body {
+ /* background: chocolate;
+  color: brown;
+  */
+}
+div {
+  /*border: 2px solid yellow;*/
+}
+
+#details.details-height {
+  height: 900px !important;
+}

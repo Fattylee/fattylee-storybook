@@ -7,15 +7,15 @@ const debug = require('debug')('active:app');
 router.get('/', async (req, res) => {
   
   const {filename, type} = req.query;
-  debug(filename, type);
+  //debug(filename, type);
   
   const imageName = createSlug(filename, req.user.id);
-  debug('imageName', imageName)
+  //debug('imageName', imageName)
   
   const options = {
     version: 'v4',
     action: 'write',
-    expires: Date.now() + 120 * 60 * 1000, // 15 MIN ,
+    expires: Date.now() + 15 * 60 * 1000, // 15 MIN ,
     contentType: type,
   };
    
@@ -28,7 +28,7 @@ router.get('/', async (req, res) => {
       url,
       imageName,
     };
-    debug(uploadPayload);
+    // debug(uploadPayload);
   res.status(200).send(uploadPayload)
 });
    

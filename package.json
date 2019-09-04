@@ -8,7 +8,7 @@
   },
    "scripts": {
     "test": "jest --watchAll",
-    "dev": "export NODE_ENV=\"development\" || set \"NODE_ENV=deployment\" && DEBUG=active:app nodemon index.js -e 'js' -i public",
+    "dev": "export NODE_ENV=\"development\" || set \"NODE_ENV=deployment\" && DEBUG=active:app nodemon index.js -e 'js' -i public -i client",
     "start:dev": "nodemon",
     "start": "node index.js",
     "start:stag": "export NODE_ENV=\"staging\" && DEBUG=active:app nodemon index.js",
@@ -18,7 +18,8 @@
     "gc": "npm run start --prefix playground/",
     "webpack": "webpack -p --env production",
     "webpack:dev": "webpack-dev-server",
-    "fat-heroku-postbuild": "npm run webpack"
+    "fat-heroku-postbuild": "npm run webpack",
+    "client": "npm run webpack:start --prefix client"
   },
   "dependencies": {
     "mongoose": "5.4.16",

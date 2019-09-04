@@ -1,49 +1,41 @@
-import $ from 'jquery';
-import bsCustomFileInput from  "../bootstrap-4.3.1/js/bs-custom-file-input.min.js"
-import axios from 'axios';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import alertBox from '../helpers/alertBox';
+import './eruda';
 
+//import 'bootstrap/dist/css/bootstrap.min.css';
+//import './css/style.less';
+import './css/base.css';
+//import './helpers/bootstrap-4.3.1.min.css'
+
+import $ from 'jquery';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import bsCustomFileInput from 'bs-custom-file-input'
+
+import axios from 'axios';
+import ckeditorIniatializer from './helpers/ckeditor';
+import alertBox from './helpers/alertBox';
+import floatingFooterFix from './helpers/floatingFooterFix';
+import modalBox from './helpers/modalBox';
+
+
+
+/*
+$( window ).on( "load", function() {
+
+console.log( "window loaded" );
+
+});*/
 
 
 $(function(){
- // console.log('body', $('body').text());
- 
+  console.log('on ready')
   // fix upload filename
   bsCustomFileInput.init();
   
   // CKEDITOR for textarea
- 
- if($('textarea#details').length) {
-   console.log('ck')
-    ClassicEditor
+  ckeditorIniatializer();
 
-        .create( document.querySelector( '#details' ) )
-
-        .catch( error => {
-
-            console.error('error page');
-console.error( error );
-
-        } );
-
-
- }
+  // floating footer
+  floatingFooterFix();
   
-  // fixed floation footer
-  const footer = document.getElementById('fixed-bottom');
-  document.body.clientHeight  <=  window.innerHeight ? (() => {
-  footer.classList.add('fixed-bottom');
-  footer.classList.remove('off');
-  })() : footer.classList.remove('off');
-  
-  // remove bg-black class from second column
-  const bgBlack = document.querySelector('.bg-black');
-  window.innerWidth > 500 && (() => {
-    bgBlack.classList.remove('bg-black');
-     // add-light color to footer's links
-    $('.add-light').addClass('text-black');
-  })() ;
  
        
   
@@ -308,86 +300,6 @@ $('#delete-profile').submit(function(e){
        };
     };// end loading
     
-    
-   
-    
-   
-    
-    
-    
-    function modalBox(options) {
-      const {
-        modalID = 'unique',
-        title = 'Modal title',
-        body = '...',
-        actionButton = '<button type="button" class="btn btn-primary">Save changes</button> ',
-        launcherSelector,
-        launcherClasses,
-        launcherText = 'Launch demo modal',
-      } = options || {} ;
-      
-      const buttonTrigger = `
-      <!-- Button trigger modal -->
-      <button type="button" class="btn btn-danger ${launcherClasses}" data-toggle="modal" data-target="#${modalID}">
-      ${launcherText}
-      </button>`;
-      
-      const modalTemplate = `
-      <!-- Modal -->
-      <div class="modal fade" id="${modalID}" tabindex="-1" role="dialog" aria-labelledby="${modalID}Label" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-      <div class="modal-content">
-      <div class="modal-header">
-      <h5 class="modal-title" id="${modalID}Label">${title}</h5>
-     
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-      </button>
-      </div>
-      <div class="modal-body">
-      ${body}
-       <div>
-       <small style='text-transform: lowercase' class='text-secondary'><span class="fas fa-bomb"></span> THIS ACTION IS NOT REVERSIBLE</small></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-        ${actionButton}
-      </div>
-   </div>
-   </div>
-   </div>`;
-     
-     // inject after .body class
-     $('.body')
-      .after(modalTemplate);
-    
-     $(launcherSelector).before(buttonTrigger).remove();
-    
-    }// end modalBox
-    
-    
-  
-    
-    
-    
-    // jquery effects
-    
-    /*
-      hide
-      show
-      slideUp
-      slideDown
-      fadeOut
-      fadeIn
-      toggle
-      slideToggle
-      delay
-      
-      $('.body').delay(1000).slideToggle('slow', () => {
-      //alert('fijished!');
-      $('.body').fadeToggle(1000);
-      });
-    
-    */
  
 }); // end onload
+
