@@ -1,3 +1,6 @@
+import $ from 'jquery';
+
+
 function modalBox(options) {
       const {
         modalID = 'unique',
@@ -10,12 +13,14 @@ function modalBox(options) {
       } = options || {} ;
       
       const buttonTrigger = `
+     
       <!-- Button trigger modal -->
       <button type="button" class="btn btn-danger ${launcherClasses}" data-toggle="modal" data-target="#${modalID}">
       ${launcherText}
       </button>`;
       
       const modalTemplate = `
+      
       <!-- Modal -->
       <div class="modal fade" id="${modalID}" tabindex="-1" role="dialog" aria-labelledby="${modalID}Label" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -45,8 +50,9 @@ function modalBox(options) {
       .after(modalTemplate);
     
      $(launcherSelector).before(buttonTrigger).remove();
+     
+     
     
     }// end modalBox
    
 export default modalBox;
-

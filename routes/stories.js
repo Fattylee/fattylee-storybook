@@ -120,17 +120,27 @@ router.put('/:id', validateEditFields, async (req, res) => {
 // Delete a story and related comments
 router.delete('/:id', async (req, res) => {
   const story = await Story.findByIdAndRemove(req.params.id);
+    
+  
+  if(!story) {
+     req.flash('error_msg', 'story was not found, please try again');
+  return res.redirect('/stories');
+  }
   if(story.comments.length) {
     const allComments = story.comments.map(id => Comment.findByIdAndRemove(id));
     const deletedComments = await Promise.all(allComments);
+    
   }
-  if(story) {
     const {storyImage} = story;
-  storage
+  await storage
     .bucket('storybook_uploads')
     .file(storyImage)
-    .delete();
-  } 
+    .delete()
+    .catch(err => {
+      debug(err);
+      
+    });
+  
   req.flash('success_msg', 'story was deleted successfully');
   res.redirect('/stories');
 });// end Delete a story and related comments
@@ -156,7 +166,7 @@ async (req, res) => {
     return res.redirect('/');
   }
   if(!req.body.body.trim()){
-    debug('cannot be empty');
+    
     const errors = [{error: 'Comment body cannot be empty'}]
     return res.render('stories/full_story', { story, pageTitle: 'Full Story', errors,  });
   }

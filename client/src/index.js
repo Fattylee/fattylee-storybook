@@ -30,11 +30,6 @@ $(function(){
   // floating footer
   floatingFooterFix();
   
-  
-  //let presignedUrlRes = '';
-  // start all events
-  
-  
   /*
     
       
@@ -42,35 +37,7 @@ $(function(){
     
     
      
-    // submit event for each delete story
-$('.delete-stories').submit(function(e){
-  
-  const dynamicId = 'delete-story-' + Math.ceil(10000 * Math.random());
-  
-  const launcherSelector = '#' + dynamicId + 'y';
-  
-  // add dynamicId to launcherButton
-  $(e.target).attr('id', dynamicId + 'y');
-  
-   // DELETE story modalBox
-    modalBox({
-      modalID: dynamicId,
-      actionButton: `
-     <form action="${$(launcherSelector).attr('action')}" method="post">
-    <button type="submit" class="btn btn-block btn-danger">Delete story</button>
-  </form>
-    `, 
-    launcherSelector, 
-    launcherClasses: 'btn-block',
-    title: 'Delete  story',
-    body: `Are you sure you want to delete this story "${$(launcherSelector).closest('.card-footer').prev().find('h4').text()}"?`,
-    launcherText: 'Delete story'
-    }); // end DELETE story modalBox   
- 
-    $(`[data-target="#${dynamicId}"]`)[0].click();
    
-}); // end submit event for each delete story
-    
    
     
 // submit event for each delete account   

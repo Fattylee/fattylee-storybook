@@ -13,7 +13,7 @@
     "fat-heroku-postbuild": "npm run webpack",
     "main": "nodemon ../public/dist/bundle.js -w ../public/dist/bundle.js",
     "start:dev": "concurrently \"npm run main\" \" npm run webpack:start\" ",
-    "ce": "cross-env test=mama nodemon playground/cross_env -w playground/cross_env.js"
+    "ce": "cross-env test=mama nodemon playground/tru_if -w playground/tru_if.js"
   },
   "dependencies": {
     "axios": "",

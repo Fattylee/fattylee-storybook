@@ -11,5 +11,6 @@ export default function loading(selector, text){
          $(selector).
          text(initialText)
          .removeAttr('disabled');
-       };
-    };// end loading
+     };
+};// end loading
+
