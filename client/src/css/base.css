@@ -7,6 +7,20 @@ div {
   /*border: 2px solid yellow;*/
 }
 
+/*
 #details.details-height {
   height: 900px !important;
+}
+*/
+
+.bg-black {
+  background: black;
+  opacity: 1;
+}
+.text-black {
+  color: #BCBCB1 !important;
+}
+
+.off {
+  opacity: 0;
 }

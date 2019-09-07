@@ -89,7 +89,28 @@ const validateProfileFields = async (req, res, next) => {
     req.userValue = value;
     next();
   }
-}
+};
+
+const validateCommentField = async (req, res, next) => {
+  debug('req', req.user);
+  return;
+  const { error, value } = Joi.validate(req.body, storySchema);
+  const story = value;
+  let errors = [];
+  
+  if(error) {
+     errors = [...error.details.map(e => ({error: e.message}))];
+     }
+  if(errors.length) {
+    const slug = '';
+    res.render('stories/' + slug, {errors, story, pageTitle: 'Full story'});
+  }
+  else {
+    req.storyValue = story;
+    next();
+  }
+};
+
 
 
 exports.validateEditFields = validateEditFields;
@@ -97,3 +118,4 @@ exports.validateAddFields = validateAddFields;
 exports.validateLoginFields = validateLoginFields;
 exports.validateRegisterFields = validateRegisterFields;
 exports.validateProfileFields = validateProfileFields;
+exports.validateCommentField = validateCommentField;

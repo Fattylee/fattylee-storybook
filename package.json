@@ -8,7 +8,7 @@
   },
    "scripts": {
     "test": "jest --watchAll",
-    "dev": "export NODE_ENV=\"development\" || set \"NODE_ENV=deployment\" && DEBUG=active:app nodemon index.js -e 'js' -i public -i client",
+    "dev": "cross-env NODE_ENV=development DEBUG=active:app nodemon index.js -e 'js' -i public -i client",
     "start:dev": "nodemon",
     "start": "node index.js",
     "start:stag": "export NODE_ENV=\"staging\" && DEBUG=active:app nodemon index.js",
@@ -51,7 +51,8 @@
     "jest": "24.1.0",
     "nodemon": "1.19.0",
     "@babel/cli": "7.5.5",
-    "@babel/preset-env": "7.5.5"
+    "@babel/preset-env": "7.5.5",
+    "cross-env": "5.2.1"
   },
   "engines": {
     "node": "12.1.0"

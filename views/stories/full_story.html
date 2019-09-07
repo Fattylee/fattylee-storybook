@@ -70,12 +70,12 @@
         <div class="card my-4">
             <h5 class="card-header">Leave a Comment:</h5>
             <div class="card-body">
-                <form action="/stories/{{story.id}}/comments/" method="post">
+                <form action="/stories/{{story.id}}/comments/" method="post" id="add-comment" >
                     <div class="form-group">
                         <textarea name="body" id="body" class="form-control" rows="3" placeholder="Write a comment.."></textarea>
                         
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary" id="comment-btn" >Submit</button>
                 </form>
             </div>
         </div>

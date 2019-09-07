@@ -11,7 +11,7 @@ const startDB = async (app) => {
     const mongdbUri = keys.MONGODB_URI;
     console.log('mongdbUri', mongdbUri);
     await mongoose.connect(mongdbUri);
-    console.log('connected to mongodb(expert)');
+    console.log('connected to mongodb(expert)', process.env.NODE_ENV);
     const port = process.env.PORT || 4000;
 app.listen(port, () => console.log('Server running on port', port));
   }

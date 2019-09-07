@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const Story = require('../models/Story');
 const Comment = require('../models/Comment');
-const {validateAddFields, validateEditFields} = require('../middlewares/validateFields');
+const {validateAddFields, validateEditFields, } = require('../middlewares/validateFields');
 const debug = require('debug')('active:app');
 const storyError = require('../controllers/errors/storyError');
 const faker = require('faker');
@@ -90,7 +90,7 @@ router.get('/edit/:slug', async (req, res) => {
 router.put('/:id', validateEditFields, async (req, res) => {
   const story = await Story.findById(req.params.id);
   if(!story){
-    req.flash('error_msg', 'story not found');
+    req.flash('error_msg', 'story not$ found');
     return res.redirect('/stories');
   }
   if(story.user.toString() !== req.user._id.toString()) {
@@ -135,14 +135,32 @@ router.delete('/:id', async (req, res) => {
   res.redirect('/stories');
 });// end Delete a story and related comments
 
+
 // comments action
-router.post('/:id/comments/', async (req, res) => {
+router.post('/:id/comments/',
+async (req, res) => {
+   
+   const story = await Story.findOne({_id: req.params.id })
+  .populate('user')
+  .populate({
+    path: 'comments',
+    populate: {
+      path: 'owner', 
+      select: 'name',
+      model: 'User',
+      }
+  });
   
-  const story = await Story.findOne({_id: req.params.id});
   if(!story) {
     req.flash('error_msg', 'cannot find comment with the given ID');
     return res.redirect('/');
   }
+  if(!req.body.body.trim()){
+    debug('cannot be empty');
+    const errors = [{error: 'Comment body cannot be empty'}]
+    return res.render('stories/full_story', { story, pageTitle: 'Full Story', errors,  });
+  }
+ 
   const newComment = new Comment({
     owner: req.user.id,
     body: req.body.body,
