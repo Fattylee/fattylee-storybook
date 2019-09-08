@@ -30,46 +30,5 @@ $(function(){
   // floating footer
   floatingFooterFix();
   
-  /*
-    
-      
-    
-    
-    
-     
-   
-   
-    
-// submit event for each delete account   
-$('#delete-profile').submit(function(e){
-   const dynamicId = 'delete-account-' + Math.ceil(10000 * Math.random());
-  
-  const launcherSelector = '#' + dynamicId + 'y';
-  
-  // add dynamicId to launcherButton
-  $(e.target).attr('id', dynamicId + 'y');
-  // DELETE account modalBox
-    modalBox({
-      modalID: dynamicId,
-      actionButton: `
-     <form action="/users/me?_method=DELETE" method="post">
-    <button type="submit" class="btn btn-block btn-danger">Delete Account</button>
-  </form>
-    `, 
-    launcherSelector, 
-    launcherClasses: 'btn-block btn-danger',
-    title: 'Delete account',
-    body: 'Are you sure you want to delete your account?',
-    launcherText: 'Delete account'
-    }); // end DELETE account modalBox   
-    
-     $(`[data-target="#${dynamicId}"]`)[0].click();
-});// end submit event for each delete account
-    
-    
-     
-      */
-    
-    
  
 }); // end onload

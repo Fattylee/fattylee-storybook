@@ -20,7 +20,8 @@ $('.delete-stories').submit(function(e){
   
   
   
-   // DELETE story modalBox
+  
+   // mount modalBox
     modalBox({
       modalID: dynamicId,
       actionButton: `
@@ -35,17 +36,17 @@ $('.delete-stories').submit(function(e){
     launcherText: 'Delete story'
     }); // end DELETE story modalBox   
  
+ // triggered modalBox click
     $(`[data-target="#${dynamicId}"]`)[0].click();
    
    const deleteBtnSelector = `[action="${actionUrl}"] button`;
    
+   
+   // add loading effect
    $(deleteBtnSelector).on('click', function(e){
-     
-     const loadingHandler =  loading(deleteBtnSelector, 'Deleting...');
-     const form = $(this).parent();
-     console.log(form.submit(), form[0])
-         
-   })
+     loading(deleteBtnSelector, 'Deleting...');
+     $(this).parent().submit();
+   });
 }); // end submit event for each delete story
 };
 
