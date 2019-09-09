@@ -10,9 +10,6 @@
     "webpack:start": "webpack -w",
     "webpack": "webpack -p --env production",
     "webpack:dev": "webpack-dev-server",
-    "fat-heroku-postbuild": "npm run webpack",
-    "main": "nodemon ../public/dist/bundle.js -w ../public/dist/bundle.js",
-    "start:dev": "concurrently \"npm run main\" \" npm run webpack:start\" ",
     "ce": "cross-env test=mama testtu=man nodemon playground/cross_env -w playground/cross_env.js"
   },
   "dependencies": {
@@ -47,7 +44,7 @@
   },
   "devDependencies": {
     "jest": "24.1.0",
-    "nodemon": "1.19.0",
+    "nodemon": "1.19.0"
   },
   "engines": {
     "node": "12.1.0"
