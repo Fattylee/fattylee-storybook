@@ -1,20 +1,22 @@
+import $ from 'jquery';
 import './eruda';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-//import './css/style.less';
-import './css/base.css';
+console.log("NODE_ENV", process.env.test_TEST, process.env, typeof process.env.test_TEST);
 
-import $ from 'jquery';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import './css/base.css';
+import './css/style.less';
+//import '../../public/fontawesome-free-5.8.2-web/css/all.min.css'
+
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import bsCustomFileInput from 'bs-custom-file-input'
 
 import axios from 'axios';
 import ckeditorIniatializer from './helpers/ckeditor';
-import alertBox from './helpers/alertBox';
-import display from './helpers/display';
-import loading from './helpers/loading';
+
 import floatingFooterFix from './helpers/floatingFooterFix';
-import modalBox from './helpers/modalBox';
+
 import './events';
 
 

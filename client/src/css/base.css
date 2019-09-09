@@ -1,7 +1,7 @@
 body {
- /* background: chocolate;
+ background: chocolate;
   color: brown;
-  */
+  
 }
 div {
   /*border: 2px solid yellow;*/
@@ -24,3 +24,9 @@ div {
 .off {
   opacity: 0;
 }
+
+
+.flap {
+  display: flex;
+}
+
