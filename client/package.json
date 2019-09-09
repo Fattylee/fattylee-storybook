@@ -40,7 +40,8 @@
     "style-loader": "0.23.1",
     "terser-webpack-plugin": "2.0.1",
     "uuid": "3.3.2",
-    "webpack": "4.39.3"
+    "webpack": "4.39.3",
+    "webpack-cli": "3.3.2"
   },
   "devDependencies": {
     "jest": "24.1.0",
