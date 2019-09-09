@@ -16,11 +16,12 @@
     "bab": "babel  playground/api.test.js --out-file=playground/api.res.js --presets=env",
     "babel:node": "nodemon -w playground/uuid.js --exec babel-node playground/uuid.js",
     "gc": "npm run start --prefix playground/",
-    "webpack": "webpack -p --env production",
+    "webpackt": "webpack -p --env production",
     "webpack:dev": "webpack-dev-server",
     "fat-heroku-postbuild": "npm run webpack",
     "client": "npm run webpack:start --prefix client",
-    "client:build": "npm run webpack --prefix client"
+    "client:build": "npm run webpack --prefix client",
+    "heroku-postbuild": "cd client && npm i && npm run webpack && echo 'boss man' "
   },
   "dependencies": {
     "mongoose": "5.4.16",

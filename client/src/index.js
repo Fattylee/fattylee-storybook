@@ -4,9 +4,9 @@ import './eruda';
 console.log("NODE_ENV", process.env.test_TEST, process.env, typeof process.env.test_TEST);
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import './css/base.css';
 import './css/style.less';
+
 //import '../../public/fontawesome-free-5.8.2-web/css/all.min.css'
 
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';

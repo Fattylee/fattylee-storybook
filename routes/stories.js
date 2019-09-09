@@ -119,30 +119,34 @@ router.put('/:id', validateEditFields, async (req, res) => {
 
 // Delete a story and related comments
 router.delete('/:id', async (req, res) => {
-  const story = await Story.findByIdAndRemove(req.params.id);
+ 
+    const story = await Story.findById(req.params.id);
     
-  
   if(!story) {
      req.flash('error_msg', 'story was not found, please try again');
   return res.redirect('/stories');
   }
+  const {storyImage} = story;
+  try {
+  await storage
+    .bucket('storybook_uploads')
+    .file(storyImage)
+    .delete();
+  
   if(story.comments.length) {
     const allComments = story.comments.map(id => Comment.findByIdAndRemove(id));
     const deletedComments = await Promise.all(allComments);
     
   }
-    const {storyImage} = story;
-  await storage
-    .bucket('storybook_uploads')
-    .file(storyImage)
-    .delete()
-    .catch(err => {
-      debug(err);
-      
-    });
-  
+  await story.remove();
+    
   req.flash('success_msg', 'story was deleted successfully');
   res.redirect('/stories');
+  }
+  catch(err) {
+    req.flash('error_msg', 'Delete story failed, please try again later');
+    return res.redirect('/stories');
+  }
 });// end Delete a story and related comments
 
 
