@@ -22,9 +22,9 @@ router.get('/', async (req, res) => {
    .file(imageName)
    .getSignedUrl(options)
    .catch(err => {
-     debug(err);
+     return console.log('err', err);
    });
-   
+   console.log('url', url);
    const uploadPayload = {
       url,
       imageName,
