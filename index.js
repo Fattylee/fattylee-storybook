@@ -82,7 +82,11 @@ app.use((err, req, res, next) => {
       req.flash('error_msg', `email "${req.userValue.email}" already registered, pls login to your account`);
     return res.redirect('/users/login');
     }
-  res.status(500).render('errors/500');
+  //res.status(500).render('errors/500');
+  res.status(200).send({
+    msg: 'na error bdis',
+    err,
+  });
 });
 
 // disable in production
