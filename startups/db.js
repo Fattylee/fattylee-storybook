@@ -17,7 +17,7 @@ app.listen(port, () => console.log('Server running on port', port));
   }
   catch(ex) {
     console.error('Could not connect to mongodb:', ex);
-    //process.exit(1)
+    process.exit(1)
   }
 };
 

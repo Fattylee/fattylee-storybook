@@ -27,6 +27,7 @@ const UserSchema =  new Schema({
 
 UserSchema.methods.isValidPassword = async function (password) {
   const user = this;
+  
   return bcrypt.compare(password, user.password);
 };
 

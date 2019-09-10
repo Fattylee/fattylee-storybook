@@ -12,14 +12,23 @@ module.exports = (passport) => {
   passport.use(new LocalStrategy(
   {usernameField: 'email'}, 
   async (email, password, done) => {
-    
-    const user = await User.findOne({email});
-    if(!user) return done(null, false, {message: 'Email not found'});
-    const result = await user.isValidPassword(password).catch(err => console.error('bcrypt password err', err));
-    
-    if(!result) return done(null, false, {message: 'Password is incorrect'});
-    
-    return done(null, user, {message: 'na so u enter finish'});
+   try {
+      const user = await User.findOne({email});
+      
+      if(!user) return done(null, false, {message: 'Email not found'});
+      
+      const result = await user.isValidPassword(password).catch(err => {
+        throw  {message: 'Login failed, please try again later', err};
+      });
+      if(!result) return done(null, false, {message: 'Password is incorrect'});
+       
+      return done(null, user, {message: 'na so u enter finish'});
+    }
+   catch(err) {
+     if(err.err) debug('bcrypt err', err.err);
+      debug(' err', err);
+   return done(null, false, {message: err.message});  
+    }; 
   })); // end LocalStrategy
   
   passport.use(new FacebookStrategy({

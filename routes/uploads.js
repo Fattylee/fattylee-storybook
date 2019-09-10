@@ -7,10 +7,8 @@ const debug = require('debug')('active:app');
 router.get('/', async (req, res) => {
   
   const {filename, type} = req.query;
-  //debug(filename, type);
   
-  const imageName = createSlug(filename, req.user.id);
-  //debug('imageName', imageName)
+  const imageName = createSlug(filename, req.user.id); 
   
   const options = {
     version: 'v4',
@@ -22,7 +20,10 @@ router.get('/', async (req, res) => {
  const [url] = await storage
    .bucket('storybook_uploads')
    .file(imageName)
-   .getSignedUrl(options);
+   .getSignedUrl(options)
+   .catch(err => {
+     debug(err);
+   });
    
    const uploadPayload = {
       url,
@@ -33,4 +34,3 @@ router.get('/', async (req, res) => {
 });
    
 module.exports = router;
-

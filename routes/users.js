@@ -74,7 +74,7 @@ router.post(
       failureFlash: 'Invalid email or password', 
       successFlash: 'Your login was successful', //this will override the message defined at passport stragety callback
       successRedirect: '/stories',
-      //session: false, //default option is true, session can be turned off by allow this line of code
+      //session: false, //default option is true, session can be turned off by allowing this line of code
     })
 );// end login user using passport
 
@@ -138,7 +138,7 @@ router.delete('/me', isAuthenticated, async (req, res) => {
      if(file.name.startsWith(id)){
        file.delete();
      }
-   }); // [END 
+   }); // END 
   
   req.flash('success_msg', 'your account was deleted successfully')
   res.redirect('/users/login');
