@@ -74,7 +74,10 @@ app.use('/auth', auth);
 app.use('/uploads', /*isAuthenticated,*/ uploads);
 
 app.use((err, req, res, next) => {
-  debug('Async error', err);
+  if(app.get('env') === 'development')
+  console.log('Async error', err);
+  else debug('Async error', err);
+  
   if(err.message.includes('duplicate key error')) {
       req.flash('error_msg', `email "${req.userValue.email}" already registered, pls login to your account`);
     return res.redirect('/users/login');
