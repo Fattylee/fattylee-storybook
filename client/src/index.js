@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import './eruda';
 
-console.log("NODE_ENV", process.env.test_TEST, typeof process.env.test_TEST);
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/base.css';

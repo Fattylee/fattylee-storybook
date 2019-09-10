@@ -7,15 +7,16 @@ import axios from 'axios'
 
 export let presignedUrlRes = '';
 
-//on_change_profile.js
+
 export default () => {
 //export default () => {
   $('#file').on('change', async function(e) {
       const file = $('#file')[0].files[0];
-    console.log('working', presignedUrlRes);
+    console.log('1 - working', presignedUrlRes);
       if(!file){
         presignedUrlRes = '';
         display('', 'No image preview, please upload an image', '#story-img', '#story-title');
+        console.log('2 - no file', presignedUrlRes);
         return;
       } 
      // grab the first image in the FileList object and pass it to the function
@@ -39,9 +40,10 @@ export default () => {
           display('', 'No image preview, please upload an image', '#story-img', '#story-title');
           alertBox({message: 'image size can not exceed 5mb'});
           presignedUrlRes = '';
+          console.log('3 - larger than 5mb', presignedUrlRes);
           return;
         }
-     console.log('file size', file.size);
+     console.log('4 - file size', file.size);
    
      // getPresignedUrl
       axios.get(url, {
@@ -54,14 +56,14 @@ export default () => {
           presignedUrlRes = res.data;
           
         console.log(
-        'on change: presignedUrlRes',
+        '5 - on change: presignedUrlRes',
         presignedUrlRes);
         })
         .catch(err => {
          presignedUrlRes = '';
          console.log(
-        'on change: presignedUrlRes',
-        presignedUrlRes);
+        '6 - on change: error presignedUrlRes',
+        presignedUrlRes, 'err', err);
           display('', 'No image preview, please upload an image', '#story-img', '#story-title');
           alertBox({message: 'pls select another image'});
           return;

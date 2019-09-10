@@ -5,7 +5,7 @@ import alertBox from '../helpers/alertBox';
 
 
 export let presignedUrlResProfile = '';
-console.log('presignedUrlRes', presignedUrlResProfile);
+
 export default () => {
   
   $('form input#profile-image').on('change', async function(e) {
@@ -73,4 +73,3 @@ export default () => {
       
     }); // end change
 }
-
