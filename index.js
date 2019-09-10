@@ -74,7 +74,7 @@ app.use('/auth', auth);
 app.use('/uploads', /*isAuthenticated,*/ uploads);
 
 app.use((err, req, res, next) => {
-  if(app.get('env') === 'development')
+  if(app.get('env') === 'production')
   console.log('Async error', err);
   else debug('Async error', err);
   
@@ -82,11 +82,11 @@ app.use((err, req, res, next) => {
       req.flash('error_msg', `email "${req.userValue.email}" already registered, pls login to your account`);
     return res.redirect('/users/login');
     }
-  //res.status(500).render('errors/500');
-  res.status(200).send({
+  res.status(500).render('errors/500');
+  /*res.status(200).send({
     msg: 'na error bdis',
     err,
-  });
+  });*/
 });
 
 // disable in production
