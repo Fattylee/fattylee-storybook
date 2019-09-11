@@ -20,6 +20,7 @@
     "heroku-postbuild": "cd client && npm i && npm run webpack && echo \"boss man\" "
   },
   "dependencies": {
+     "dotenv": "8.1.0",
     "mongoose": "5.4.16",
     "express": "4.16.4",
     "method-override": "3.0.0",
