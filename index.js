@@ -90,10 +90,10 @@ app.use((err, req, res, next) => {
 });
 
 // disable in production
-if(app.get('env') === 'development' || app.get('env') === 'staging') {
+//if(app.get('env') === 'development' || app.get('env') === 'staging') {
   app.use('/xyz', require('./routes/comments'));
   debug('comments routes loaded')
-}
+//}
 
 app.all('*', (req, res, next) => {
   res.render('errors/404', {pageTitle: '404'});

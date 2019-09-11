@@ -9,7 +9,7 @@ export let presignedUrlRes = '';
 
 
 export default () => {
-//export default () => {
+
   $('#file').on('change', async function(e) {
       const file = $('#file')[0].files[0];
     console.log('1 - working', presignedUrlRes);

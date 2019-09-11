@@ -8,8 +8,8 @@
   },
    "scripts": {
     "test": "jest --watchAll",
-    "dev": "cross-env NODE_ENV=development DEBUG=active:app nodemon index.js -e 'js' -i public -i client",
-    "start:dev": "nodemon",
+    "start:dev": "cross-env NODE_ENV=development DEBUG=active:app nodemon index.js -e 'js' -i public -i client",
+    "start:prod": "cross-env NODE_ENV=production DEBUG=active:app nodemon index.js -e 'js' -i public -i client",
     "start": "node index.js",
     "start:stag": "cross-env NODE_ENV=staging DEBUG=active:app nodemon index.js -i client -i public", 
     "webpack": "webpack -p --env production",
