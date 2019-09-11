@@ -12,6 +12,6 @@ const storage = new Storage({
     },
     projectId: GOOGLE_PROJECT_ID,
 });
-console.log(GOOGLE_PRIVATE_KEY);
+//console.log(GOOGLE_PRIVATE_KEY);
 
 module.exports = storage;

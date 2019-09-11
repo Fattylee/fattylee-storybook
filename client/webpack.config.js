@@ -32,24 +32,14 @@ module.exports = (env) => {
           exclude: /node_modules/,
           loader: 'babel-loader',
           query: {
-            presets: [
-            //'env', 
-            //'react'
+            presets: [ 
             "@babel/env",
             ],
             plugins: [
-            //'transform-class-properties',
-           // 'transform-runtime',
-           '@babel/plugin-proposal-class-properties',
+            '@babel/plugin-proposal-class-properties',
            [
               "@babel/plugin-transform-runtime",
-             /*{ 
-             "absoluteRuntime": false,
-             "corejs": false, 
-             "helpers": true, 
-             "regenerator": true, "useESModules": true 
-             
-             },*/
+            
            ],
           
             ],

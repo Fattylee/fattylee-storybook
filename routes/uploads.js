@@ -1,36 +1,20 @@
 const router = require('express').Router();
-const storage = require('../helpers/googleCloudService');
-const createSlug = require('../helpers/createSlug');
 const debug = require('debug')('active:app');
+const generatePresignedUrl = require('../helpers/generatePresignedUrl');
 
 
 router.get('/', async (req, res) => {
   
   const {filename, type} = req.query;
   
-  const imageName = createSlug(filename, req.user.id); 
-  
-  const options = {
-    version: 'v4',
-    action: 'write',
-    expires: Date.now() + 15 * 60 * 1000, // 15 MIN ,
-    contentType: type,
-  };
-   
- const [url] = await storage
-   .bucket('storybook_uploads')
-   .file(imageName)
-   .getSignedUrl(options)
-   .catch(err => {
-     return console.log('err', err);
-   });
-   console.log('url', url);
-   const uploadPayload = {
-      url,
-      imageName,
-    };
-    // debug(uploadPayload);
+  const  uploadPayload = await generatePresignedUrl({
+    filename, 
+    type, 
+    userID: req.user.id,
+    });
+    
   res.status(200).send(uploadPayload)
 });
    
 module.exports = router;
+

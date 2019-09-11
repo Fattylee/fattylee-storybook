@@ -44,7 +44,7 @@ module.exports = (passport) => {
      
      const currentUser = await User.findOne({email});
      if(currentUser) {
-       if(currentUser.avatar === 'avatar_placeholder.png') {
+       if(currentUser.avatar === 'images.png') {
          // update avatar of user using the social media link
          currentUser.avatar = avatar;
          const updatedUser = await currentUser.save(); 
@@ -70,16 +70,19 @@ module.exports = (passport) => {
      }, 
    async (accessToken, refreshToken, profile, done) => {
      const {sub: googleId, name, email, picture: avatar } = profile._json;
-     
+     debug('avatar', avatar);
      const currentUser = await User.findOne({email});
      if(currentUser) {
-       if(currentUser.avatar === 'avatar_placeholder.png') {
+       debug('user already exist', currentUser);
+       if(currentUser.avatar === 'images.png') {
+         debug('user already exist with default avatar do ur swapping here')
          // update avatar of user using the social media link
-         currentUser.avatar = avatar;
-         const updatedUser = await currentUser.save();
+       //  currentUser.avatar = avatar;
+      //   const updatedUser = await currentUser.save();
          done(null, currentUser); 
        }
        else {
+         debug('user already exist with his own custom avatar');
          done(null, currentUser); 
        }
      }
@@ -88,6 +91,7 @@ module.exports = (passport) => {
          googleId, name, email, avatar
        });
        const newUser = await user.save();
+       debug('new user', newUser);
        done(null, newUser);
      }
    })); // end GoogleStrategy
