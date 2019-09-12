@@ -6,7 +6,7 @@ const generatePresignedUrl = require('../helpers/generatePresignedUrl');
 router.get('/', async (req, res) => {
   
   const {filename, type} = req.query;
-  
+  debug(filename, type, '=====');
   const  uploadPayload = await generatePresignedUrl({
     filename, 
     type, 

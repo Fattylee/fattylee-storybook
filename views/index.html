@@ -10,6 +10,16 @@
   {{else}}
   
   <div class="container mt-4">
+   
+    <!-- action button -->
+    <a href="/stories/add"
+      class="action-btn btn btn-lg btn-light  text-primary"
+    >
+      <i class="fas fa-plus"></i>
+   </a>
+     <!-- end action button -->
+     
+     
     <h3>Latest stories</h3>
   </div>
   {{!-- display only public stories --}}
@@ -17,7 +27,7 @@
       <div class="row">
         {{#each stories}}
         <div class=" col-sm-6">
-          <div class="card mb-3 shadow-sm">
+          <div class="card mb-3 shadow-lg">
             <div class="text-center">
             <img src="https://storage.cloud.google.com/storybook_uploads/{{storyImage}}" alt="" class="mb-2" height="150" width="100%"/>
             </div>
@@ -40,6 +50,7 @@
            <p class="jumbotron">No published stories,  be the first to <a href="/stories" class="btn btn-primary"><span class="fas fa-plus"></span> publish a story</a></p></p>
          </div>
     {{/each}}
+    
   </div><!-- End row  -->
 </div><!-- End container -->
 {{/unless}}
