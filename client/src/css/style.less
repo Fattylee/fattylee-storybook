@@ -2,25 +2,23 @@
 @off-black: #20222b;
 @purple: #8357c5 ;
 
-body {
-  //background: @pr;
-}
 
-::placeholder {
- // background: @pr ;
-}
-
-@dist: 20px;
+@dist: 60px;
 @btnSize: 20px;
 .action-btn {
   border-radius: 50%;
-  padding: 15px @btnSize;
+  width: @dist;
+  height: @dist;
+  display: flex; 
+  justify-content: center;
+  align-items: center;
   position: fixed;
-  bottom: @dist;
-  right: @dist;
-  z-index: 1;
+  bottom: @dist/3;
+  right: @dist/3;
+  z-index: 1200;
   box-shadow: 1px 4px 12px rgba(0,0,0,0.4);
   &:hover {
     box-shadow: 2px 4px 7px rgba(0,0,0,0.7);
   }
+  
 }

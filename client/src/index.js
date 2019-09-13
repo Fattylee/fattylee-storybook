@@ -21,8 +21,7 @@ import './events';
 
 
 $(function(){
-  
-  
+  console.log('on load');
   // fix upload filename
   bsCustomFileInput.init();
   
@@ -31,7 +30,5 @@ $(function(){
 
   // floating footer
   floatingFooterFix();
-  
-  
  
 }); // end onload

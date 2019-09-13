@@ -71,7 +71,7 @@ app.use('/', index);
 app.use('/stories', isAuthenticated, stories);
 app.use('/users', users);
 app.use('/auth', auth);
-app.use('/uploads', /*isAuthenticated,*/ uploads);
+app.use('/uploads', isAuthenticated, uploads);
 
 app.use((err, req, res, next) => {
   if(app.get('env') === 'production')
@@ -98,3 +98,6 @@ if(app.get('env') === 'development' || app.get('env') === 'staging') {
 app.all('*', (req, res, next) => {
   res.render('errors/404', {pageTitle: '404'});
 });
+
+module.exports = app;
+

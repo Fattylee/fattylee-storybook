@@ -3,6 +3,8 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../models/User');
 const { facebook, google } = require('./keys');
+const generatePresignedUrl = require('../helpers/generatePresignedUrl');
+const request = require('request');
 const debug = require('debug')('active:app');
 
 
@@ -58,7 +60,7 @@ module.exports = (passport) => {
        const user = new User({
          facebookId, name, email, avatar
        });
-       const newUser = await user.save();  
+       const newUser = await user.save();
        done(null, newUser);
      }
    })); // end FacebookStrategy
@@ -69,30 +71,70 @@ module.exports = (passport) => {
     callbackURL: google.callbackURL,
      }, 
    async (accessToken, refreshToken, profile, done) => {
+     try {
      const {sub: googleId, name, email, picture: avatar } = profile._json;
      debug('avatar', avatar);
      const currentUser = await User.findOne({email});
      if(currentUser) {
        debug('user already exist', currentUser);
        if(currentUser.avatar === 'images.png') {
+         
          debug('user already exist with default avatar do ur swapping here')
          // update avatar of user using the social media link
-       //  currentUser.avatar = avatar;
-      //   const updatedUser = await currentUser.save();
-         done(null, currentUser); 
+       
+   
+   
+  
+    request.get(avatar).on('response', async function(res){
+      let filename = 'profile_avatar.',
+      type = '';
+      
+      type = res.headers['content-type'];
+      filename = filename + type.split('/')[1];
+      
+      const uploadPayload = await generatePresignedUrl({filename, type, userID: currentUser.id});
+    const {url, imageName} = uploadPayload;
+    
+    await request.get(avatar).pipe(request.put(url));
+    
+    currentUser.avatar = imageName;
+    const updatedUser = await currentUser.save();
+        return done(null, currentUser); 
+    });
        }
        else {
-         debug('user already exist with his own custom avatar');
-         done(null, currentUser); 
+         return done(null, currentUser); 
        }
      }
      else {
        const user = new User({
          googleId, name, email, avatar
        });
+       
+       request.get(avatar).on('response', async function(res){
+      let filename = 'profile_avatar.',
+      type = '';
+      
+      type = res.headers['content-type'];
+      filename = filename + type.split('/')[1];
+      
+      const uploadPayload = await generatePresignedUrl({filename, type, userID: user.id});
+    const {url, imageName} = uploadPayload;
+    
+    await request.get(avatar).pipe(request.put(url));
+    
+      user.avatar = imageName;
        const newUser = await user.save();
        debug('new user', newUser);
        done(null, newUser);
+    });
+       
+     }
+     }
+     catch(err) {
+       // log the error to db
+       debug(err);
+       return done(null, false);
      }
    })); // end GoogleStrategy
   

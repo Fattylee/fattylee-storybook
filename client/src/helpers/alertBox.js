@@ -5,7 +5,7 @@ const  alertBox = (options = {}) => {
         type = 'danger',
         duration = 3000,
         speed = 400,
-        message = 'Network error. Please try again later',
+        message = 'Network error, please try again later',
       } = options;
       
     const alertMsgHandler = $(`<div class="container" id='alert'>
@@ -41,4 +41,3 @@ const  alertBox = (options = {}) => {
     }; // end alertBox
 
 export default alertBox;
-

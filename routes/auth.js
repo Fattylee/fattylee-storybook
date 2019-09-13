@@ -30,7 +30,7 @@ passport.authenticate('facebook',
   {
     successRedirect: '/stories/', 
     failureRedirect: '/users/login',
-    failureFlash: 'Invalid email or password', 
+    failureFlash: 'Login failed, please try again later.', 
     successFlash: 'Your login was successful',
   })
 ); // end facebook authentication
@@ -43,7 +43,7 @@ passport.authenticate('google',
   {
     successRedirect: '/stories/', 
     failureRedirect: '/users/login',
-    failureFlash: 'Invalid email or password', 
+    failureFlash: 'Login failed, please try again later.', 
     successFlash: 'Your login was successful',
   })
 ); // end google authentication
