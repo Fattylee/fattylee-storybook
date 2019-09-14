@@ -12,7 +12,7 @@ const {validateAddFields, validateEditFields, validateLoginFields, validateRegis
 const passport = require('passport');
 const authLogout = require('../middlewares/authLogout');
 const debug = require('debug')('active:app');
-const { redirectToLogin } = require('../helpers/redirect');
+const { redirectToStories } = require('../helpers/redirect');
 const isAuthenticated = require('../middlewares/auth');
 const isAdmin = require('../middlewares/isAdmin');
 const storage = require('../helpers/googleCloudService');
@@ -31,7 +31,7 @@ router.get('/', isAuthenticated, isAdmin, async (req, res) => {
 });// end get user only admin can perform action
 
 // login page
-router.get('/login', redirectToLogin, async (req, res) => {
+router.get('/login', redirectToStories, async (req, res) => {
   
   res.render('users/login', {pageTitle: 'Login'});
 }, async function (req, res) {
@@ -46,7 +46,7 @@ router.get('/logout', authLogout, (req, res) => {
 }); // end logout user
 
 // display register form
-router.get('/register', redirectToLogin, (req, res) => {
+router.get('/register', redirectToStories, (req, res) => {
   res.render('users/register', {pageTitle: 'Register'});
 });// end display register form
 

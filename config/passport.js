@@ -3,7 +3,8 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../models/User');
 const { facebook, google } = require('./keys');
-const generatePresignedUrl = require('../helpers/generatePresignedUrl');
+const uploadImg = require('../helpers/uploadImg');
+
 const request = require('request');
 const debug = require('debug')('active:app');
 
@@ -73,34 +74,19 @@ module.exports = (passport) => {
    async (accessToken, refreshToken, profile, done) => {
      try {
      const {sub: googleId, name, email, picture: avatar } = profile._json;
-     debug('avatar', avatar);
+     
      const currentUser = await User.findOne({email});
      if(currentUser) {
-       debug('user already exist', currentUser);
+       
        if(currentUser.avatar === 'images.png') {
          
-         debug('user already exist with default avatar do ur swapping here')
          // update avatar of user using the social media link
-       
-   
-   
-  
-    request.get(avatar).on('response', async function(res){
-      let filename = 'profile_avatar.',
-      type = '';
-      
-      type = res.headers['content-type'];
-      filename = filename + type.split('/')[1];
-      
-      const uploadPayload = await generatePresignedUrl({filename, type, userID: currentUser.id});
-    const {url, imageName} = uploadPayload;
-    
-    await request.get(avatar).pipe(request.put(url));
+    const imageName = await uploadImg(avatar, currentUser.id);
     
     currentUser.avatar = imageName;
     const updatedUser = await currentUser.save();
+    
         return done(null, currentUser); 
-    });
        }
        else {
          return done(null, currentUser); 
@@ -110,25 +96,11 @@ module.exports = (passport) => {
        const user = new User({
          googleId, name, email, avatar
        });
+       const imageName = await uploadImg(avatar, user.id);
        
-       request.get(avatar).on('response', async function(res){
-      let filename = 'profile_avatar.',
-      type = '';
-      
-      type = res.headers['content-type'];
-      filename = filename + type.split('/')[1];
-      
-      const uploadPayload = await generatePresignedUrl({filename, type, userID: user.id});
-    const {url, imageName} = uploadPayload;
-    
-    await request.get(avatar).pipe(request.put(url));
-    
-      user.avatar = imageName;
-       const newUser = await user.save();
-       debug('new user', newUser);
+       user.avatar = imageName;
+       const newUser = await user.save(); 
        done(null, newUser);
-    });
-       
      }
      }
      catch(err) {
@@ -148,3 +120,4 @@ module.exports = (passport) => {
     done(null, user);
   });
 }
+
