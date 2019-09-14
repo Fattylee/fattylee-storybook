@@ -1,7 +1,7 @@
 const generatePresignedUrl = require('./generatePresignedUrl');
 const request = require('request');
 
-function uploadImg(avatar, userID) {
+function uploadImg(avatar, userID='123456789') {
     
     return new Promise((resolve, reject) => {
       

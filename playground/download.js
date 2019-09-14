@@ -1,9 +1,10 @@
-import http from 'http';
+//import http from 'http';
 const fs = require('fs');
 const request = require('request');
 const axios = require('axios');
 const debug = require('debug')('api:req');
 const generatePresignedUrl = require('../helpers/generatePresignedUrl');
+const uploadImg = require('../helpers/uploadImg');
 
 
 function download(url, dest, callback) {
@@ -43,21 +44,24 @@ const dest = './';
 
 //url = 'https://00e9e64bacd104277cd80e05a3575cbbffffe47d193eb23830-apidata.googleusercontent.com/download/storage/v1/b/storybook_uploads/o/123456789%2Ffile-b58daa50-d524-11e9-b163-9527b82f9390.json?qk=AD5uMEvRNiLdjawR8fkiZJoW6GkgzZ2mfVnS-zGs6z4WZPHssI0BpE2rPSmRf_j-XvRo2TuUyEWJGFR1Lc_yxOLX2BToYleQEcqmDGiZwZYGxwcVWc2wwu-4mYbO6prMvBudhVP0aGRsNAg7_ErrJa4wDXmo4wgliyz-i6QBu1PEt4ZBBz6BNm4iczatsWrD0JSzUNyBsG9djdEQZzo5S2nyiqTLvJIjfJqkVcTqebqFQE9LH0TUFJcgoN0R2F4I7x7iTZsm5SQ6BHhe72ljaLs84rVzT6H92MURqzZrOywet8OubedwP0vIW6JcwxJznoHuksqNaogwvLd4yFUgG0ckng5pxD5MMJm_1Z9q24AvzTMJAS9CNATVqd_MXdlzGq5669Dj9swY23gwc8Viufb64NbybaDzM5Mjlhxpmmlu1071DXr3R7mxkLglWDPFRErX7ShRRFMmkeP2KbpM5J30YcllBq6tmO2wuRxQN-24FsWkaydPUjT6DeFIbYOhnVTRwjMZIff4Qc4e12FrBl_5COclxSW5WzIzOhxj8taIR51CnY4rBYO-P9YFfZQpCTe5wBi-qDoK-gJLTs2bNtZpRoLUfYe40ATD78Y1lEaCgTYujedbhC8HoeK8QpKKCWeFrjxfqewdp0UQQF6p16DHyt2O1na1Ux9NKDEAD5kNGW8loqVnzQFzTIBOG9Z3EHxg3-pNwZejEDz9F5wOUXU7pcqd90Gbb9NX09BLawqzE_3izdBkl6hE-ARGNDkdZJkssTVWUJYlR0mDko-eIbg7SAMcxIeVMGIWNZgk4R8NP_v6CckLTg_HwitLXiNfyxbWi_zs85ggbh0zgZF9V0YY1i7VKbkKDHu9grAJ45QjoPUI6AQdW2w';
 
+url = 'https://graph.facebook.com/2593431920676795/picture?type=large';
+
 async function run() {
     let filename = 'abc.gif',
-    type = 'image/png';
+    type = 'image/jpeg';
    // type = 'text/html';
    //type = 'application/javascript';
     //type = 'image/jpg';
    
    const userID = '5d7a618c3bcdf1676daf9633';
     try {
-    const uploadPayload = await generatePresignedUrl({filename, type, userID})
+    const uploadPayload = await generatePresignedUrl({filename, type})
     
     
     debug('after generatePresignedUrl await');
     const uploadUrl = uploadPayload.url;
     console.log('uploadUrl', uploadUrl);
+    debug(await uploadImg(url));
   
   /*request.get(url)
   .on('response', function(response) {
@@ -69,14 +73,14 @@ async function run() {
   //fs.createReadStream('index.js').pipe(request.put(uploadUrl));
  
   //request.get(url).pipe(request.put(uploadUrl))
-  const res = await request.get(url)
+  //const res = await request.get(url)
   /*.on('response', function(response) {
       console.log(response.statusCode) // 200
       //console.log(response.headers['content-type']) // 'image/png'
       debug(response.headers);
     });*/
     
-debug('after request', res)
+//debug('after request', res)
 //await axios.get(url).pipe(axios.put(uploadUrl));
 
   }
@@ -86,4 +90,5 @@ debug('after request', res)
      };
 };
 
-run();
+//run();
+

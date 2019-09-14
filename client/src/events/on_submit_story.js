@@ -54,7 +54,7 @@ $('form#story').on('submit', function(e){
         elem.val(imageName);
         
         // upload to google buckets
-         axios.put(imageUrl, file, { 
+        axios.put(imageUrl, file, { 
         headers: {
            'Content-Type': file.type,
            },
@@ -69,4 +69,3 @@ $('form#story').on('submit', function(e){
         
       }); // end submit story image upload
 }
-

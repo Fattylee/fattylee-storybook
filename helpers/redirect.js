@@ -1,6 +1,5 @@
 const redirectToStories = (req, res, next) => {
-  //if(req.isAuthenticated) 
-  if(req.user) return res.redirect('/stories');
+  if(req.isAuthenticated()) return res.redirect('/stories');
   next();
 }
 

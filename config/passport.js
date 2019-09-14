@@ -41,6 +41,7 @@ module.exports = (passport) => {
     profileFields: ['id', 'displayName', 'photos', 'email', 'gender', 'name'],
      }, 
    async (accessToken, refreshToken, profile, done) => {
+     try {
      const { id: facebookId, name, email } = profile._json;
      // change avatar size
      const avatar = `https://graph.facebook.com/${facebookId}/picture?type=large`;
@@ -49,7 +50,7 @@ module.exports = (passport) => {
      if(currentUser) {
        if(currentUser.avatar === 'images.png') {
          // update avatar of user using the social media link
-         currentUser.avatar = avatar;
+         currentUser.avatar = await uploadImg(avatar, currentUser.id);
          const updatedUser = await currentUser.save(); 
          done(null, currentUser); 
        }
@@ -61,8 +62,15 @@ module.exports = (passport) => {
        const user = new User({
          facebookId, name, email, avatar
        });
+       user.avatar = await uploadImg(avatar, user.id);
        const newUser = await user.save();
        done(null, newUser);
+     }
+     }
+     catch(err) {
+       // log the error to db
+       debug(err);
+       return done(null, false);
      }
    })); // end FacebookStrategy
   

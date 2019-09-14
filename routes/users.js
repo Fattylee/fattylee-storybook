@@ -20,6 +20,7 @@ const storage = require('../helpers/googleCloudService');
 
 router.use((req, res, next) => {
   //req.app.locals.layout = 'container';
+  
   next();
 });
 
@@ -104,7 +105,7 @@ router.patch('/me', isAuthenticated, validateProfileFields, async (req, res, nex
       storage
     .bucket('storybook_uploads')
     .file(prevAvatar)
-    .delete();
+    .delete().catch(err => debug(err));
     }
     
     //debug('update', update);
@@ -136,7 +137,7 @@ router.delete('/me', isAuthenticated, async (req, res) => {
   
    files.forEach(file => {
      if(file.name.startsWith(id)){
-       file.delete();
+       file.delete().catch(err => debug(err));
      }
    }); // END 
   
