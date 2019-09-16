@@ -4,8 +4,6 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../models/User');
 const { facebook, google } = require('./keys');
 const uploadImg = require('../helpers/uploadImg');
-
-const request = require('request');
 const debug = require('debug')('active:app');
 
 

@@ -47,9 +47,11 @@ module.exports = (env) => {
         },
         {
           test: /\.(png|svg|jpg|gif|jpeg)$/,
-          use: [
-            'file-loader',
-          ]
+          loader: 'file-loader',
+          options: {
+            outputPath: '../',
+            name: '[name]-[contenthash].[ext]',
+          },
         },
         {
           test: /\.(woff|woff2|eot|ttf|otf)$/,

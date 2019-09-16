@@ -22,3 +22,34 @@
   }
   
 }
+
+.body {
+  //min-height: 100vh;
+}
+
+.parent-root {
+  color: purple;
+  background: orange;
+  //background: url('/img/storybook.png') no-repeat
+}
+@base: "dist/";
+@path: "../storybook.png";
+@back: "@{base}@{path}";
+.pa {
+  width: 100%;
+}
+.img, .pa{
+  color: skyblue ;
+  //background-image: url(../../../public/img/500-Error-Page-Template.gif);
+ // background-image: url(../storybook.png);
+ // height: 200px;
+  background-repeat: no-repeat;
+  border: 2px red solid;
+  background-color: grey;
+  background-attachment: fixed;
+  background-position: center ;
+  background: pink url(../storybook.png) no-repeat center;
+  padding-bottom: 100%;
+  width: 100%;
+  background-size: 100%;
+}

@@ -2,7 +2,7 @@ import $ from 'jquery';
 
 export default () => {
   // fixed floation footer
-  console.log('document.body.clientHeight  <=  window.innerHeight', document.body.clientHeight, window.innerHeight);
+  
   const footer = document.getElementById('fixed-bottom');
   document.body.clientHeight  <=  window.innerHeight ? (() => {
   footer.classList.add('fixed-bottom');
