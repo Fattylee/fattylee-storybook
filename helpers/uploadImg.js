@@ -18,11 +18,11 @@ function uploadImg(avatar, userID='123456789') {
     await request.get(avatar).pipe(request.put(url));
     
     resolve(imageName);
-    }); // end response
+    }); 
+    // end response
       
   });
    
 }; // end uploadImg
 
 module.exports = uploadImg;
-

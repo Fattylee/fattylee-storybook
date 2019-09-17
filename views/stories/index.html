@@ -12,13 +12,13 @@
     {{#each stories }}
    
       <div class=" col-sm-6">
-        <div class="card mb-3"> 
-        <div class="text-center">
-        <img src="https://storage.cloud.google.com/storybook_uploads/{{storyImage}}" alt="" class="mb-2" height="150" width="100%"/>
+        <div class="card mb-4 shadow"> 
+        <div class="story-avatar" data-story_image="https://storage.cloud.google.com/storybook_uploads/{{storyImage}}">
+       <img class="story-avatar-img"  src="https://storage.cloud.google.com/storybook_uploads/{{storyImage}}" alt="" class="mb-2" height="200px" width="100%" />
         </div>
           <div class="card-body"> 
-            <h4 class="card-title text-center mb-3">{{title}}</h4>  
-            <p class="card-text">{{{truncateDetails details 100}}} <a class="btn text-dark border-dark bg-white" href="/stories/{{slug}}">Full story</a></p>
+            <h4 class="card-title text-center mb-3 story-card-title">{{title}}</h4>  
+            <p class="card-text story-card-body">{{{truncateDetails details 100}}} <a class="btn text-dark border-dark bg-white" href="/stories/{{slug}}">Full story</a></p>
           </div> 
         <div class="card-footer">
           <div class="row">

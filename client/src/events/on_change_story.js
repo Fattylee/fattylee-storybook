@@ -36,6 +36,7 @@ export default () => {
        display(the_url, 'Preview', '#story-img', '#story-title');
        
         const url = '/uploads';
+        // convert byte to megabyte
         if(file.size > 5 * 1024 * 1024){
           display('', 'No image preview, please upload an image', '#story-img', '#story-title');
           alertBox({message: 'image size can not exceed 5mb'});
@@ -43,7 +44,7 @@ export default () => {
           console.log('3 - larger than 5mb', presignedUrlRes);
           return;
         }
-     console.log('4 - file size', file.size);
+     console.log('4 - file size (kB)', Math.ceil(file.size/1024));
    
      // getPresignedUrl
       axios.get(url, {
