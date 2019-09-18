@@ -23,6 +23,18 @@ const expressFileupload = require('express-fileupload');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+if(app.get('env') === 'developmentj') {
+  debug('spitting webpack config...');
+  const webpack = require('webpack'); 
+  const webpackDevMiddleware = require('webpack-dev-middleware'); 
+  const config = require('./client/webpack.config.js')();
+  console.log(config);
+  const compiler = webpack(config); // Tell express to use the webpack-dev-middleware and use the webpack.config.js 
+  // configuration file as a base.
+   app.use(webpackDevMiddleware(compiler, { publicPath: config.output.publicPath }));
+   
+}
+
 startDB(app);
 require('./config/passport')(passport);
 
@@ -101,4 +113,3 @@ app.all('*', (req, res, next) => {
 });
 
 module.exports = app;
-

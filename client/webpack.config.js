@@ -10,7 +10,7 @@ const autoprefixer = require('autoprefixer');
 
 
 module.exports = (env) => {
-  const publicPath = path.join(__dirname, '../public/dist');
+  const publicPath = path.join(__dirname, '../public');
   const isProduction = !!env;
   
   if(!isProduction) {
@@ -19,10 +19,12 @@ module.exports = (env) => {
 
   return  {
     
-    entry: './src/index.js',
+    //entry: './src/index.js',
+    entry: path.join(__dirname, 'src/index.js'),
     output: {
       path: publicPath,
-      filename: 'bundle.js'
+      filename: 'bundle.js',
+      publicPath: '/',
     },
     
     module: {
@@ -49,8 +51,9 @@ module.exports = (env) => {
           test: /\.(png|svg|jpg|gif|jpeg|woff|woff2|eot|ttf|otf)$/,
           loader: 'file-loader',
           options: {
-            outputPath: '../',
+            outputPath: 'assets',
             name: '[name]-[contenthash].[ext]',
+            //publicPath,
           },
         },
         
@@ -113,7 +116,7 @@ module.exports = (env) => {
     devtool: isProduction? 'source-map' : 'cheap-module-eval-source-map' /* inline-source-map */,
     devServer: {
       contentBase: publicPath,
-      historyApiFallback: true,
+      historyApiFallback: true, 
     },
     optimization: { 
       minimizer: [
