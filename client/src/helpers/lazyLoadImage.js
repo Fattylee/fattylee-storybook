@@ -1,67 +1,48 @@
 import $ from 'jquery';
 
-function preloadImages() {
+function lazyLoadImages() {
   
   let counter = 0, rect='', template='';
   const storyLinks = $('[data-story_image]');
- 
- function lazyload(target) {
+  document.querySelectorAll('[data-story_image]').forEach(storyLink => {
+    lazyload().observe(storyLink);
+  });
+  
+  
+ function lazyload() {
    
    const options = {
-     //rootMargin: '0px 0px -200px 0px',
+     rootMargin: '0px 0px 100px 0px',
+     threshold: 0,
    };
-   const io = new IntersectionObserver((entries, observer) => {
+   const io = new IntersectionObserver((entries, imgObserver) => {
      entries.forEach(entry => {
      
        if(entry.isIntersecting){ 
-         entry.target.style['background'] = 'transparent';
-         console.log(entry.target.firstElementChild);
+         
+         const img =  entry.target.firstElementChild;
+         img.src = entry.target.getAttribute('data-story_image')
+         console.log(img);
+         img.onload = function(){
+           entry.target.style['background'] = 'transparent';
+           img.classList.add('story-avatar-img-fade');
+         }
+         
          console.log(++counter);
-         //observer.disconnect();
-         observer.unobserve(entry.target);
+         //imgObserver.disconnect();
+         imgObserver.unobserve(entry.target);
        }
      })
    }, options);
    
-   io.observe(target);
+   return io;
  };
  
- document.querySelectorAll('[data-story_image]').forEach(lazyload);
  
- // scroll event
-  // window.onscroll = function (event) {
-    /*$(window).scroll(function(event){ 
-    console.log(counter);
-    new Array(storyLinks.length)
-  .fill(0)
-  .forEach((storyLink, i) => {
-    const story = new Image();
-    const link = storyLinks[i].dataset['story_image'];
-    //const link = storyLinks[i].getAttribute('data-story_image');
-    const target = storyLinks[i];
-    rect = target.getBoundingClientRect();
-    console.log('rect:',++counter);
-    for(const prop in rect){
-      //if(typeof rect[prop] === 'function' || prop === 'x' || prop === 'y' || prop === 'height' || prop === 'width' || prop === 'left' || prop === "right") continue;
-      if(prop !== 'top' && prop !== 'bottom') continue;
-      
-      template += `${prop}: ${Math.round(rect[prop])}, `; 
-      
-    }
-    console.log(template, '...');
-    template = '';
-    //story.src = link;
-    /*story.onload = function(){
-      $('.story-avatar')[i].style['background-image'] = `url(${story.src})`;
-      console.log('completed!!!', counter);
-    };/
-    
-  });
-  
-   });*/ // end onscroll event
+ 
 }
 
-export default preloadImages;
+export default lazyLoadImages;
 
 // IIFE
 (function(){

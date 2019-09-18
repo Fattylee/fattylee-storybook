@@ -14,7 +14,7 @@
       <div class=" col-sm-6">
         <div class="card mb-4 shadow"> 
         <div class="story-avatar" data-story_image="https://storage.cloud.google.com/storybook_uploads/{{storyImage}}">
-       <img class="story-avatar-img"  src="https://storage.cloud.google.com/storybook_uploads/{{storyImage}}" alt="" class="mb-2" height="200px" width="100%" />
+       <img class="story-avatar-img"  data-src="https://storage.cloud.google.com/storybook_uploads/{{storyImage}}" alt="" class="mb-2" height="200px" width="100%" />
         </div>
           <div class="card-body"> 
             <h4 class="card-title text-center mb-3 story-card-title">{{title}}</h4>  
@@ -51,14 +51,3 @@
   </div><!-- End row  -->
 </div><!-- End container -->
       
-<script>
-  window.onload =  function(e){ 
- if (window.location.href.includes('#')) {
-window.location.hash = ''; // for older browsers, leaves a # behind
-history.pushState('', document.title, window.location.pathname); // nice and clean
-e.preventDefault(); // no page reload 
-} 
-
-
-};
-</script>

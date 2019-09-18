@@ -42,14 +42,28 @@
 }
 
 .story-avatar-img {
-  transform: translateX(500px);
   opacity: 0;
   transition: all 0.5s;
 }
 
-.fade {
-  transform: translateX(0px);
+.story-avatar-img-fade {
   opacity: 1;
+}
+
+.or {
+  position: relative;
+  height: 40px;
+  hr {
+    position: absolute;
+    width: 100%;
+  }
+  span {
+    position: absolute;
+    top: 5px;
+    left: calc(50% - 45px);
+    background: white;
+    padding: 0px 30px;
+  }
 }
 /* above mobile devices*/
 @media (min-width: @m-screen) {
@@ -64,7 +78,6 @@
     overflow: hidden;
   }
   .story-avatar {
-    //padding-bottom: 60% ;
     height: 220px;
   }
 }

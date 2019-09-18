@@ -19,8 +19,11 @@ import floatingFooterFix from './helpers/floatingFooterFix';
 import './events';
 
 import lazyLoadImage from './helpers/lazyLoadImage';
+import removeTrailingHash from './helpers/removeTrailingHash';
 
-$(function(){
+
+$(window).on('load', (e) => {
+  e.preventDefault(); // no page reload
   console.log('on load');
   // fix upload filename
   bsCustomFileInput.init();
@@ -32,6 +35,9 @@ $(function(){
   floatingFooterFix();
 
   // lazyLoadImage
-  //lazyLoadImage();
+  //setTimeout(lazyLoadImage, 0);
+  lazyLoadImage();
+ 
+  removeTrailingHash();
  
 }); // end onload
