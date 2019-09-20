@@ -43,7 +43,8 @@
     "terser-webpack-plugin": "2.0.1",
     "uuid": "3.3.2",
     "webpack": "4.40.2",
-    "webpack-cli": "3.3.2"
+    "webpack-cli": "3.3.2",
+    "intersection-observer": "0.7.0"
   },
   "devDependencies": {
     "jest": "24.1.0",

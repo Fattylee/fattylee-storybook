@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import './eruda';
+import 'intersection-observer'; 
 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -34,9 +35,8 @@ $(window).on('load', (e) => {
   // floating footer
   floatingFooterFix();
 
-  // lazyLoadImage
-  //setTimeout(lazyLoadImage, 0);
- // lazyLoadImage();
+  // lazyLoadImage 
+  lazyLoadImage();
  
   removeTrailingHash();
  

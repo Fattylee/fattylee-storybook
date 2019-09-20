@@ -34,22 +34,30 @@
   border-bottom: 2px solid darken(@primary, 15%);
 }
 .story-avatar{
-  background: url(../storybook.png) no-repeat center top;
+  background: url(../free-blurry-12x12.jpg) no-repeat center top;
   width: 100%;
-  background-size: 100%;
   height: 200px;
+  text-align: center;
+  background-size: 100%; 
+  overflow: hidden;
+  img {
+    opacity: 0;
+    transition: all 0.1s;
+    max-width: 100%;
+  }
+  .story-avatar-img-fade {
+  opacity: 1;
+  }
   
 }
-
-.story-avatar-img {
-  opacity: 0;
-  transition: all 0.5s;
+.full-story-img {
+    height: auto ; 
+    margin: 30px 0;
+  }
+.auto {
+  height: auto ;
+  max-height: 250px;
 }
-
-.story-avatar-img-fade {
-  opacity: 1;
-}
-
 .or {
   position: relative;
   height: 40px;
@@ -65,6 +73,10 @@
     padding: 0px 30px;
   }
 }
+#story-img {
+  max-height: 300px;
+}
+
 /* above mobile devices*/
 @media (min-width: @m-screen) {
 
@@ -79,6 +91,13 @@
   }
   .story-avatar {
     height: 220px;
+  }
+  .card-footer-h {
+    height: 70px;
+  }
+  .full-story-img {
+    height: auto ; 
+    margin: 30px 0;
   }
 }
 /* end above mobile devices*/

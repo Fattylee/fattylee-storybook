@@ -23,7 +23,7 @@ const expressFileupload = require('express-fileupload');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-if(app.get('env') === 'developmentj') {
+if(app.get('env') === 'development') {
   debug('spitting webpack config...');
   const webpack = require('webpack'); 
   const webpackDevMiddleware = require('webpack-dev-middleware'); 

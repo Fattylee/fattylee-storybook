@@ -10,7 +10,7 @@ const autoprefixer = require('autoprefixer');
 
 
 module.exports = (env) => {
-  const publicPath = path.join(__dirname, '../public');
+  const publicPath = path.join(__dirname, '../public/dist');
   const isProduction = !!env;
   
   if(!isProduction) {
@@ -24,7 +24,7 @@ module.exports = (env) => {
     output: {
       path: publicPath,
       filename: 'bundle.js',
-      publicPath: '/',
+      publicPath: '/dist/',
     },
     
     module: {

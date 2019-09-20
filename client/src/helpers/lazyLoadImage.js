@@ -3,7 +3,7 @@ import $ from 'jquery';
 function lazyLoadImages() {
   
   let counter = 0, rect='', template='';
-  const storyLinks = $('[data-story_image]');
+  //const storyLinks = $('[data-story_image]');
   document.querySelectorAll('[data-story_image]').forEach(storyLink => {
     lazyload().observe(storyLink);
   });
@@ -12,7 +12,7 @@ function lazyLoadImages() {
  function lazyload() {
    
    const options = {
-     rootMargin: '0px 0px 100px 0px',
+     rootMargin: '0px 0px 400px 0px',
      threshold: 0,
    };
    const io = new IntersectionObserver((entries, imgObserver) => {
@@ -25,6 +25,12 @@ function lazyLoadImages() {
          console.log(img);
          img.onload = function(){
            entry.target.style['background'] = 'transparent';
+           entry.target.classList.add('auto');
+           
+           if(entry.target.dataset.full){
+           entry.target.classList.add('full-story-img');
+           
+           }
            img.classList.add('story-avatar-img-fade');
          }
          

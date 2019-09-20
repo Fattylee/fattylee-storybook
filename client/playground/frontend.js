@@ -19,6 +19,19 @@ const cr = combineReducers({
 })
 const store = createStore(cr, {}, applyMiddleware());
 
+// components
+// reducers -> authReducer, index
+/*
+componentDidMount() {
+  this.props.fetchUser();
+  const mstp = (state) => {
+    return {auth: state.auth};
+  }
+  export default connect(mstp, {})(Header);
+}
+
+
+*/
 
 const Landing = () => <h1>Welcome to my app </h1>;
 const Header = () => <div>Header comp </div>;
