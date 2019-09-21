@@ -32,7 +32,7 @@ $('.delete-stories').submit(function(e){
     launcherSelector, 
     launcherClasses: 'btn-block',
     title: 'Delete  story',
-    body: `Are you sure you want to delete this story "${$(launcherSelector).closest('.card-footer').prev().find('h4').text()}"?`,
+    body: `Are you sure you want to delete this story "${$(launcherSelector).closest('.card-footer').closest('.get-title').find('.card-title').text()}"?`,
     launcherText: 'Delete story'
     }); // end DELETE story modalBox   
  
@@ -49,4 +49,3 @@ $('.delete-stories').submit(function(e){
    });
 }); // end submit event for each delete story
 };
-
