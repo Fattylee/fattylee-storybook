@@ -14,7 +14,7 @@
     "start:stag": "cross-env NODE_ENV=staging DEBUG=active:app nodemon index.js -i client -i public", 
     "webpack": "webpack -p --env production",
     "webpack:dev": "webpack-dev-server",
-    "download": "DEBUG=api:req nodemon -w playground/download.js --exec babel-node playground/download.js",
+    "redux": "cross-env DEBUG=api:req nodemon -w playground/redux.js playground/redux.js ",
     "client": "npm run webpack:start --prefix client",
     "client:build": "npm run webpack --prefix client",
     "heroku-postbuild": "cd client && npm i && npm run webpack && echo \"boss man\" "

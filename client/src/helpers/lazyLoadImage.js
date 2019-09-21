@@ -29,6 +29,7 @@ function lazyLoadImages() {
            
            if(entry.target.dataset.full){
            entry.target.classList.add('full-story-img');
+           entry.target.classList.remove('auto');
            
            }
            img.classList.add('story-avatar-img-fade');
