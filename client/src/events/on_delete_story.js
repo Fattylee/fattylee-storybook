@@ -32,7 +32,7 @@ $('.delete-stories').submit(function(e){
     launcherSelector, 
     launcherClasses: 'btn-block',
     title: 'Delete  story',
-    body: `Are you sure you want to delete this story "${$(launcherSelector).closest('.card-footer').closest('.get-title').find('.card-title').text()}"?`,
+    body: `Are you sure you want to delete this story "<strong>${$(launcherSelector).closest('.card-footer').closest('.get-title').find('.card-title').text()}</strong>"?`,
     launcherText: 'Delete story'
     }); // end DELETE story modalBox   
  
