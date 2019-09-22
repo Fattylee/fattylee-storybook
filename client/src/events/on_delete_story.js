@@ -47,5 +47,6 @@ $('.delete-stories').submit(function(e){
      loading(deleteBtnSelector, 'Deleting...');
      $(this).parent().submit();
    });
+   
 }); // end submit event for each delete story
 };

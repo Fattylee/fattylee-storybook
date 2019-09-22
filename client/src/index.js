@@ -1,8 +1,15 @@
 import $ from 'jquery';
-import './eruda';
+
 import 'intersection-observer'; 
 
+if(process.env.NODE_ENV === 'development') {
+  console.log(process.env.NODE_ENV);
+  console.log('eruda loaded');
+  require('./eruda');
+  
+}
 
+console.log('swe', process.env.NODE_ENV);
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/base.css';
 import './css/style.less';

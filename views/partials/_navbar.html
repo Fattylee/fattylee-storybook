@@ -26,11 +26,18 @@
      {{#isNotEqual 'Create story' pageTitle}}
     <a class="dropdown-item text-dark" href="/stories/add"><i class="fas fa-plus"></i> Add story</a>
     {{/isNotEqual}}
-    <form method="post" action="/stories/faker">
+    
+    {{#isEqual 'Feeds' pageTitle}} 
       <div class="form-group dropdown-item">
-        <input type="number" name="amount" class="form-control">
+        <input type="text" name="search-title" id="search-title" class="form-control" placeholder="Search story by title">
       </div>
-    </form>
+    {{/isEqual}}
+     {{#isEqual 'Stories' pageTitle}}
+      <div class="form-group dropdown-item">
+        <input type="text" name="search-title" id="search-title" class="form-control" placeholder="Search story by title">
+      </div> 
+    {{/isEqual}}
+    
     </div> <!-- end dropdown-menu -->
     </div><!-- end dropdown -->
  

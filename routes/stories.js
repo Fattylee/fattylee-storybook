@@ -127,23 +127,35 @@ router.delete('/:id', async (req, res) => {
   return res.redirect('/stories');
   }
   const {storyImage} = story;
+  
+  const forceDelete = async () => {
+    if(story.comments.length) {
+      const allComments = story.comments.map(id => Comment.findByIdAndRemove(id));
+      const deletedComments = await Promise.all(allComments);
+      
+    }
+    return story.remove();
+  };
+  
   try {
   await storage
     .bucket('storybook_uploads')
     .file(storyImage)
     .delete();
   
-  if(story.comments.length) {
-    const allComments = story.comments.map(id => Comment.findByIdAndRemove(id));
-    const deletedComments = await Promise.all(allComments);
-    
-  }
-  await story.remove();
-    
+  await forceDelete();
+  
   req.flash('success_msg', 'story was deleted successfully');
   res.redirect('/stories');
   }
   catch(err) {
+    debug('delete error:', typeof err.code);
+    if(err.code == '404') {
+      await forceDelete();
+  
+  req.flash('success_msg', 'story was deleted successfully');
+  return res.redirect('/stories');
+    }
     req.flash('error_msg', 'Delete story failed, please try again later');
     return res.redirect('/stories');
   }

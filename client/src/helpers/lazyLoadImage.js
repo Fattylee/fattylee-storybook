@@ -22,7 +22,7 @@ function lazyLoadImages() {
          
          const img =  entry.target.firstElementChild;
          img.src = entry.target.getAttribute('data-story_image')
-         console.log(img);
+         //console.log(img);
          img.onload = function(){
            entry.target.style['background'] = 'transparent';
            entry.target.classList.add('auto');
@@ -30,12 +30,12 @@ function lazyLoadImages() {
            if(entry.target.dataset.full){
            entry.target.classList.add('full-story-img');
            entry.target.classList.remove('auto');
-           
            }
+           
            img.classList.add('story-avatar-img-fade');
          }
          
-         console.log(++counter);
+        
          //imgObserver.disconnect();
          imgObserver.unobserve(entry.target);
        }

@@ -70,7 +70,8 @@ app.use(passport.session());
 
 
 // set global variables
-app.use((req, res, next) => {
+app.use((req, res, next) => { 
+  //debug(req.user);
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');
   res.locals.error = req.flash('error');
@@ -105,7 +106,10 @@ app.use((err, req, res, next) => {
 // disable in production
 if(app.get('env') === 'development' || app.get('env') === 'staging') {
   app.use('/xyz', require('./routes/comments'));
-  debug('comments routes loaded')
+  debug('comments routes loaded');
+  
+  
+ // require('./playground/faker');
 }
 
 app.all('*', (req, res, next) => {

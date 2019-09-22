@@ -134,7 +134,7 @@ module.exports = (env) => {
       plugins: [ 'code', 'dom']
       }),*/
       new webpack.DefinePlugin({ 
-      "process.env.test": JSON.stringify(process.env.test)
+      "process.env": JSON.stringify(process.env)
       }),
     ],
   
