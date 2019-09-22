@@ -15,7 +15,7 @@ export default () => {
     };
     
     clear();
-     const searchBox = $(`
+     const searchBoxContainer = $(`
      <div class='searchBox-container'>
        <input type="text" placeholder="Search story by title" class="search-box"/>
        <span class='close-span fas fa-times  fa-1x text-center pt-3'></span>
@@ -32,9 +32,9 @@ export default () => {
        overflow: 'hidden',
      }).hide();
      
-     $('.body').before(searchBox.slideDown());
+     $('.body').before(searchBoxContainer.slideDown());
        
-       $('.search-box').css({
+       const searchBox = $('.search-box').css({
        padding: '10px 50px 10px 15px',
        outline: 'none',
        border: 'none',
@@ -42,30 +42,34 @@ export default () => {
        background: 'rgba(0,0,0,0.8)',
        color: 'white',
      });
+     
      const baseCss = {
        position: 'absolute',
        right: '0px',
        top: '0px',
+       bottom: '0px',
        color: 'white',
        background: 'red',
-       height: '200px',
        width: '40px',
-       paddingTop: '10px',
        cursor: 'pointer',
-       
      };
      
-     $('.close-span').css(baseCss).on('click', () => {
+     $('.close-span')
+     .css(baseCss)
+     .on('click', () => {
        clear();
      });
-     $('.match-count').css({
+     
+     $('.match-count')
+     .css({
        ...baseCss,
-       right: '40px',
-       //background: 'transparent',
+       right: '40px', 
        cursor: 'auto',
        textAlign: 'center',
        background: 'rgba(0,0,0,0.9)',
+       paddingTop: '11.5px',
      });
+     
        $('.match-count').text($('.get-title').length);
      searchBox.focus();
      searchBox.click();
