@@ -21,6 +21,7 @@
     "heroku-postbuild": "cd client && npm i && npm run webpack && echo \"boss man\" "
   },
   "dependencies": {
+    "@sendgrid/mail": "6.4.0",
     "dotenv": "8.1.0",
     "mongoose": "5.4.16",
     "express": "4.16.4",

@@ -7,10 +7,13 @@ export default () => {
   $('#search-title').on('click', async function(e) {
  
  // close open navbar on mobile
-    $('#navbarSupportedContent').removeClass('show');
+    const btn = $('nav button');
+ if(btn.attr('aria-expanded') === 'true') btn.click();
+
+ // remove previous textbox and display:none from the dom
     const clear = () => 
      {
-   /// remove previous textbox and display:none from the dom
+   
     $('.searchBox-container').remove();
     $('.get-title').css({display: 'block'});
     };
@@ -19,62 +22,24 @@ export default () => {
      const searchBoxContainer = $(`
      <div class='searchBox-container'>
        <input type="text" placeholder="Search story by title" class="search-box"/>
-       <span class='close-span fas fa-times  fa-1x text-center pt-3'></span>
-       <span class='match-count'>999</span>
-     </div>`).
-     css({
-       borderBottom: '1px solid blue',
-       borderRadius: '5px 5px 0 0', 
-       width: '80%',
-       position: 'fixed',
-       left: '10%',
-       marginTop: '20px',
-       zIndex: 1000,
-       overflow: 'hidden',
-     }).hide();
+       <span class='close-search-box fas fa-times  fa-1x text-center pt-3' title='close search box'></span>
+       <span class='match-count'></span>
+     </div>`)
+     .hide();
      
      $('.body').before(searchBoxContainer.slideDown());
        
-       const searchBox = $('.search-box').css({
-       padding: '10px 50px 10px 15px',
-       outline: 'none',
-       border: 'none',
-       width: 'calc(100% - 40px)',
-       background: 'rgba(0,0,0,0.8)',
-       color: 'white',
-     });
+    const searchBox = $('.search-box');
      
-     const baseCss = {
-       position: 'absolute',
-       right: '0px',
-       top: '0px',
-       bottom: '0px',
-       color: 'white',
-       background: 'red',
-       width: '40px',
-       cursor: 'pointer',
-     };
-     
-     $('.close-span')
-     .css(baseCss)
+     $('.close-search-box')
      .on('click', () => {
        clear();
      });
-     
-     $('.match-count')
-     .css({
-       ...baseCss,
-       right: '40px', 
-       cursor: 'auto',
-       textAlign: 'center',
-       background: 'rgba(0,0,0,0.9)',
-       paddingTop: '11.5px',
-     });
-     
-       $('.match-count').text($('.get-title').length);
+    
+     $('.match-count').text($('.get-title').length);
+       
      searchBox.focus();
      searchBox.click();
-     
      
    
      searchBox.on('keyup', function(e){
@@ -93,14 +58,13 @@ export default () => {
         el.style.display = 'block';
        // ++matchCounter;
         $('.match-count').text(++matchCounter);
-         //console.log(titleText, 'matched!');
+         
        }
        
      }
      
      })
      return;
-     
       
     }); // end change
 

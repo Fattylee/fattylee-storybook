@@ -4,9 +4,16 @@ import 'intersection-observer';
 
 if(process.env.NODE_ENV === 'development') { 
   require('./eruda');
+  window.$j = $;
 }
 
+/*
 
+$j('*').on('click', function(e){
+  console.log("click")
+})
+
+*/
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/base.css';
 import './css/style.less';

@@ -77,14 +77,51 @@
   max-height: 300px;
 }
 
-.search-box {
+.searchBox-container {
+  border-bottom: 1px solid blue;
+  width: 92%;
+  position: fixed;
+  left: 4%;
+  margin-top: 20px;
+  z-index: 1000;
+  overflow: hidden;
+  
   &::placeholder {
    color: darken(white, 10%);
    font-size: 0.9rem;
    font-style: italic;
   }
   
+  .search-box {
+    padding: 10px 50px 10px 15px;
+    outline: none;
+    border: none;
+    width: calc(100% - 40px);
+    background: rgba(0,0,0,0.8);
+    color: white;
+  }
+  
+  .close-search-box {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    color: white;
+    background: red;
+    width: 40px;
+    cursor: pointer;
+  }
+  .match-count {
+    .close-search-box;
+    right: 40px;
+    cursor: auto;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.9);
+    padding-top: 11.5px;
+  }
+       
 }
+
 
 .story-list {
   margin-bottom: 170px;
@@ -94,7 +131,7 @@
 
   .story-card-title {
     height: 50px;
-    overflow: auto;
+    overflow: overlay;
   }
   
   .story-card-body {
@@ -113,6 +150,11 @@
   }
   .story-list {
   margin-bottom: 80px;
+  }
+  .searchBox-container {
+    max-width: 500px;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 /* end above mobile devices*/
