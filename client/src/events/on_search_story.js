@@ -6,7 +6,8 @@ export default () => {
   
   $('#search-title').on('click', async function(e) {
  
-    
+ // close open navbar on mobile
+    $('#navbarSupportedContent').removeClass('show');
     const clear = () => 
      {
    /// remove previous textbox and display:none from the dom

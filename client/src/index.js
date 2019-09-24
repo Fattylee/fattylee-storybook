@@ -2,14 +2,11 @@ import $ from 'jquery';
 
 import 'intersection-observer'; 
 
-if(process.env.NODE_ENV === 'development') {
-  console.log(process.env.NODE_ENV);
-  console.log('eruda loaded');
+if(process.env.NODE_ENV === 'development') { 
   require('./eruda');
-  
 }
 
-console.log('swe', process.env.NODE_ENV);
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/base.css';
 import './css/style.less';
@@ -21,7 +18,7 @@ import bsCustomFileInput from 'bs-custom-file-input'
 
 import axios from 'axios';
 import ckeditorIniatializer from './helpers/ckeditor';
-
+import removeFlash from './helpers/removeFlash';
 import floatingFooterFix from './helpers/floatingFooterFix';
 
 import './events';
@@ -46,5 +43,7 @@ $(window).on('load', (e) => {
   lazyLoadImage();
  
   removeTrailingHash();
+  
+  removeFlash();
  
 }); // end onload

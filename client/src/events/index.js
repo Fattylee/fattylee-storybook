@@ -8,6 +8,7 @@ import on_delete_story from './on_delete_story';
 import on_delete_account from './on_delete_account';
 import on_submit_login_register from './on_submit_login_register';
 import on_search_story from './on_search_story';
+import on_page_resize from './on_page_resize';
 
 
 $(() => {
@@ -20,4 +21,6 @@ $(() => {
   on_delete_account();
   on_submit_login_register();
   on_search_story();
+  on_page_resize();
 });
+
