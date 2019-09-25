@@ -6,13 +6,13 @@ mongoose.set('useCreateIndex', true);
 mongoose.Promise = global.Promise;
 
 
-const startDB = async (app) => {
+const startDB = async (app) => { 
   try {
     const mongdbUri = keys.MONGODB_URI;
     console.log('mongdbUri', mongdbUri);
     await mongoose.connect(mongdbUri);
     console.log('connected to mongodb(expert)', process.env.NODE_ENV);
-    const port = process.env.PORT || 4000;
+     const port = process.env.PORT || keys.PORT;
 app.listen(port, () => console.log('Server running on port', port));
   }
   catch(ex) {
@@ -22,3 +22,4 @@ app.listen(port, () => console.log('Server running on port', port));
 };
 
 module.exports = startDB;
+

@@ -8,7 +8,7 @@ const router = express.Router();
 const User = require('../models/User');
 const Story = require('../models/Story');
 const Comment = require('../models/Comment');
-const {validateAddFields, validateEditFields, validateLoginFields, validateRegisterFields, validateProfileFields} = require('../middlewares/validateFields');
+const {validateAddFields, validateEditFields, validateLoginFields, validateRegisterFields, validateProfileFields, validateNewPasswordFields} = require('../middlewares/validateFields');
 const passport = require('passport');
 const authLogout = require('../middlewares/authLogout');
 const debug = require('debug')('active:app');
@@ -16,6 +16,11 @@ const { redirectToStories } = require('../helpers/redirect');
 const isAuthenticated = require('../middlewares/auth');
 const isAdmin = require('../middlewares/isAdmin');
 const storage = require('../helpers/googleCloudService');
+const encryptPassword = require('../helpers/encryptPassword');
+const jwt = require('jsonwebtoken');
+const keys = require('../config/keys');
+const passwordEmailTemplate = require('../services/templates/passwordReset');
+const sendMail = require('../services/sendGrid');
 
 
 router.use((req, res, next) => {
@@ -145,6 +150,79 @@ router.delete('/me', isAuthenticated, async (req, res) => {
   res.redirect('/users/login');
 });// end delete account
 
+
+router.get('/forgot-password', (req, res) => {
+  res.render('users/forgot-password', {
+    pageTitle: 'Forgot-password'
+  });
+});
+
+router.get('/new-password/:token', async (req, res) => {
+  const { token } = req.params;
+  try {
+    const {email} = jwt.verify(token, keys.JWT_SECRET);
+    const foundUser = await User.findOne({email});
+    if(!foundUser) {
+      throw new Error();
+    }
+    res.render('users/new-password', {
+      pageTitle: 'New-password',
+      email,
+    });
+  }
+  catch(err) {
+    req.flash('error_msg', 'unauthorized link, please enter email to reset password.');
+    return res.redirect('/users/forgot-password');
+  }
+});
+
+// request a token via email
+router.post('/forgot-password', async (req, res) => {
+  const {email} = req.body;
+  const foundUser = await User.findOne({email});
+    if(!foundUser) {
+    debug('not foundUser', foundUser);
+    req.flash('error_msg', 'email does not exist');
+    return res.redirect('/users/forgot-password');
+    }
+  const token = jwt.sign({email}, keys.JWT_SECRET, { expiresIn: '1d' });
+  
+  await sendMail(passwordEmailTemplate({token}))
+  req.flash('success_msg', 'Check your email for a new password reset link');
+  res.redirect('/');
+ 
+}); // end forgot-password
+
+
+// set new password
+router.post('/reset-password', validateNewPasswordFields, async (req, res, next) => { 
+  try {
+    const { password, email} = req.body;
+    // update user in mongoose
+    const hash = await encryptPassword(password);
+    
+    const updateUser = await User.findOneAndUpdate({email}, {
+      password: hash
+    }, { new: true}); 
+
+  next();
+  }
+  catch(err) {
+    debug('err', err);
+    req.flash('error_msg', 'invalid token, continue to forgot password');
+    return res.redirect('/users/forgot-password');
+  }
+},
+passport.authenticate(
+    'local', 
+    {
+      failureRedirect: '/users/login', 
+      failureFlash: 'Incomplete reset password', 
+      successFlash: 'Your password reset was successful', 
+      successRedirect: '/stories',
+    })
+); // end reset-password
+
 /*
 router.all('/*', (req, res, next) => {
   res.send('404 not found, Users');
@@ -152,3 +230,13 @@ router.all('/*', (req, res, next) => {
 
 
 module.exports = router;
+/*
+1. POST /forgot-password/ email
+update user field passwordResetToken: token
+
+2. Check email for reset password link/token
+
+3. POST /reset-password body [password, token]
+
+Verify token and update user field passwordResetToken: ''
+*/

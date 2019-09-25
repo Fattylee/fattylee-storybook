@@ -111,6 +111,18 @@ const validateCommentField = async (req, res, next) => {
   }
 };
 
+const validateNewPasswordFields = async (req, res, next) => {
+  const { error } = config.keys({
+    confirmPassword: Joi.string().valid(Joi.ref('password')).required().label('Confirm password').options({ language: { any: { allowOnly: 'must match Password' } } }).trim(),
+  }).validate(req.body);
+  if(error) {
+    const errors = error.details.map(e => ({error: e.message}));
+    res.render('users/new-password', {errors,  pageTitle: 'New-password'});
+  }
+  else {
+    next();
+  }
+};
 
 
 exports.validateEditFields = validateEditFields;
@@ -119,3 +131,5 @@ exports.validateLoginFields = validateLoginFields;
 exports.validateRegisterFields = validateRegisterFields;
 exports.validateProfileFields = validateProfileFields;
 exports.validateCommentField = validateCommentField;
+exports.validateNewPasswordFields = validateNewPasswordFields;
+
