@@ -5,8 +5,7 @@ export default () => {
  
  const flash = $('[role="alert"]'); 
  if(flash.length){
-   setTimeout(() => flash.fadeOut(), 2000);
+   setTimeout(() => flash.fadeOut(), 5000);
  }
   
 }
-

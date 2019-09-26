@@ -39,7 +39,7 @@ export default () => {
      $('.match-count').text($('.get-title').length);
        
      searchBox.focus();
-     searchBox.click();
+     //searchBox.click();
      
    
      searchBox.on('keyup', function(e){

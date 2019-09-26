@@ -18,7 +18,7 @@ $('form.submit').on('submit', function(e){
             loadingMessage: 'Registering...',
           },
           'forgot-password': {
-            loadingMessage: 'Submitting...',
+            loadingMessage: 'Sending...',
           },
           'reset-password': {
             loadingMessage: 'Resetting password...',

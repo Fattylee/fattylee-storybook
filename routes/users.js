@@ -182,12 +182,12 @@ router.post('/forgot-password', async (req, res) => {
   const foundUser = await User.findOne({email});
     if(!foundUser) {
     debug('not foundUser', foundUser);
-    req.flash('error_msg', 'email does not exist');
+    req.flash('error_msg', 'Can\'t find that email, sorry.');
     return res.redirect('/users/forgot-password');
     }
   const token = jwt.sign({email}, keys.JWT_SECRET, { expiresIn: '1d' });
   
-  await sendMail(passwordEmailTemplate({token}))
+  await sendMail(passwordEmailTemplate({token, to: email}))
   req.flash('success_msg', 'Check your email for a new password reset link');
   res.redirect('/');
  
@@ -230,13 +230,3 @@ router.all('/*', (req, res, next) => {
 
 
 module.exports = router;
-/*
-1. POST /forgot-password/ email
-update user field passwordResetToken: token
-
-2. Check email for reset password link/token
-
-3. POST /reset-password body [password, token]
-
-Verify token and update user field passwordResetToken: ''
-*/
