@@ -7,7 +7,7 @@
     "test": "tests"
   },
    "scripts": {
-    "test": "jest --watchAll",
+    "test": " cross-env DEBUG=test jest --watchAll",
     "sendMail": "cross-env DEBUG=sendMail nodemon playground/sendMail.js -w playground/sendMail.js",
     "start:dev": "cross-env NODE_ENV=development DEBUG=active:app nodemon index.js -e 'js' -i public -i playground -i client",
     "start:prod": "cross-env NODE_ENV=production DEBUG=active:app nodemon index.js -e 'js' -i public -i client",
@@ -15,7 +15,7 @@
     "start:stag": "cross-env NODE_ENV=staging DEBUG=active:app nodemon index.js -i client -i public", 
     "webpack": "webpack -p --env production",
     "webpack:dev": "webpack-dev-server",
-    "redux": "cross-env DEBUG=api:req nodemon -w playground/redux.js playground/redux.js ",
+    "play": "cross-env DEBUG=api:req nodemon -w playground/echo.js playground/echo.js ",
     "client": "npm run webpack:start --prefix client",
     "client:build": "npm run webpack --prefix client",
     "heroku-postbuild": "cd client && npm i && npm run webpack && echo \"boss man\" "
