@@ -5,9 +5,12 @@ export default () => {
   
   const footer = document.getElementById('fixed-bottom');
   document.body.clientHeight  <=  window.innerHeight ? (() => {
-  footer.classList.add('fixed-bottom');
-  footer.classList.remove('off');
-  })() : footer.classList.remove('off');
+    if(footer) {
+      footer.classList.add('fixed-bottom');
+      footer.classList.remove('off');
+    }
+  
+  })() : footer && footer.classList.remove('off');
   
   // desktop settings
   // remove bg-black class from second column

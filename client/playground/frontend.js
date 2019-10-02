@@ -1,7 +1,7 @@
 import React, {ReactDOM} from 'react';
 import { createStore, applyMiddleware, combineReducers} from 'redux';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Link, NavLink } from 'react-router-dom';
 
 const authReducer = (state = {}, action) => {
   switch(action.type) {
@@ -50,4 +50,3 @@ const Router = () => (
   </BrowserRouter>
 );
 ReactDOM.render(<Provider store={store}><App /></Provider>, document.querySelector('root'));
-

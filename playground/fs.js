@@ -1,3 +1,4 @@
+//import fs from 'fs';
 const fs = require('fs');
 const util = require('util')
 const fse = require('fs-extra');
@@ -61,4 +62,4 @@ run();
 /*fse.readdir(__dirname, (err, files) => {
   console.log('my list of files:', files)
 })*/
-console.log('util.promisify', util.isObject({}))
+console.log('util.promisify', util.isObject({}));

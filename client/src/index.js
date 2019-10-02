@@ -48,5 +48,10 @@ $(window).on('load', (e) => {
   removeTrailingHash();
   
   removeFlash();
- 
+  
+ if(window.location.pathname.startsWith('/react')) {
+   require('./components/App');
+   require('./eruda');
+ }
+  
 }); // end onload

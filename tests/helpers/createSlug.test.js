@@ -1,24 +1,30 @@
-const createSlug = require('../../helpers/createSlug');
+import createSlug from '../../helpers/createSlug';
 const debug = require('debug')('test');
 
-describe('Home page route GET /', () => {
-    it('should GET /', (done) => {
-   /* request(app)
-      .get('/')
-      .expect(200)
-      .end((err, res) => {
-        if(err) return done(err);
-        done();
-      });*/
-      done();
-  }); // end it
-  test('next one', () => {
-    
+
+describe('createSlug test /', () => {
+   
+  test('should throw invalid filename for a bad input', () => {
+    expect(() => {
+      createSlug('abupng', 526628263538)
+    }).toThrowError('Invalid filename');
   });
-  test('nice one', () => {
-    const sum = (a,b) => a + b;
-    debug('testing...');
-    console.log(createSlug('abu.png', 526628263538));
-    expect(sum(2,4)).toBe(6);
+  test('should return a slug name', () => {
+    
+    const res = createSlug('abu.png', 526628263538)
+   
+    expect(res).toMatch(/^526628263538\/.*\.png$/);
+  
+  });
+  
+  test('should be a function', () => {
+    expect(typeof createSlug).toBe('function');
+  });
+  
+  it('should throw error for empty userId field', () => {
+    expect(() => {
+      createSlug('filename.app');
+    }).toThrowError('userId is required');
   })
+  
 });

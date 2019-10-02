@@ -1,4 +1,5 @@
 const debug = require('debug')('api:req'); 
+const moment = require('moment');
 
 
 const isParlindrome = (str) => str.toLowerCase() === str.toLowerCase().split('').reverse().join('');
@@ -118,20 +119,6 @@ const steps = num => {
   }
 };
 
-const printNumber = (num , dec ) => {
-  if(num <= 0) return;
-  
-  debug(num);
-  printNumber(num - dec, dec);
-};
-
-const factorial = num => {
-  if(num < 2) return 6;
-  debug('peint', num)
-  return factorial(num - 1) + 1;
-}
-const str = '   lulu_Yu55 baaa!!! log mark, toLowerCase.'.padEnd(100, '===');
-
 const stepsR = (n, row =0, stair = '') => {
   
   if(row === n) {
@@ -181,26 +168,156 @@ const isPalindromeR = (str, reversed = '', index = 0) => {
  
   return isPalindromeR(str, reversed + str.charAt(str.length - index -1 ), index + 1);
 };
+const printNumber = (num = 10 , dec = 1 ) => {
+  if(num <= -1) return;
+  
+  debug(num);
+  printNumber(num - dec, dec);
+};
 
+const factorial = num => {
+  if(num < 2) return 6;
+  debug('peint', num)
+  return factorial(num - 1) + 1;
+};
+
+const sumR = (num) => {
+  if( num <= 0) {
+    return 10;
+  }
+  return sumR(num - 1) + num;
+  
+}
+
+const pyramid = (size) => {
+  const limit = size * 2;
+  for (let i=1; i< limit; i += 2 ) {
+    const pad = (limit - 1 - i) / 2 ;
+    const padding = ''.padStart(pad, ' ');
+    debug( padding + ''.padStart(i, '#') + padding);
+  }
+  /*
+   #
+  ###
+ #####
+#######
+  */
+};
+
+const pyramidR = (steps, i=1) => {
+  if(!(i < steps * 2)){
+    return;
+  }
+  const pad = (steps *2 - 1 - i) / 2 ;
+   // const padding = ''.padStart(pad, ' ');
+    const padding = ' '.repeat(pad);
+    debug( padding + ''.padStart(i, '#') + padding);
+  pyramidR(steps, i + 2);
+};
+const countVowel = (str) => {
+  return str.split('').reduce((no, ch) => {
+    if('aeiou'.includes(ch.toLowerCase())) return ++no;
+    return no;
+  }, 0)
+};
+
+const fib = (num) => {
+  if(Math.sign(num) === -1) throw new Error('only a positive integer is allowed');
+  if(num < 2) return num ;
+  
+  const arr = [0, 1];
+  for(let i=2; i<= num; i++) {
+    const next = arr[i - 1] + arr[i - 2];
+    arr.push(next);
+  }
+  return arr[num];
+};
+
+const fibR = (num) => {
+  //if(num <= 2) return num - 1;
+  if(num < 2) return num;
+  return fib(num-2) + fib(num - 1);
+};
+/*for(const num of [0,1,2,3,4,5,6,7,8,9,10]) {
+  debug('fib('+ num+')', fib(num))
+}*/
+
+class QueueClass {
+   
+  constructor() {
+    data = [];
+  }
+  
+  add(val) {
+    this.data.push(val);
+    return this;
+  }
+  
+  remove() {
+    return this.data.shift();
+  }
+}
+
+function Queue() {
+  const data = [];
+  
+  this.add = (val) => {
+    data.push(val);
+    return this;
+  }
+  
+  this.remove = () => {
+    return data.shift();
+  }
+  
+  this.data = function(){
+    return [...data];
+  }
+  this.peek = () => {
+    return data[0];
+  }
+}
+const str = 'abU 646 utre';
 
 const o = {
   name: 'Abu Adnaan',
   'city-name': 'Itele',
 };
+debug(moment('').valueOf())
+const q = new Queue();
+q.add(4).add(2)
+debug('what', q.data().unshift(7,52));
+debug('removed', q.remove());
+debug('after rm',q.data())
+//o[[1,3,undefined,null,8,'next']] = 'arr';
+//debug(o)
+let counter = 0;
+//rest(3,4,'city-name', o);
+//debug(str, countVowel(str))
+//pyramidR(14);
+//debug(sumR(5)); // 1,2,3,4,5 = 15;
+//debug(isPalindromeR('abuutbA'));
+//debug(capitalizeR('abu next streewr'));
+//stepsR(20);
+//debug('isPalindrome', isParlindrome('boB'));
+//debug(factorial(12));
+//printNumber(21, undefined);
+//steps(5);
+//debug(capitalize2(str));//console.log('is anagram:', anagram2('5abu+-', 'uba5'))
+//console.log(charMap(str));
 /*
 let para = document.querySelector('p');
 let compStyles = window.getComputedStyle(para); 
 
 console.log(compStyles.getPropertyValue('color'));
 */
-let counter = 0;
-//debug(isPalindromeR('abuutbA'));
-//debug(capitalizeR('abu next streewr'));
-//stepsR(20);
-//debug('isPalindrome', isParlindrome('boB'));
-//debug(factorial(12));
-//printNumber(20, 3);
-//steps(5);
-//debug(capitalize2(str));//console.log('is anagram:', anagram2('5abu+-', 'uba5'))
-//console.log(charMap(str));
 
+/*
+const rest = (...args) => {
+  debug(args); // args is an array
+};
+
+rest.call(this, 1,3,2);
+rest.apply(this, [1,2,3]);
+rest.bind(this, [1,2,4])(5,6,7)
+*/

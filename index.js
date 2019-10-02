@@ -81,6 +81,9 @@ app.use((req, res, next) => {
 });
 
 //app.use('/stories', storyError);
+app.get('/react*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/public/react.html'));
+});
 app.use('/', index);
 app.use('/stories', isAuthenticated, stories);
 app.use('/users', users);

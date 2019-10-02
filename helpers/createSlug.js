@@ -1,6 +1,8 @@
 const uuid = require('uuid/v1');
 
 const createSlug = (filename, userId) => {
+  if(!userId) throw new Error('userId is required');
+  
   if(!filename.includes('.')) throw new Error('Invalid filename, "filename" must include an extension name.');
   const extIndex = filename.lastIndexOf('.');
   const ext = filename.slice(extIndex + 1);

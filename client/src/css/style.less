@@ -2,6 +2,7 @@
 @off-black: #20222b;
 @purple: #8357c5 ;
 @primary: rgb(0,123,255);
+@danger: rgb(220,53,69);
 
 // screen sizes
 @m-screen: 440px;
@@ -32,6 +33,10 @@
 .shadow-dark {
   box-shadow: rgba(0,0,0,0.5) 0px 0.5rem 1rem;
   border-bottom: 2px solid darken(@primary, 15%);
+}
+.shadow-dark-react {
+  .shadow-dark;
+  border-bottom-color: darken(@danger, 15%);
 }
 .story-avatar{
   background: url(../free-blurry-12x12.jpg) no-repeat center top;
