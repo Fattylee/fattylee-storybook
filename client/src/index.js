@@ -50,7 +50,7 @@ $(window).on('load', (e) => {
   removeFlash();
   
  if(window.location.pathname.startsWith('/react')) {
-   require('./components/App');
+   require('./expensify');
    require('./eruda');
  }
   

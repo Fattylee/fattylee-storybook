@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import $ from 'jquery';
-import { BrowserRouter, Route, NavLink, Link, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, NavLink, Link, Switch } from 'react-router-dom';
 
+console.log(require('react-router-dom'));
 import Header from './Header';
 
 const Home = () => (
@@ -21,22 +21,21 @@ const NotFound = () => (
 
 
 const App = () => (
-  <BrowserRouter>
+  <Router>
   <Header />
+  <div className='container mt-4'>
   <Switch>
-
+  
     <Route exact path='/react' component={Home} />
     <Route  path='/react/about' component={About} />
     <Route  path='/react/news' component={News} />
     <Route component={NotFound} />
-    
+    <News /> {/* never will it get here */}
   </Switch>
-  </BrowserRouter>
+  </div>
+  </Router>
 
 );
 
-ReactDOM.render(<App />, $('#rootZ')[0]);
-
 
 export default App;
-

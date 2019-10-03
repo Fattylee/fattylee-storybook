@@ -20,7 +20,8 @@ class Header extends Component {
     
     
     <ul className="navbar-nav ml-auto">
-   {/*{#if user}*/}
+    {/*
+   {/*{#if user}/}
    
      <div className="dropdown">
     <a className="btn btn-danger dropdown-toggle nav-link text-left" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -29,46 +30,49 @@ class Header extends Component {
     
      <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
        
-     {/*{#isNotEqual 'Stories' pageTitle}*/}
+     {/*{#isNotEqual 'Stories' pageTitle}/}
      <a className="dropdown-item text-dark" href="/stories"><i className="fas fa-book-open"></i> View stories</a>
-     {/*{/isNotEqual}*/}
+     {/*{/isNotEqual}/}
      
-     {/*{#isNotEqual 'Create story' pageTitle}*/}
+     {/*{#isNotEqual 'Create story' pageTitle}/}
     <a className="dropdown-item text-dark" href="/stories/add"><i className="fas fa-plus"></i> Add story</a>
-    {/*{/isNotEqual}*/}
+    {/*{/isNotEqual}/}
     
-    {/*{#isEqual 'Feeds' pageTitle}*/} 
+    {/*{#isEqual 'Feeds' pageTitle}/} 
       <div className="form-group dropdown-item">
         <input type="text" name="search-title" id="search-title" className="form-control" placeholder="Search story by title" />
       </div>
-    {/*{/isEqual}*/}
-     {/*{#isEqual 'Stories' pageTitle}*/}
+    {/*{/isEqual}/}
+     {/*{#isEqual 'Stories' pageTitle}/}
       <div className="form-group dropdown-item">
         <input type="text" name="search-title" id="search-title" className="form-control" placeholder="Search story by title" />
       </div> 
-    {/*{/isEqual}*/}
+    {/*{/isEqual}/}
     
-    </div> {/* end dropdown-menu */}
-    </div>{/* end dropdown */}
+    </div> {/* end dropdown-menu /}
+    </div>{/* end dropdown /}
  
    
     <li className="nav-item">
         <a className="nav-link " href="/users/me"> <img src='https://storage.cloud.google.com/storybook_uploads/{{user.avatar }}'
-        width="20" height="25" alt="" className="img-fluid rounded-circle " /> <span>{/*{capitalizeEach user.name}*/}</span> </a>
+        width="20" height="25" alt="" className="img-fluid rounded-circle " /> <span>{/*{capitalizeEach user.name}/}</span> </a>
     </li>
     <li className="nav-item ">
         <a className="nav-link" href="/users/logout"><i className='fas fa-sign-out-alt'></i> Logout</a>
     </li>
     
     
-      {/*{else}*/}
+      {/*{else}/}
       <li className="nav-item ">
         <a className="nav-link" href="/users/login"><i className='fas fa-user-lock'></i> Login</a>
       </li>
      <li className="nav-item">
         <a className="nav-link" href="/users/register"><i className='fas fa-user-plus'></i> Register</a> 
-    {/*{/if}*/}
+    {/*{/if}/}
     </li>
+    */}
+    
+    
     <li className="nav-item">
         <Link className="nav-link" to="/react/about"><i className='fas fa-user-plus'></i> About</Link>
     </li>
@@ -76,7 +80,7 @@ class Header extends Component {
         <Link className="nav-link" to="/react/news"><i className='fas fa-user-plus'></i> News</Link>
     </li>
      <li className="nav-item">
-        <a className="nav-link" href="/"><i className='fas fa-user-plus'></i> Storybook</a>
+        <a className="nav-link" href="/"><i className='fas fa-book'></i> Storybook</a>
     </li>
   </ul>
       
@@ -89,4 +93,3 @@ class Header extends Component {
 }
 
 export default Header;
-
