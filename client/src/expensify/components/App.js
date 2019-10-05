@@ -2,6 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, NavLink, Link, Switch } from 'react-router-dom';
 
+import ListConnect from './ExpensesList';
+import Expense from './Expense';
+
 console.log(require('react-router-dom'));
 import Header from './Header';
 
@@ -20,13 +23,29 @@ const NotFound = () => (
 );
 
 
+
+const Hoc = (WrappedComp) => {
+  return (props) => (
+    <div>
+    {props.isAdmin && <h1>I am admin</h1>}
+    <p>Hoc comp</p>
+    <WrappedComp {...props} />
+    </div>
+  );
+}
+
+const Alias = Hoc(NotFound);
+//const ListHoc = Hoc(List);
+
 const App = () => (
   <Router>
   <Header />
+  {/* <Alias isAdmin={true}/> */}
   <div className='container mt-4'>
   <Switch>
   
-    <Route exact path='/react' component={Home} />
+    <Route exact path='/react' component={ListConnect} />
+    <Route  path='/react/add' component={Expense} />
     <Route  path='/react/about' component={About} />
     <Route  path='/react/news' component={News} />
     <Route component={NotFound} />

@@ -54,4 +54,3 @@ const expensesReducer = (state = expensesDefaultState, action)=> {
 };
 
 export default expensesReducer;
-

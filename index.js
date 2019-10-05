@@ -9,11 +9,21 @@ const path = require('path');
 const flash = require('connect-flash');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+
 const stories = require('./routes/stories');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
 const index = require('./routes');
 const uploads = require('./routes/uploads');
+
+// API routes import
+const apiStories = require('./routes/api/v1/stories');
+const apiUsers = require('./routes/api/v1/users');
+const apiAuth = require('./routes/api/v1/auth');
+const apiIndex = require('./routes/api/v1');
+const apiUploads = require('./routes/api/v1/uploads');
+
+
 const startDB = require('./startups/db');
 const passport = require('passport');
 const isAuthenticated = require('./middlewares/auth');
@@ -80,15 +90,27 @@ app.use((req, res, next) => {
   next();
 });
 
-//app.use('/stories', storyError);
+// serve react index for all routes matching react
 app.get('/react*', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/react.html'));
 });
+
+
 app.use('/', index);
 app.use('/stories', isAuthenticated, stories);
 app.use('/users', users);
 app.use('/auth', auth);
 app.use('/uploads', isAuthenticated, uploads);
+
+
+// API routes
+
+app.use('/api/v1', apiIndex);
+app.use('/api/v1/stories', /*isAuthenticated,*/ apiStories);
+app.use('/api/v1/users', apiUsers);
+app.use('/api/v1/auth', apiAuth);
+app.use('/api/v1/uploads', isAuthenticated, apiUploads);
+
 
 app.use((err, req, res, next) => {
   if(app.get('env') === 'production')

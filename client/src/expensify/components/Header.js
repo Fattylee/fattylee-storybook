@@ -79,6 +79,9 @@ class Header extends Component {
      <li className="nav-item">
         <Link className="nav-link" to="/react/news"><i className='fas fa-user-plus'></i> News</Link>
     </li>
+    <li className="nav-item">
+        <Link className="nav-link" to="/react/add"><i className='fas fa-user-plus'></i> Add expense</Link>
+    </li>
      <li className="nav-item">
         <a className="nav-link" href="/"><i className='fas fa-book'></i> Storybook</a>
     </li>
