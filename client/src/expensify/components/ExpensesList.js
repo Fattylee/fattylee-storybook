@@ -1,10 +1,16 @@
 import React, { Fragment } from 'react';
 import {connect} from 'react-redux';
+import visibleExpenses from '../selectors/expenses';
+import {removeExpense} from '../actions/expensesAction';
+import {setTextFilter} from '../actions/filtersAction';
 
 
-
-const List = ({expenses}) => {
-  
+const List = ({expenses, dispatch, filters}) => {
+  const NoStories = <div  className="col">
+           <p  className="jumbotron">No published stories,  be the first to <a href="/stories"  className="btn btn-primary"><span  className="fas fa-plus"></span> publish a story</a>
+           </p>
+         </div>;
+         
   const expensesList = expenses.length ? expenses.map((expense, index) => (
   
      <Fragment key={index}>
@@ -30,19 +36,35 @@ const List = ({expenses}) => {
       </div>{/*}<!-- End col -->*/}
         
     </Fragment>
-  )) : <div  className="col">
-           <p  className="jumbotron">No published stories,  be the first to <a href="/stories"  className="btn btn-primary"><span  className="fas fa-plus"></span> publish a story</a>
-           </p>
-         </div>;
+  )) : NoStories; {/* expensesList */}
          
+         
+  const expensesListSketch = expenses.length ? expenses.map(expense => (
+  
+  <div key={expense.id} className='col-sm-6 text-white'>
+  <div >
+    <h3>{expense.description}</h3>
+    <p>Amount: {expense.amount} - createdAt: {expense.createdAt}</p>
+    
+    <button className='btn btn-sm btn-danger'
+    onClick={() =>dispatch(removeExpense(expense.id))}
+    >Remove</button>
+  </div>
+  <hr  className='text-white'/>
+ </div>
+  )) : NoStories; {/* expensesListSketch */}
+  
+  
   return (
 <Fragment>
+      <input 
+      className='my-4'
+      value={filters.text}
+      onChange={(e)=>dispatch(setTextFilter(e.target.value))}/>
 
-  {/*props.expenses.map((expense, i) =><li key={i}>{`${expense.description || 'default'} - ${expense.note}`} </li>)*/}
-  {/*}<div  className="container story-list">*/}
       <div  className="row">
        
-       {expensesList}
+       {expensesListSketch}
     
   </div>{/*}<!-- End row  -->*/}
 {/*}</div>{/*}<!-- End container -->*/}
@@ -53,8 +75,9 @@ const List = ({expenses}) => {
 
 const mstp = (state) => {
   return {
-    expenses: state.expenses,
+    expenses: visibleExpenses( state.expenses, state.filters),
+    filters: state.filters,
   };
 }
 export default connect(mstp)(List)
-//export default List;
+

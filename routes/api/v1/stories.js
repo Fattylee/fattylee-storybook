@@ -52,12 +52,13 @@ router.get('/', async (req, res) => {
   .populate('user')
   .populate({
     path: 'comments',
-    /*populate: {
+    populate: {
       path: 'owner', 
       //select: 'name',
       model: 'User',
-      }*/
+      }
   })  
+  //.populate('comments')
   .sort('-updatedAt');
   
   res.status(200).send(stories);

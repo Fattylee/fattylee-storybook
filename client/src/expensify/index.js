@@ -22,15 +22,15 @@ const unsubscribe = store.subscribe(() => {
 
 //store.dispatch(actionFilter.setTextFilter('rent'))
 
-store.dispatch(actionFilter.sortByAmount())
-store.dispatch(actionFilter.sortByDate())
+//store.dispatch(actionFilter.sortByAmount())
+//store.dispatch(actionFilter.sortByDate())
 //store.dispatch(actionFilter.setStartDate())
 
 //setTimeout(() => {
 
-//store.dispatch(actionFilter.setTextFilter('onE'));
+store.dispatch(actionFilter.setTextFilter('E'));
 
-store.dispatch(actionFilter.setStartDate(0));
+//store.dispatch(actionFilter.setStartDate(0));
 //store.dispatch(actionFilter.setEndDate(Date.now() -1000));
 //}, 500);
 
