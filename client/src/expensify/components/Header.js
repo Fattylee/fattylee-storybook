@@ -10,7 +10,7 @@ class Header extends Component {
       <Fragment>
         <nav className="navbar navbar-expand-sm navbar-dark bg-danger shadow-dark-react">
 <div className='container'>
-  <NavLink className="navbar-brand" to="/react">Expensify</NavLink>
+  <NavLink className="navbar-brand" activeClassName='active-nav-link' exact to="/react">Expensify</NavLink>
   <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span className="navbar-toggler-icon"></span>
   </button>
@@ -74,13 +74,13 @@ class Header extends Component {
     
     
     <li className="nav-item">
-        <Link className="nav-link" to="/react/about"><i className='fas fa-user-plus'></i> About</Link>
+        <NavLink activeClassName='active-nav-link' className="nav-link" to="/react/about"><i className='fas fa-user-plus'></i> About</NavLink>
     </li>
      <li className="nav-item">
-        <Link className="nav-link" to="/react/news"><i className='fas fa-user-plus'></i> News</Link>
+        <NavLink className="nav-link" activeClassName='active-nav-link' to="/react/news"><i className='fas fa-user-plus'></i> News</NavLink>
     </li>
     <li className="nav-item">
-        <Link className="nav-link" to="/react/add"><i className='fas fa-user-plus'></i> Add expense</Link>
+        <NavLink className="nav-link" activeClassName='active-nav-link' to="/react/add"><i className='fas fa-user-plus'></i> Add expense</NavLink>
     </li>
      <li className="nav-item">
         <a className="nav-link" href="/"><i className='fas fa-book'></i> Storybook</a>
