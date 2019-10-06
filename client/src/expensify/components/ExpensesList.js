@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import {connect} from 'react-redux';
 import visibleExpenses from '../selectors/expenses';
 import {removeExpense} from '../actions/expensesAction';
-import {setTextFilter} from '../actions/filtersAction';
+import {setTextFilter, sortByDate, sortByAmount} from '../actions/filtersAction';
 
 
 const List = ({expenses, dispatch, filters}) => {
@@ -57,11 +57,35 @@ const List = ({expenses, dispatch, filters}) => {
   
   return (
 <Fragment>
-      <input 
-      className='my-4'
-      value={filters.text}
-      onChange={(e)=>dispatch(setTextFilter(e.target.value))}/>
-
+     
+<div className='searchBox-container move-to-navbar-bottom'>
+       <input type="text" placeholder="Search expenses by description" className="search-box"
+       value={filters.text}
+      onChange={(e)=>dispatch(setTextFilter(e.target.value))}
+       />
+       <span className='close-search-box fas fa-times  fa-1x text-center pt-3' title='close search box'
+       onClick={() => dispatch(setTextFilter()) }
+       ></span>
+       <span className='match-count'>{expenses.length}</span>
+     </div>
+     
+     <div className="form-group text-white" style={{marginTop: '67px'}}>
+     <label htmlFor="status">Sort by</label>
+<select className="form-control" id="status" name="status"
+onChange={(e) => {
+  const value = e.target.value;
+  if(value === 'amount'){
+    dispatch(sortByAmount());
+  }
+  else {dispatch(sortByDate())}
+}}
+>
+    <option value="date">Date</option>
+    <option value="amount">Amount</option>
+  </select>
+  </div>
+     <h1 className='text-white' >Expenses List</h1>
+     
       <div  className="row">
        
        {expensesListSketch}
