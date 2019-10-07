@@ -2,8 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, NavLink, Link, Switch } from 'react-router-dom';
 
+
 import ListConnect from './ExpensesList';
-import Expense from './Expense';
+import ExpenseForm from './ExpenseForm';
+import AddExpense from './AddExpense';
+
 
 console.log(require('react-router-dom'));
 import Header from './Header';
@@ -41,11 +44,11 @@ const App = () => (
   <Router>
   <Header />
   {/* <Alias isAdmin={true}/> */}
-  <div className='container mt-4'>
+  <div className='container mt-4 text-white'>
   <Switch>
   
     <Route exact path='/react' component={ListConnect} />
-    <Route  path='/react/add' component={Expense} />
+    <Route  path='/react/add' component={AddExpense} />
     <Route  path='/react/about' component={About} />
     <Route  path='/react/news' component={News} />
     <Route component={NotFound} />

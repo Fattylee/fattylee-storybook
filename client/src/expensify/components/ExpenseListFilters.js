@@ -16,7 +16,7 @@ const ExpenseListFilters = ({dispatch, filters, expenses}) => (
      </div>
      {/* end searchBox-container*/}
      
-     <div className="form-group text-white" style={{marginTop: '67px'}}>
+     <div className="form-group" style={{marginTop: '67px'}}>
      <label htmlFor="status">Sort by</label>
 <select className="form-control" id="status" name="status"
 onChange={(e) => {

@@ -3,12 +3,10 @@ import {connect} from 'react-redux';
 import visibleExpenses from '../selectors/expenses';
 import {removeExpense} from '../actions/expensesAction';
 import ExpenseListFilters from './ExpenseListFilters';
+import NoStories from './NoStories';
 
-const List = ({expenses, dispatch, filters}) => {
-  const NoStories = <div  className="col">
-           <p  className="jumbotron">No published stories,  be the first to <a href="/stories"  className="btn btn-primary"><span  className="fas fa-plus"></span> publish a story</a>
-           </p>
-         </div>;
+
+const List = ({expenses, dispatch, filters}) => { 
          
   const expensesList = expenses.length ? expenses.map((expense, index) => (
   
@@ -35,12 +33,12 @@ const List = ({expenses, dispatch, filters}) => {
       </div>{/*}<!-- End col -->*/}
         
     </Fragment>
-  )) : NoStories; {/* expensesList */}
+  )) : <NoStories />; {/* expensesList */}
          
          
   const expensesListSketch = expenses.length ? expenses.map(expense => (
   
-  <div key={expense.id} className='col-sm-6 text-white'>
+  <div key={expense.id} className='col-sm-6'>
   <div >
     
     <h3>{expense.description}</h3>
@@ -52,7 +50,7 @@ const List = ({expenses, dispatch, filters}) => {
   </div>
   <hr  className='text-white'/>
  </div>
-  )) : NoStories; {/* expensesListSketch */}
+  )) : <NoStories />; {/* expensesListSketch */}
   
   
   return (
