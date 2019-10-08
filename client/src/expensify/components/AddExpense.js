@@ -6,7 +6,8 @@ import {SingleDatePicker} from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 import {addExpense} from '../actions/expensesAction';
 import {connect} from 'react-redux';
-
+//import alertBox from '../../helpers/alertBox';
+import AlertBox from './AlertBox';
 
 
 class AddExpense extends Component {
@@ -16,31 +17,50 @@ class AddExpense extends Component {
     amount: '',
     createdAt: moment(),
     focused: false,
+    errors: [],
   }
-  onSubmit = (props) => {
-   // e.preventDefault();
-    console.log(props, 'from direct', this.props.dispatch);
+  onSubmit = (e) => {
+    e.preventDefault();
+    this.setState(prevState => ({errors: []}));
+    const {description, amount} = this.state;
+    console.log('form', this.state);
+    
+    if(!description) {
+      this.setState(prevState => ({ errors: [...prevState.errors, 'Please provide a value for the description field']}));
+      console.log('description', this.state);
+    }
+    
+    if(!amount) {
+      this.setState(prevState => ({ errors: [...prevState.errors, 'Please provide a value for the amount field']}));
+      console.log('amount', this.state);
+    }
+    else {
+    console.log('else', this.state);
     const result = {
       ...this.state,
       amount: parseFloat(this.state.amount, 10),
-      createdAt: this.state.createdAt.millisecond(),
+      createdAt: this.state.createdAt.milliseconds(),
       };
-    console.log('result', result);
+    console.log(this.state, 'result', result);
     this.props.dispatch(addExpense(result));
     this.props.history.push('/react');
-  }
+    }
+  }; // end onSubmit
   
   onChangeDescription = (e) => {
+    this.setState(prevState => ({errors: []}));
       const description = e.target.value; 
       this.setState((prevState) => ({
         description,
       }));
-    }
+  }; // end onChangeDescription
   onChangeNote = (e) => {
+    this.setState(prevState => ({errors: []}));
     const note = e.target.value;
     this.setState(prevState => ({note}));
   }
   onChangeAmount = (e) => {
+    this.setState(prevState => ({errors: []}));
     const amount = e.target.value;
     
     if(amount.match(/^(|\d+\.?(\d{1,2})?)$/ig)) {
@@ -70,7 +90,12 @@ class AddExpense extends Component {
     <Fragment>
     
    
-  
+  { !!this.state.errors.length &&  this.state.errors.map((msg,i) => (
+  <AlertBox  
+    key={i}             
+    message={msg}
+    duration={100000}
+   />))}
   <h3 className="text-center mt-4" id="story-title">Add your next expense</h3>
   
  
@@ -84,16 +109,14 @@ class AddExpense extends Component {
     
     <div className="col-sm-8 mx-auto mb-4">
      
-<form onSubmit={(e) => {
-  e.preventDefault();
-  this.onSubmit(this.props);
-}}>
+<form onSubmit={this.onSubmit}>
       
   
   <div className="form-group">
     <label htmlFor="description">Description</label>
     <input type="text" name="description" 
-    value={this.state.description} className="form-control" id="description" aria-describedby="descriptionHelp" placeholder="Enter description" autoFocus maxLength="100" minLength="3" required 
+    value={this.state.description} className="form-control" id="description" aria-describedby="descriptionHelp" placeholder="Enter description" autoFocus maxLength="100" minLength="3" 
+    required 
     onChange={ this.onChangeDescription }
     />
   </div> {/*{!-- End Description --}*/}
@@ -114,21 +137,25 @@ class AddExpense extends Component {
      style={{display: 'block'}}>Pick a date</label>
      <SingleDatePicker 
      id='datepicker'
-     className="form-control"
+     //className="form-control"
     date={this.state.createdAt} // momentPropTypes.momentObj or null
-    onDateChange={createdAt => this.setState({ createdAt })} // PropTypes.func.isRequired
+    onDateChange={createdAt => {
+      if(createdAt) {
+        this.setState({ createdAt })}
+      }
+    }  // PropTypes.func.isRequired
     focused={this.state.focused} // PropTypes.bool 
     onFocusChange={({ focused }) => this.setState({ focused })} // PropTypes.func.isRequired
     id="your_unique_id" // PropTypes.string.isRequired,
     numberOfMonths={1}
     isOutsideRange={() => false}
-    style={{zIndex: '10'}}
+    
      />
   </div> {/*{!-- End Date --}*/}
   
   <div className="form-group">
     <label htmlFor="note">Note</label>
-    <textarea name="note"  className="form-control details-height" id="note" placeholder="Enter note(optional)"  
+    <textarea name="note"  className="form-control details-height" id="note" placeholder="Enter note (optional)"  
     onChange={this.onChangeNote}
     >{this.state.note}</textarea>
   </div> {/*{!-- End note --}*/}

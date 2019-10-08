@@ -28,7 +28,7 @@ const unsubscribe = store.subscribe(() => {
 
 //setTimeout(() => {
 
-store.dispatch(actionFilter.setTextFilter('E'));
+//store.dispatch(actionFilter.setTextFilter('E'));
 
 //store.dispatch(actionFilter.setStartDate(0));
 //store.dispatch(actionFilter.setEndDate(Date.now() -1000));

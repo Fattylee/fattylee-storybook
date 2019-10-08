@@ -38,6 +38,9 @@ const  alertBox = (options = {}) => {
       alertMsgHandler.fadeOut(speed, () => alertMsgHandler.remove())
     }, duration);
     
+    $('button.close[data-dismiss="alert"]').on('click', function(){
+      alertMsgHandler.remove();
+    });
     }; // end alertBox
 
 export default alertBox;

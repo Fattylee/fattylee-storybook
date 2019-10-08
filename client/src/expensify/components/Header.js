@@ -83,7 +83,7 @@ class Header extends Component {
     
     
     <li className="nav-item">
-        <NavLink exact activeClassName='active-nav-link' className="nav-link" to="/react"><i className='fas fa-user-plus'></i> Dashboard</NavLink>
+        <NavLink exact activeClassName='active-nav-link' className="nav-link" to="/react"><i className='fas fa-database'></i> Dashboard</NavLink>
     </li>
      <li className="nav-item">
         <NavLink activeClassName='active-nav-link' className="nav-link" to="/react/about"><i className='fas fa-user-plus'></i> About</NavLink>
@@ -92,7 +92,7 @@ class Header extends Component {
         <NavLink className="nav-link" activeClassName='active-nav-link' to="/react/news"><i className='fas fa-user-plus'></i> News</NavLink>
     </li>
     <li className="nav-item">
-        <NavLink className="nav-link" activeClassName='active-nav-link' to="/react/add"><i className='fas fa-user-plus'></i> Add expense</NavLink>
+        <NavLink className="nav-link" activeClassName='active-nav-link' to="/react/add"><i className='fas fa-coins'></i> Add expense</NavLink>
     </li>
      <li className="nav-item">
         <a className="nav-link" href="/"><i className='fas fa-book'></i> Storybook</a>
