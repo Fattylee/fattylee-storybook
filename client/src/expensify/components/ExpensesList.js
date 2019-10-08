@@ -1,13 +1,23 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Component } from 'react';
 import {connect} from 'react-redux';
 import visibleExpenses from '../selectors/expenses';
 import {removeExpense} from '../actions/expensesAction';
 import ExpenseListFilters from './ExpenseListFilters';
 import NoStories from './NoStories';
+import {setPathname} from '../actions/pathnameAction';
 
 
-const List = ({expenses, dispatch, filters}) => { 
-         
+class List extends Component { 
+  
+  componentDidMount() {
+    this.props.dispatch(setPathname('/react'));
+  }
+  componentWillUnmount() {
+    this.props.dispatch(setPathname());
+  }
+  render() { 
+  const {expenses, dispatch, filters} = this.props;
+      
   const expensesList = expenses.length ? expenses.map((expense, index) => (
   
      <Fragment key={index}>
@@ -71,6 +81,7 @@ const List = ({expenses, dispatch, filters}) => {
 </Fragment>
 );
 };
+};
 
 const mstp = (state) => {
   return {
@@ -79,4 +90,3 @@ const mstp = (state) => {
   };
 }
 export default connect(mstp)(List)
-

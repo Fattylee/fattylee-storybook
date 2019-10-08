@@ -1,5 +1,6 @@
 import React, { Fragment, Component} from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import {connect} from 'react-redux';
 import $ from 'jquery';
 
 
@@ -9,8 +10,12 @@ class Header extends Component {
  const btn = $('nav.navbar button'); 
  if(btn.attr('aria-expanded') === 'true') btn.click(); // close opened navbar
     }
+  
+  componentDidMount() {
+    console.log(window.location.pathname, 'header');
+  }
   render () {
-    console.log('see me',);
+    console.log('see me', this.state, this.props);
     return (
       <Fragment>
         <nav className="navbar navbar-expand-sm navbar-dark bg-danger shadow-dark-react">
@@ -85,9 +90,17 @@ class Header extends Component {
     <li className="nav-item">
         <NavLink exact activeClassName='active-nav-link' className="nav-link" to="/react"><i className='fas fa-database'></i> Dashboard</NavLink>
     </li>
+    <li className="nav-item">
+        {/*<NavLink exact activeClassName='active-nav-link' className="nav-link"><i className='fas fa-search'></i> Search</NavLink>*/}
+    </li>
+    
+    {
+      this.props.location === '/react/add' &&
+    
      <li className="nav-item">
         <NavLink activeClassName='active-nav-link' className="nav-link" to="/react/about"><i className='fas fa-user-plus'></i> About</NavLink>
     </li>
+    }
      <li className="nav-item">
         <NavLink className="nav-link" activeClassName='active-nav-link' to="/react/news"><i className='fas fa-user-plus'></i> News</NavLink>
     </li>
@@ -107,4 +120,5 @@ class Header extends Component {
   }
 }
 
-export default Header;
+export default connect(state => state)(Header);
+

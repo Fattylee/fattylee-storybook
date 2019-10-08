@@ -18,6 +18,7 @@ class AddExpense extends Component {
     createdAt: moment(),
     focused: false,
     errors: [],
+    screen: window.innerWidth,
   }
   onSubmit = (e) => {
     e.preventDefault();
@@ -38,8 +39,8 @@ class AddExpense extends Component {
     console.log('else', this.state);
     const result = {
       ...this.state,
-      amount: parseFloat(this.state.amount, 10),
-      createdAt: this.state.createdAt.milliseconds(),
+      amount: parseFloat(this.state.amount, 10) * 100,
+      createdAt: this.state.createdAt.valueOf(),
       };
     console.log(this.state, 'result', result);
     this.props.dispatch(addExpense(result));
@@ -72,9 +73,9 @@ class AddExpense extends Component {
   }
   componentDidMount(prevState, prevProp) {
     // console.log(prevState, prevProp);
-   const now = moment(33);
+  
    
-   console.log(now, now.millisecond());
+   console.log(this.state.screen, 'innerWidth');
     axios.get('/api/v1/stories')
     .then(res => {
       //console.log('res', res);
@@ -85,10 +86,9 @@ class AddExpense extends Component {
   }
   
   render() {
-    
+    const wrapper = "col-sm-8 mx-auto mb-4 bg-transparent card-body border-color-white ";
     return (
     <Fragment>
-    
    
   { !!this.state.errors.length &&  this.state.errors.map((msg,i) => (
   <AlertBox  
@@ -96,19 +96,17 @@ class AddExpense extends Component {
     message={msg}
     duration={100000}
    />))}
-  <h3 className="text-center mt-4" id="story-title">Add your next expense</h3>
-  
  
   
-  <div className="text-center">
-    <img  className="img-fluid mb-4 rounded" id="story-img"/>
-    </div>
+  
   <div className="row">
   
-
-    
-    <div className="col-sm-8 mx-auto mb-4">
-     
+    <div className={this.state.screen >= 440 ? wrapper + 'card mt-4' : wrapper }
+    >
+     <div className="text-center">
+  <span className='fa fa-database fa-5x'></span>
+     <h3 className="mt-4" id>Add expense</h3>
+  </div>
 <form onSubmit={this.onSubmit}>
       
   

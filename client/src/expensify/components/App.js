@@ -18,9 +18,13 @@ const About = () => (
   <h4>About || This is the main Header</h4>
 );
 
-const News = () => (
+const News = (props) => {
+  console.log(props, 'news')
+return (
    <h5>News || Some text may go here, thanks </h5>
 );
+};
+
 const NotFound = () => (
    <h5>404 || Some text may go here, thanks </h5>
 );
@@ -39,8 +43,10 @@ const Hoc = (WrappedComp) => {
 
 const Alias = Hoc(NotFound);
 //const ListHoc = Hoc(List);
-
-const App = () => (
+let c=0;
+const App = () => {
+  console.log('App', ++c)
+  return(
   <Router>
   <Header />
   {/* <Alias isAdmin={true}/> */}
@@ -56,8 +62,8 @@ const App = () => (
   </Switch>
   </div>
   </Router>
-
 );
-
+};
 
 export default App;
+
