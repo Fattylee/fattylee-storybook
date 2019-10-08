@@ -31,7 +31,7 @@ import removeTrailingHash from './helpers/removeTrailingHash';
 
 $(window).on('load', (e) => {
   
-  console.log('on load');
+  //console.log('on load');
   
   // fix upload filename
   bsCustomFileInput.init();
@@ -49,6 +49,8 @@ $(window).on('load', (e) => {
   
   removeFlash();
   
+ // const c = require('./expensify/helpers/on_close_navbar_react.js');
+  //c();
  if(window.location.pathname.startsWith('/react')) {
    require('./expensify');
    require('./eruda');

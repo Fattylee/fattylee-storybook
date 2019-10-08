@@ -1,16 +1,23 @@
 import React, { Fragment, Component} from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import $ from 'jquery';
 
 
 class Header extends Component {
   
+  onClickCloseNavbar = () => {
+ const btn = $('nav.navbar button'); 
+ if(btn.attr('aria-expanded') === 'true') btn.click(); // close opened navbar
+    }
   render () {
     console.log('see me',);
     return (
       <Fragment>
         <nav className="navbar navbar-expand-sm navbar-dark bg-danger shadow-dark-react">
 <div className='container'>
-  <NavLink className="navbar-brand" activeClassName='active-nav-link' exact to="/react">Expensify</NavLink>
+  <NavLink className="navbar-brand" activeClassName='active-nav-link' exact to="/react"
+  onClick={this.onClickCloseNavbar}
+  >Expensify</NavLink>
   <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span className="navbar-toggler-icon"></span>
   </button>
@@ -19,7 +26,9 @@ class Header extends Component {
    
     
     
-    <ul className="navbar-nav ml-auto">
+    <ul className="navbar-nav ml-auto"
+    onClick={this.onClickCloseNavbar}
+    >
     {/*
    {/*{#if user}/}
    
@@ -74,6 +83,9 @@ class Header extends Component {
     
     
     <li className="nav-item">
+        <NavLink exact activeClassName='active-nav-link' className="nav-link" to="/react"><i className='fas fa-user-plus'></i> Dashboard</NavLink>
+    </li>
+     <li className="nav-item">
         <NavLink activeClassName='active-nav-link' className="nav-link" to="/react/about"><i className='fas fa-user-plus'></i> About</NavLink>
     </li>
      <li className="nav-item">

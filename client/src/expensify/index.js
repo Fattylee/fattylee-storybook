@@ -14,7 +14,7 @@ const store = configureStore();
 
 const unsubscribe = store.subscribe(() => {
   const state = store.getState();
-  console.log('state', state);
+ // console.log('state', state);
 });
 
 
@@ -38,7 +38,7 @@ store.dispatch(actionFilter.setTextFilter('E'));
 
 const { expenses, filters} = store.getState()
 
-console.log('visibleExpenses', getVisibleExpenses(expenses, filters));
+//console.log('visibleExpenses', getVisibleExpenses(expenses, filters));
 
 $('body').css({background: 'rgba(0,0,0,0.8)', //color: 'white'
 });

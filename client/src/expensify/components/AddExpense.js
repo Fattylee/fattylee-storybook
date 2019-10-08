@@ -1,34 +1,66 @@
 import React, {Fragment, Component } from 'react';
 import axios from 'axios';
+import moment from 'moment';
+import 'react-dates/initialize';
+import {SingleDatePicker} from 'react-dates';
+import 'react-dates/lib/css/_datepicker.css';
+import {addExpense} from '../actions/expensesAction';
+import {connect} from 'react-redux';
+
 
 
 class AddExpense extends Component {
   state = {
     description: '',
-    text: '',
+    note: '',
     amount: '',
-    createdAt: undefined,
+    createdAt: moment(),
+    focused: false,
   }
-  onSubmit = (e) => {
-    e.preventDefault();
-    console.log(e.target);
+  onSubmit = (props) => {
+   // e.preventDefault();
+    console.log(props, 'from direct', this.props.dispatch);
+    const result = {
+      ...this.state,
+      amount: parseFloat(this.state.amount, 10),
+      createdAt: this.state.createdAt.millisecond(),
+      };
+    console.log('result', result);
+    this.props.dispatch(addExpense(result));
+    this.props.history.push('/react');
   }
   
   onChangeDescription = (e) => {
-      const value = e.target.value; 
+      const description = e.target.value; 
       this.setState((prevState) => ({
-        description: value,
+        description,
       }));
     }
+  onChangeNote = (e) => {
+    const note = e.target.value;
+    this.setState(prevState => ({note}));
+  }
+  onChangeAmount = (e) => {
+    const amount = e.target.value;
+    
+    if(amount.match(/^(|\d+\.?(\d{1,2})?)$/ig)) {
+      this.setState((prevState) => ({
+        amount,
+      }));
+    }
+    
+  }
   componentDidMount(prevState, prevProp) {
     // console.log(prevState, prevProp);
+   const now = moment(33);
    
+   console.log(now, now.millisecond());
     axios.get('/api/v1/stories')
     .then(res => {
-      console.log('res', res);
+      //console.log('res', res);
     })
     .catch(err => {
-      console.log('err', err);
+     // console.log('err', err);
     })
   }
   
@@ -39,63 +71,69 @@ class AddExpense extends Component {
     
    
   
-  <h3 className="text-center mt-4" id="story-title">Add your next story</h3>
+  <h3 className="text-center mt-4" id="story-title">Add your next expense</h3>
+  
+ 
+  
   <div className="text-center">
     <img  className="img-fluid mb-4 rounded" id="story-img"/>
     </div>
   <div className="row">
+  
+
+    
     <div className="col-sm-8 mx-auto mb-4">
      
-<form method="post" action="/stories" id="story" data-name="add" onSubmit={this.onSubmit}>
-   
-  
-   <input type="hidden" name="storyImage" value=""
-   onChange={() => {}}/>
-
+<form onSubmit={(e) => {
+  e.preventDefault();
+  this.onSubmit(this.props);
+}}>
+      
   
   <div className="form-group">
     <label htmlFor="description">Description</label>
     <input type="text" name="description" 
-    value={this.state.description} className="form-control" id="description" aria-describedby="descriptionHelp" placeholder="Enter description" autoFocus maxLength="100" minLength="5" required 
+    value={this.state.description} className="form-control" id="description" aria-describedby="descriptionHelp" placeholder="Enter description" autoFocus maxLength="100" minLength="3" required 
     onChange={ this.onChangeDescription }
     />
-  </div> {/*{!-- End title --}*/}
+  </div> {/*{!-- End Description --}*/}
   
   <div className="form-group">
-    <label htmlFor="details">Details</label>
-    <textarea name="details" type="password" className="form-control details-height" id="details" placeholder="Enter details"  minLength="100" required={true}
-    
-    >{/*{story.details}*/}</textarea>
-  </div> {/*{!-- End details --}*/}
+    <label htmlFor="amount">Amount</label>
+    <input 
+    type="text" 
+    name="amount" 
+    value={this.state.amount} className="form-control" id="amount"  placeholder="Enter amount" 
+    required 
+    onChange={ this.onChangeAmount }
+    />
+  </div> {/*{!-- End Amount --}*/}
   
-   <div className="input-group mb-3">
-    <div className="input-group-prepend">
-      <span className="input-group-text">Upload</span>
-    </div>
-    <div className="custom-file">
-    <input type="file" className="custom-file-input" id="file" accept="image/*"  required={true} />
-    <label className="custom-file-label" htmlFor="file">Choose a story image</label>
-    </div>
-  </div> {/*{!-- End File upload --}*/}
+   <div className="form-group">
+    <label htmlFor="datepicker"
+     style={{display: 'block'}}>Pick a date</label>
+     <SingleDatePicker 
+     id='datepicker'
+     className="form-control"
+    date={this.state.createdAt} // momentPropTypes.momentObj or null
+    onDateChange={createdAt => this.setState({ createdAt })} // PropTypes.func.isRequired
+    focused={this.state.focused} // PropTypes.bool 
+    onFocusChange={({ focused }) => this.setState({ focused })} // PropTypes.func.isRequired
+    id="your_unique_id" // PropTypes.string.isRequired,
+    numberOfMonths={1}
+    isOutsideRange={() => false}
+    style={{zIndex: '10'}}
+     />
+  </div> {/*{!-- End Date --}*/}
   
-   <div className="form-check">
-        <label htmlFor="allowComments" className="form-check-label">
-        <input name="allowComments" type="checkbox" className="form-check-input" id="allowComments" checked
-        onChange={() => {}}
-         />
-            Allow Comments
-        </label>
-    </div>
   <div className="form-group">
-     <label htmlFor="status">Status</label>
-<select className="form-control" id="status" name="status"
-onChange={() => {}}
->
-    <option value="public">Public</option>
-    <option value="private">Private</option>
-  </select>
-  </div>
-   <button type="submit" className="btn btn-block btn-primary" data-name='add'>Add story </button>
+    <label htmlFor="note">Note</label>
+    <textarea name="note"  className="form-control details-height" id="note" placeholder="Enter note(optional)"  
+    onChange={this.onChangeNote}
+    >{this.state.note}</textarea>
+  </div> {/*{!-- End note --}*/}
+ 
+   <button type="submit" className="btn btn-block btn-lg  btn-black" data-name='add'>Add expense </button>
       
 </form>
 </div>
@@ -104,9 +142,7 @@ onChange={() => {}}
     </Fragment>
   );
   }
-  
 }
 
 
-export default AddExpense;
-
+export default connect()(AddExpense);
