@@ -19,7 +19,7 @@ const About = () => (
 );
 
 const News = (props) => {
-  console.log(props, 'news')
+  
 return (
    <h5>News || Some text may go here, thanks </h5>
 );
@@ -43,9 +43,9 @@ const Hoc = (WrappedComp) => {
 
 const Alias = Hoc(NotFound);
 //const ListHoc = Hoc(List);
-let c=0;
+
 const App = () => {
-  console.log('App', ++c)
+  
   return(
   <Router>
   <Header />

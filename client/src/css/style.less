@@ -133,10 +133,17 @@
 .border-color-white {
   border-color: darken(white, 15%);
 }
-.searchBox-container.move-to-navbar-bottom {
-  margin-top: -65px;
+.expense-list-filters {
+  display: none;
 }
 
+.searchBox-container.move-to-navbar-bottom {
+  margin-top: -65px;
+  //display: none;
+}
+.sortby {
+  margin-top: 67px; 
+}
 .active-nav-link {
   color: white !important;
 }
@@ -177,7 +184,7 @@ hr.text-white {
   .story-list {
   margin-bottom: 80px;
   }
-  .searchBox-container {
+  .searchBox-container, .sortby {
     max-width: 500px;
     left: 50%;
     transform: translateX(-50%);

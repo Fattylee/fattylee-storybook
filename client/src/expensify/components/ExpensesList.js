@@ -69,7 +69,7 @@ class List extends Component {
      <ExpenseListFilters filters={filters} expenses={expenses} dispatch={dispatch}
      />
      
-     <h1 className='text-white' >Expenses List</h1>
+     <h1 className='text-white my-4 text-center' >Expenses List</h1>
      
       <div  className="row">
        
