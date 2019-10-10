@@ -147,7 +147,7 @@ class ExpenseForm extends Component {
   
   <div className="form-group">
     <label htmlFor="note">Note</label>
-    <textarea name="note"  className="form-control details-height" id="note" placeholder="Enter note (optional)"  
+    <textarea name="note"  className="form-control details-height" id="note" placeholder="Add a note for your expense (optional)"  
     onChange={this.onChangeNote}
     value={this.state.note}
     ></textarea>

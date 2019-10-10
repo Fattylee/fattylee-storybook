@@ -1,8 +1,10 @@
 import * as types from '../actions/types';
+import moment from 'moment';
+
 
 const filtersDefaultState = {
-  startDate: undefined,
-  endDate: undefined,
+  startDate: moment(0).startOf('year'),
+  endDate: moment().endOf('year'),
   sortBy: 'date', // amount or other criteria
   text: '',
 };

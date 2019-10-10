@@ -14,7 +14,7 @@ export default () => {
   
   // desktop settings
   // remove bg-black class from second column
-  const bgBlack = document.querySelector('.bg-black');
+  const bgBlack = document.querySelector('#fixed-bottom .bg-black');
   window.innerWidth > 500 && (() => {
     bgBlack && bgBlack.classList.remove('bg-black');
      // add-light color to footer's links

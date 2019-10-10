@@ -1,9 +1,27 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, Component} from 'react';
 import $ from 'jquery';
-import {setTextFilter, sortByDate, sortByAmount} from '../actions/filtersAction';
+import {setTextFilter, sortByDate, sortByAmount, setStartDate, setEndDate} from '../actions/filtersAction';
+import {DateRangePicker} from 'react-dates';
+import moment from 'moment';
 
 
-const ExpenseListFilters = ({dispatch, filters, expenses}) => (
+class ExpenseListFilters extends Component { 
+  state = {
+    startDate: moment().startOf('month'),
+    endDate: moment().endOf('month'),
+    focusedInput: null,
+  }
+  componentDidMount() {
+    const {startDate, endDate} = this.props.filters;
+    
+    this.setState(() => ({
+      startDate,
+      endDate,
+    }))
+  }
+  render() {
+    const {dispatch, filters, expenses} = this.props;
+    return (
  <div className='expense-list-filters'>
    <div className='searchBox-container move-to-navbar-bottom'>
        <input type="text" placeholder="Search expenses by description" className="search-box"
@@ -14,7 +32,11 @@ const ExpenseListFilters = ({dispatch, filters, expenses}) => (
        />
        <span className='close-search-box fas fa-times  fa-1x text-center pt-3' title='close search box'
        onClick={() => {
+         const startDate = moment(0).startOf('day'), endDate = moment().endOf('year');
          dispatch(setTextFilter());
+         dispatch(setStartDate(startDate));
+         dispatch(setEndDate(endDate));
+         this.setState({startDate, endDate});
           $('.expense-list-filters').fadeOut('slow');
        }}
        ></span>
@@ -23,7 +45,7 @@ const ExpenseListFilters = ({dispatch, filters, expenses}) => (
      {/* end searchBox-container*/}
      
   
-<div className="input-group sortby mb-3" > 
+<div className="input-group sortby sortby-mt mb-3" > 
     <div className="input-group-prepend"> 
       <span className="input-group-text bg-black text-white">
         <span>Sort by</span>
@@ -43,9 +65,39 @@ onChange={(e) => {
     <option value="amount">Amount</option>
   </select>
   </div>  {/* end Sortby selector*/}
+  
+  <div className="input-group sortby" > 
+    <div className="input-group-prepend"> 
+      <span className="input-group-text bg-black text-white">
+        <span>Range</span>
+      </span> 
+    </div> 
+  <DateRangePicker
+  startDate={this.state.startDate} // momentPropTypes.momentObj or null,
+  startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
+  endDate={this.state.endDate} // momentPropTypes.momentObj or null,
+  endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
+  onDatesChange={({ startDate, endDate }) => { 
+  console.log('=onDatesChange', startDate, endDate);
+  dispatch(setStartDate(startDate));
+  dispatch(setEndDate(endDate));
+  this.setState({ startDate, endDate }, () => {
+    console.log(this.state);
+  });
+  
+  
+  }} // PropTypes.func.isRequired,
+  focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+  onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+  numberOfMonths={1}
+  showClearDates
+  isOutsideRange={()=> false}
+  
+  />
+  </div> {/* End DateRangePicker */}
  </div>
 );
-
+}
+}
 
 export default ExpenseListFilters;
-
