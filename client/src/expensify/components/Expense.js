@@ -18,7 +18,7 @@ class Expense extends Component {
     
     return (
     <Fragment>
-     <h1 className='bg-info text-white'>Add Expense</h1>
+     <h1 className='bg-info text-white'> Expense Details</h1>
     </Fragment>
   );
   }
@@ -27,4 +27,3 @@ class Expense extends Component {
 
 
 export default Expense;
-

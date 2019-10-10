@@ -10,7 +10,7 @@
 
 @dist: 60px;
 @btnSize: 20px;
-.action-btn {
+.action-btn, .action-btn-no-border {
   border-radius: 50%;
   width: @dist;
   height: @dist;
@@ -30,6 +30,17 @@
   
 }
 
+.action-btn-no-border {
+  border: none;
+}
+.no-anchor {
+  display: block !important;
+  width: 100%;
+  color: white;
+  &:hover, &:active, &:visited {
+    color: darken(white, 0%);
+  }
+}
 .shadow-dark {
   box-shadow: rgba(0,0,0,0.5) 0px 0.5rem 1rem;
   border-bottom: 2px solid darken(@primary, 15%);

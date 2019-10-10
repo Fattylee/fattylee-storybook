@@ -7,6 +7,8 @@ const ExpenseListFilters = ({dispatch, filters, expenses}) => (
  <div className='expense-list-filters'>
    <div className='searchBox-container move-to-navbar-bottom'>
        <input type="text" placeholder="Search expenses by description" className="search-box"
+       autoFocus={true}
+       
        value={filters.text}
       onChange={(e)=>dispatch(setTextFilter(e.target.value))}
        />
@@ -23,11 +25,12 @@ const ExpenseListFilters = ({dispatch, filters, expenses}) => (
   
 <div className="input-group sortby mb-3" > 
     <div className="input-group-prepend"> 
-      <span className="input-group-text">
+      <span className="input-group-text bg-black text-white">
         <span>Sort by</span>
       </span> 
     </div> 
     <select className="form-control" id="sortby" name="sortby"
+    value={filters.sortBy}
 onChange={(e) => {
   const value = e.target.value;
   if(value === 'amount'){
@@ -42,4 +45,7 @@ onChange={(e) => {
   </div>  {/* end Sortby selector*/}
  </div>
 );
+
+
 export default ExpenseListFilters;
+

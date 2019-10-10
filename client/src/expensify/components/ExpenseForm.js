@@ -40,7 +40,7 @@ class ExpenseForm extends Component {
       createdAt: this.state.createdAt.valueOf(),
       note: this.state.note.trim(),
       };
-      this.props.onSubmitAdd(state);
+      this.props.onSubmitExpense(state);
    
     }
   }; // end onSubmit
@@ -69,7 +69,19 @@ class ExpenseForm extends Component {
     
   }
   
+  componentDidMount() {
+    if(this.props.expense) {
+      
+      this.setState(prevState => ({
+        ...prevState,
+        ...this.props.expense,
+        createdAt: moment(this.props.expense.createdAt),
+        amount: String(this.props.expense.amount / 100 ),
+      }));
+    }
+  }
   render() {
+    
     const wrapper = "col-sm-8 mx-auto mb-4 bg-transparent card-body border-color-white ";
     return (
     <Fragment>
@@ -80,8 +92,6 @@ class ExpenseForm extends Component {
     message={msg}
     duration={10000}
    />))}
- 
-  
   
   <div className="row">
   
@@ -89,7 +99,7 @@ class ExpenseForm extends Component {
     >
      <div className="text-center">
   <span className='fa fa-database fa-5x'></span>
-     <h3 className="mt-4">Add expense</h3>
+     <h3 className="mt-4">{this.props.title || 'Add expense'}</h3>
   </div>
 <form onSubmit={this.onSubmit}>
       
@@ -143,7 +153,7 @@ class ExpenseForm extends Component {
     ></textarea>
   </div> {/*{!-- End note --}*/}
  
-   <button type="submit" className="btn btn-block btn-lg  btn-black" data-name='add'>Add expense </button>
+   <button type="submit" className="btn btn-block btn-lg  btn-black" data-name='add'>{this.props.title || 'Add expense'} </button>
       
 </form>
 </div>

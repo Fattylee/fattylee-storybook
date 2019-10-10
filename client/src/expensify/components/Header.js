@@ -34,7 +34,7 @@ class Header extends Component {
    
     
     <li className="nav-item">
-        <NavLink exact activeClassName='active-nav-link' className="nav-link" to="/react"><i className='fas fa-database'></i> Dashboard</NavLink>
+        <NavLink exact activeClassName='active-nav-link' className="nav-link" to="/react/expenses"><i className='fas fa-database'></i> Expenses</NavLink>
     </li>
     {
       this.props.pathname === '/react' && (
@@ -52,7 +52,7 @@ class Header extends Component {
         <NavLink className="nav-link" activeClassName='active-nav-link' to="/react/news"><i className='fas fa-user-plus'></i> News</NavLink>
     </li>
     <li className="nav-item">
-        <NavLink className="nav-link" activeClassName='active-nav-link' to="/react/add"><i className='fas fa-coins'></i> Add expense</NavLink>
+        <NavLink className="nav-link" activeClassName='active-nav-link' to="/react/expenses/add"><i className='fas fa-coins'></i> Add expense</NavLink>
     </li>
      <li className="nav-item">
         <a className="nav-link" href="/"><i className='fas fa-book'></i> Storybook</a>
@@ -68,4 +68,3 @@ class Header extends Component {
 }
 
 export default connect(state => state)(Header);
-

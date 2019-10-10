@@ -3,17 +3,17 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, NavLink, Link, Switch } from 'react-router-dom';
 
 
-import Dashboard from './ExpensesList';
+import ExpensesList from './ExpensesList';
+import Dashboard from './Dashboard';
 import ExpenseForm from './ExpenseForm';
 import AddExpense from './AddExpense';
-
+import EditExpense from './EditExpense';
+import Expense from './Expense';
 
 //console.log(require('react-router-dom'));
 import Header from './Header';
 
-const Home = () => (
-  <h1>Home || This is the main Header</h1>
-);
+
 const About = () => (
   <h4>About || This is the main Header</h4>
 );
@@ -49,14 +49,18 @@ const App = () => {
   return(
   <Router>
   <Header />
-  {/* <Alias isAdmin={true}/> */}
+ 
   <div className='container mt-4 text-white'>
   <Switch>
   
     <Route exact path='/react' component={Dashboard} />
-    <Route  path='/react/add' component={AddExpense} />
+    <Route exact path='/react/expenses' component={ExpensesList} />
+    <Route  path='/react/expenses/add' component={AddExpense} />
+    <Route  path='/react/expenses/edit/:id' component={EditExpense} />
+    <Route exact path='/react/expenses/:id' component={Expense} />
     <Route  path='/react/about' component={About} />
     <Route  path='/react/news' component={News} />
+    
     <Route component={NotFound} />
     <News /> {/* never will it get here */}
   </Switch>
@@ -66,4 +70,3 @@ const App = () => {
 };
 
 export default App;
-
