@@ -21,7 +21,7 @@ class ExpensesList extends Component {
     this.props.dispatch(setTextFilter());
   }
   render() { 
-  const {expenses, dispatch, filters} = this.props;
+  const {expenses, dispatch, filters, IS_DESKTOP} = this.props;
       
   const expensesList = expenses.length ? expenses.map((expense, index) => (
   
@@ -31,7 +31,7 @@ class ExpensesList extends Component {
          
   const expensesListSketch = expenses.length ? expenses.map(expense => (
   
- <ExpenseListItem key={expense.id} dispatch={dispatch} {...expense} />
+ <ExpenseListItem key={expense.id} dispatch={dispatch} IS_DESKTOP={IS_DESKTOP} {...expense} />
   )) : <NoExpenses />; {/* expensesListSketch */}
   
   return (
@@ -43,7 +43,7 @@ class ExpensesList extends Component {
      
      <h1 className='text-white my-4 text-center' >Expenses List</h1>
      
-      <div  className="row">
+      <div  className="row mb-4">
        
        {expensesListSketch}
     
@@ -59,6 +59,7 @@ const mstp = (state) => {
   return {
     expenses: visibleExpenses( state.expenses, state.filters),
     filters: state.filters,
+    IS_DESKTOP: state.IS_DESKTOP,
   };
 }
 
@@ -66,4 +67,3 @@ ExpensesList.propTypes = {
   expenses: PropTypes.array.isRequired,
 }
 export default connect(mstp)(ExpensesList);
-

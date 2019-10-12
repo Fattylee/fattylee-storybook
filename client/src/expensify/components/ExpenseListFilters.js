@@ -7,18 +7,9 @@ import moment from 'moment';
 
 class ExpenseListFilters extends Component { 
   state = {
-    startDate: moment().startOf('month'),
-    endDate: moment().endOf('month'),
     focusedInput: null,
   }
-  componentDidMount() {
-    const {startDate, endDate} = this.props.filters;
-    
-    this.setState(() => ({
-      startDate,
-      endDate,
-    }))
-  }
+  
   render() {
     const {dispatch, filters, expenses} = this.props;
     return (
@@ -73,17 +64,17 @@ onChange={(e) => {
       </span> 
     </div> 
   <DateRangePicker
-  startDate={this.state.startDate} // momentPropTypes.momentObj or null,
+  startDate={filters.startDate} // momentPropTypes.momentObj or null,
   startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
-  endDate={this.state.endDate} // momentPropTypes.momentObj or null,
+  endDate={filters.endDate} // momentPropTypes.momentObj or null,
   endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
   onDatesChange={({ startDate, endDate }) => { 
   console.log('=onDatesChange', startDate, endDate);
   dispatch(setStartDate(startDate));
   dispatch(setEndDate(endDate));
-  this.setState({ startDate, endDate }, () => {
+  /*this.setState({ startDate, endDate }, () => {
     console.log(this.state);
-  });
+  });*/
   
   
   }} // PropTypes.func.isRequired,

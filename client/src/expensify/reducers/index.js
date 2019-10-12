@@ -12,4 +12,5 @@ export default combineReducers({
   filters: filtersReducer,
   expenses: expensesReducer,
   pathname: pathnameReducer,
+  IS_DESKTOP: () => window.innerWidth > 440 ,
 });

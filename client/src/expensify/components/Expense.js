@@ -4,6 +4,7 @@ import {removeExpense} from '../actions/expensesAction';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import moment from 'moment';
+import capitalizeSentence from '../helpers/capitalizeSentence';
 
 
 class Expense extends Component {
@@ -28,9 +29,11 @@ class Expense extends Component {
     <div className='text-center'>
   
   <div>
-    <h3 className='my-4 h2'>{description}</h3>
-    <p>Amount: {amount} - createdAt: {moment(createdAt).format()}</p>
-    <p>{note}</p>
+    <h3 className='my-4 h2'>{capitalizeSentence(description)}</h3>
+    <p>Amount: {amount}</p>
+   
+    <p>Note: {note}</p>
+    <p>Date: {moment(createdAt).format()}</p>
     <button className='btn btn-sm btn-danger'
     onClick={() => {
       dispatch(removeExpense(id));
@@ -63,4 +66,3 @@ const mstp = (prevState, prevProp) => {
 }
 
 export default connect(mstp)(Expense);
-

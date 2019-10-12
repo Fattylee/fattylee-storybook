@@ -118,7 +118,7 @@ class ExpenseForm extends Component {
     <input 
     type="text" 
     name="amount" 
-    value={this.state.amount} className="form-control" id="amount"  placeholder="Enter amount" 
+    value={this.state.amount} className="form-control" id="amount"  placeholder="Enter amount (eg 237, 12.73)" 
     required 
     onChange={ this.onChangeAmount }
     />
