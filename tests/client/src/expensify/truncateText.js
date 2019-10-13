@@ -9,3 +9,4 @@ const truncateText = (text, maxChar) => {
 };
 
 export default truncateText;
+

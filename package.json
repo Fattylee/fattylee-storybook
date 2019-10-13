@@ -7,7 +7,7 @@
     "test": "tests"
   },
    "scripts": {
-    "test": " cross-env DEBUG=test jest --watchAll",
+    "test": " cross-env DEBUG=test jest --verbose --watchAll ./tests",
     "sendMail": "cross-env DEBUG=sendMail nodemon playground/sendMail.js -w playground/sendMail.js",
     "start:dev": "cross-env NODE_ENV=development DEBUG=active:app nodemon index.js -e 'js' -i public -i playground -i client",
     "start:prod": "cross-env NODE_ENV=production DEBUG=active:app nodemon index.js -e 'js' -i public -i client",

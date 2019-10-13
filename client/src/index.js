@@ -31,7 +31,7 @@ import removeTrailingHash from './helpers/removeTrailingHash';
 
 $(window).on('load', (e) => {
   
-  //console.log('on load');
+  
   
   // fix upload filename
   bsCustomFileInput.init();

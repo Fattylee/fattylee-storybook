@@ -10,7 +10,7 @@ import capitalizeSentence from '../helpers/capitalizeSentence';
 class Expense extends Component {
    
   componentDidMount(prevState, prevProp) {
-    console.log(prevState, prevProp);
+    
     axios.get('/api/v1/stories')
     .then(res => {
       //console.log('res', res);

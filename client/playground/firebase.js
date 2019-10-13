@@ -87,14 +87,15 @@ firebase.database().ref('expenses').once('value')
 
 
 firebase.database().ref('expenses').on('value', snapshot => {
+  const expenses = [];
   snapshot.forEach(childSnapshot => {
-    expenses = [
-    ...expenses,
+    expenses.push( 
     {
       id: childSnapshot.key,
     ...childSnapshot.val(),
-    }];
+    });
   });
+  console.log(expenses);
 }, err => {
   console.log(err);
 })
@@ -107,9 +108,6 @@ child_removed
 child_added // alert existing data and new data
 
 */
-
-
-
 
 
 

@@ -1,5 +1,7 @@
 import uuid from 'uuid';
 import * as types from './types';
+import database, {firebase} from '../firebase/firebase';
+
 
 export const addExpense = ({
   description = '',
@@ -8,13 +10,39 @@ export const addExpense = ({
   note = '',} = {}) => ({
     type: types.ADD_EXPENSE,
     expense: {
-      id: uuid(),
       description,
       amount,
       createdAt,
       note,
     },
 });
+
+export const startAddExpense = (expenseData = {}) => {
+  const {
+    description = '',
+    amount = 0,
+    createdAt = Date.now(),
+    note = '',
+  } = expenseData;
+  
+  const expense = {description, note, createdAt, amount};
+  
+  return (dispatch) => {
+    console.log('working to call firebase');
+    database.ref('expenses').push(expense).
+    then(ref => {
+      console.log("data persisted to firebase database!");
+      
+      dispatch(addExpense({
+        id: ref.key,
+        ...expense,
+      }));
+    })
+    .catch(err => {
+      console.log('something went wrong!', err);
+    });
+  };
+};
 
 export const removeExpense = (id) => ({
   type: types.REMOVE_EXPENSE,
@@ -45,4 +73,3 @@ export const editExpense = (id, expense = {}) => {
     },
   };
 };
-
