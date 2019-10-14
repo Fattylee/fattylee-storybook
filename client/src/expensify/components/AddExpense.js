@@ -1,5 +1,5 @@
 import React, {Fragment, Component } from 'react';
-import {startAddExpense} from '../actions/expensesAction';
+import {addExpense} from '../actions/expensesAction';
 import {connect} from 'react-redux';
 import ExpenseForm from './ExpenseForm';
 
@@ -9,7 +9,7 @@ class AddExpense extends Component {
   onSubmit = (expense) => {
     
     //this.props.dispatch(addExpense(expense));
-    this.props.startAddExpense(expense);
+    this.props.addExpense(expense);
     this.props.history.push('/react/expenses');
     
   }; // end onSubmit
@@ -28,4 +28,4 @@ class AddExpense extends Component {
 }
 
 
-export default connect(null,{ startAddExpense })(AddExpense);
+export default connect(null,{ addExpense })(AddExpense);

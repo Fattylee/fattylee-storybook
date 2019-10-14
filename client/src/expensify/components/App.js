@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, NavLink, Link, Switch } from 'react-router-dom';
-
+import {connect} from 'react-redux';
 
 import ExpensesList from './ExpensesList';
 import Dashboard from './Dashboard';
@@ -9,6 +9,8 @@ import ExpenseForm from './ExpenseForm';
 import AddExpense from './AddExpense';
 import EditExpense from './EditExpense';
 import Expense from './Expense';
+import {getInit} from '../actions/expensesAction';
+
 
 //console.log(require('react-router-dom'));
 import Header from './Header';
@@ -44,8 +46,9 @@ const Hoc = (WrappedComp) => {
 const Alias = Hoc(NotFound);
 //const ListHoc = Hoc(List);
 
-const App = () => {
+const App = (props) => {
   
+   props.dispatch(getInit());
   return(
   <Router>
   <Header />
@@ -69,4 +72,4 @@ const App = () => {
 );
 };
 
-export default App;
+export default connect()(App);

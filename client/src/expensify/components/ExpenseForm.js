@@ -132,8 +132,16 @@ class ExpenseForm extends Component {
      //className="form-control"
     date={this.state.createdAt} // momentPropTypes.momentObj or null
     onDateChange={createdAt => {
+      const m = moment();
+      createdAt.set({
+        'h': m.hour(),
+        'minute': m.minute(),
+        's': m.seconds(),
+        'ms': m.milliseconds(),
+      });
       if(createdAt) {
-        this.setState({ createdAt })}
+        
+        this.setState({ createdAt  })}
       }
     }  // PropTypes.func.isRequired
     focused={this.state.focused} // PropTypes.bool 
@@ -141,6 +149,7 @@ class ExpenseForm extends Component {
     id="your_unique_id" // PropTypes.string.isRequired,
     numberOfMonths={1}
     isOutsideRange={() => false}
+    
     
      />
   </div> {/*{!-- End Date --}*/}

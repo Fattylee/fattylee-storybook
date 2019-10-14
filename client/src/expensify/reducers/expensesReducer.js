@@ -1,5 +1,6 @@
 import uuid from 'uuid';
 import * as types from '../actions/types';
+import database from '../firebase/firebase';
 
 
 const expensesDefaultState = [
@@ -26,10 +27,12 @@ const expensesDefaultState = [
   }
 ];
 
-const expensesReducer = (state = expensesDefaultState, action)=> {
+const expensesReducer =  (state = expensesDefaultState, action) => {
   switch(action.type) {
+    case 'INITME':
+      return action.expenses;
     case types.ADD_EXPENSE:
-     return [
+      return [
        ...state,
        {
          id: uuid(),
@@ -39,6 +42,7 @@ const expensesReducer = (state = expensesDefaultState, action)=> {
      case types.REMOVE_EXPENSE:
        return state.filter(expense => action.id !== expense.id);      
      case types.EDIT_EXPENSE:
+     console.log('reducwe', action.expense, action.id);
        return state.map(expense => {
          if(action.id === expense.id) {
            return {

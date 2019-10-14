@@ -8,6 +8,7 @@ class EditExpense extends Component {
   
   onSubmit = (expense) => {
     const {id} = this.props.match.params;
+    
     this.props.dispatch(editExpense(id, expense));
     this.props.history.push('/react/expenses');
     

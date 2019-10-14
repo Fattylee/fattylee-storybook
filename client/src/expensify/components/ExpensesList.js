@@ -7,6 +7,7 @@ import ExpenseListFilters from './ExpenseListFilters';
 import ExpenseListItem from './ExpenseListItem';
 import NoExpenses from './NoExpenses';
 import {setPathname} from '../actions/pathnameAction';
+import {getInit} from '../actions/expensesAction';
 import {setTextFilter } from '../actions/filtersAction';
 import ActionButton from './ActionButton';
 
@@ -15,6 +16,7 @@ class ExpensesList extends Component {
   
   componentDidMount() {
     this.props.dispatch(setPathname('/react'));
+    // this.props.dispatch(getInit());
   }
   componentWillUnmount() {
     this.props.dispatch(setPathname());

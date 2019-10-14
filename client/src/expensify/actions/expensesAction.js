@@ -1,21 +1,56 @@
 import uuid from 'uuid';
 import * as types from './types';
 import database, {firebase} from '../firebase/firebase';
+import configureStore from '../store/configureStore';
 
+
+export const getInit = () => dispatch => {
+  database.ref('expenses').on('value', (snapshot => {
+  const expenses = [];
+  snapshot.forEach(childSnapshot => {
+    expenses.push({
+      id: childSnapshot.key,
+      ...childSnapshot.val(),
+    });
+  });
+  return dispatch({type: 'INITME', expenses});
+  console.log(expenses);
+}), (err => {
+  console.log('couldnot fetch expenses from firebase, try again', err.message);
+}));
+  
+};
+
+//configureStore().dispatch(getInit());
 
 export const addExpense = ({
   description = '',
   amount = 0,
   createdAt = Date.now(),
-  note = '',} = {}) => ({
+  note = '',} = {}) => dispatch => 
+  {
+  database
+  .ref('expenses')
+  .push({description, amount, createdAt, note})
+  .then(ref => {
+      console.log("data persisted to firebase database!");
+      
+   /* dispatch({
     type: types.ADD_EXPENSE,
     expense: {
+      id: ref.key,
       description,
       amount,
       createdAt,
       note,
     },
-});
+    });*/
+    
+    })
+    .catch(err => {
+      console.log('something went wrong!', err);
+    });
+}
 
 export const startAddExpense = (expenseData = {}) => {
   const {
@@ -44,12 +79,19 @@ export const startAddExpense = (expenseData = {}) => {
   };
 };
 
-export const removeExpense = (id) => ({
+export const removeExpense = (id) => dispatch => { 
+database.ref('expenses/' + id).remove()
+.then(ref => {
+  /*dispatch({
   type: types.REMOVE_EXPENSE,
   id,
+});*/
+})
+.catch(err => {
+  console.log('could not delete expense', err.message);
 });
-
-export const editExpense = (id, expense = {}) => {
+}
+export const editExpense = (id, expense = {}) => dispatch => {
   
   const update = {};
   if(typeof expense.description !== 'undefined') {
@@ -65,11 +107,18 @@ export const editExpense = (id, expense = {}) => {
     update.note = expense.note;
   }
   
-  return {
+  return database.ref('expenses/' + id).update({...update})
+  .then( ref => {
+    
+  /*  return dispatch({
     type: types.EDIT_EXPENSE,
     id,
     expense: {
      ...update
     },
-  };
+  });*/
+  })
+  .catch(err => {
+    console.log('could not update expense with ID: ' +id, err.message);
+  });
 };

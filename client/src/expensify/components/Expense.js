@@ -32,7 +32,7 @@ class Expense extends Component {
     <h3 className='my-4 h2'>{capitalizeSentence(description)}</h3>
     <p>Amount: {amount}</p>
    
-    <p>Note: {note}</p>
+    <p>Note: { note || 'No note'}</p>
     <p>Date: {moment(createdAt).format()}</p>
     <button className='btn btn-sm btn-danger'
     onClick={() => {
