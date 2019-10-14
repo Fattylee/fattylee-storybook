@@ -13,9 +13,6 @@ module.exports = (env) => {
   const publicPath = path.join(__dirname, '../public/dist');
   const isProduction = !!env;
   
-  if(!isProduction) {
-    require('dotenv').config({path: '.test'});
-  }
 
   return  {
     
@@ -130,11 +127,7 @@ module.exports = (env) => {
       new MiniCssExtractPlugin({ 
       filename: '/css/styles.css', 
       chunkFilename: '[id].css', 
-      }),
-      /*new ErudaWebpackPlugin({ 
-      entry: /bundle\.js$/ ,
-      plugins: [ 'code', 'dom']
-      }),*/
+      }),  
       new webpack.DefinePlugin({ 
       "process.env": JSON.stringify(process.env)
       }),
