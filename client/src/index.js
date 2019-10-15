@@ -31,8 +31,6 @@ import removeTrailingHash from './helpers/removeTrailingHash';
 
 
 $(window).on('load', (e) => {
-  console.log('load')
-  console.log('NODE_ENV', process.env.Put, process.env.TEST_FIREBASE_API_KEY, process.env);
   
   // fix upload filename
   bsCustomFileInput.init();
