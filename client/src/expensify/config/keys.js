@@ -1,7 +1,5 @@
-//import devKeys from './dev';
 import prodKeys from './prod';
 import testDbKeys from './test_db';
-
 
 let keys;
 
@@ -12,7 +10,7 @@ else if(process.env.NODE_ENV  === 'test') {
   
   keys = testDbKeys;
 }
-else {
+else { 
   keys = require('./dev');
 }
 

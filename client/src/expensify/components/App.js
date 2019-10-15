@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, NavLink, Link, Switch } from 'react-router-dom';
-import {connect} from 'react-redux';
 
 import ExpensesList from './ExpensesList';
 import Dashboard from './Dashboard';
@@ -9,7 +8,8 @@ import ExpenseForm from './ExpenseForm';
 import AddExpense from './AddExpense';
 import EditExpense from './EditExpense';
 import Expense from './Expense';
-import {getInit} from '../actions/expensesAction';
+import Loading from './Loading';
+
 
 
 //console.log(require('react-router-dom'));
@@ -46,9 +46,7 @@ const Hoc = (WrappedComp) => {
 const Alias = Hoc(NotFound);
 //const ListHoc = Hoc(List);
 
-const App = (props) => {
-  
-   props.dispatch(getInit());
+const App = () => {
   return(
   <Router>
   <Header />
@@ -63,6 +61,7 @@ const App = (props) => {
     <Route exact path='/react/expenses/:id' component={Expense} />
     <Route  path='/react/about' component={About} />
     <Route  path='/react/news' component={News} />
+    <Route  path='/react/loading' component={Loading} />
     
     <Route component={NotFound} />
     <News /> {/* never will it get here */}
@@ -72,4 +71,5 @@ const App = (props) => {
 );
 };
 
-export default connect()(App);
+export default App;
+

@@ -169,6 +169,21 @@ hr.text-white {
   background: black;
   color: white;
 }
+
+@loaderSize: 100px;
+.loading { 
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  span {
+    width: @loaderSize;
+    height: @loaderSize;
+    font-size: 2rem;
+    color: white;
+  }
+  
+}
 /* above mobile devices*/
 @media (min-width: @m-screen) {
 

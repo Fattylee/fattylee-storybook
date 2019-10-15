@@ -16,7 +16,7 @@ class ExpensesList extends Component {
   
   componentDidMount() {
     this.props.dispatch(setPathname('/react'));
-    // this.props.dispatch(getInit());
+    
   }
   componentWillUnmount() {
     this.props.dispatch(setPathname());

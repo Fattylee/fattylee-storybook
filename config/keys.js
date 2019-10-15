@@ -4,6 +4,6 @@ if(process.env.NODE_ENV === 'production') {
 else if (process.env.NODE_ENV === 'staging') { 
   module.exports = require('./stag');
 }
-else {
+else { 
   module.exports = require('./dev');
 }

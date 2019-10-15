@@ -5,6 +5,9 @@ import configureStore from '../store/configureStore';
 
 
 export const getInit = () => dispatch => {
+  
+  return new Promise((resolve, reject) => {
+    
   database.ref('expenses').on('value', (snapshot => {
   const expenses = [];
   snapshot.forEach(childSnapshot => {
@@ -13,12 +16,14 @@ export const getInit = () => dispatch => {
       ...childSnapshot.val(),
     });
   });
-  return dispatch({type: 'INITME', expenses});
-  console.log(expenses);
+  dispatch({type: 'INITME', expenses}); 
+  resolve();
 }), (err => {
   console.log('couldnot fetch expenses from firebase, try again', err.message);
+  reject(err);
 }));
-  
+  });
+
 };
 
 //configureStore().dispatch(getInit());
@@ -82,10 +87,7 @@ export const startAddExpense = (expenseData = {}) => {
 export const removeExpense = (id) => dispatch => { 
 database.ref('expenses/' + id).remove()
 .then(ref => {
-  /*dispatch({
-  type: types.REMOVE_EXPENSE,
-  id,
-});*/
+  
 })
 .catch(err => {
   console.log('could not delete expense', err.message);
