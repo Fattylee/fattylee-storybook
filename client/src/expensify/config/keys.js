@@ -1,4 +1,4 @@
-import devKeys from './dev';
+//import devKeys from './dev';
 import prodKeys from './prod';
 import testDbKeys from './test_db';
 
@@ -9,10 +9,11 @@ if(process.env.NODE_ENV  === 'production') {
   keys = prodKeys;
 }
 else if(process.env.NODE_ENV  === 'test') {
+  
   keys = testDbKeys;
 }
 else {
-  keys = devKeys;
+  keys = require('./dev');
 }
 
 
