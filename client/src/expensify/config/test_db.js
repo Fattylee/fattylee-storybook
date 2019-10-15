@@ -1,6 +1,3 @@
-//console.log('udur', process.env.TEST_FIREBASE_API_KEY);
-
-
 export default {
   apiKey: process.env.TEST_FIREBASE_API_KEY,
     authDomain: process.env.TEST_FIREBASE_AUTH_DOMAIN,
