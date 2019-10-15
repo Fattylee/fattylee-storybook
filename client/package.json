@@ -29,7 +29,7 @@
     "bs-custom-file-input": "1.3.2",
     "cross-env": "5.2.1",
     "css-loader": "2.1.1",
-    "dotenv": "8.1.0",
+    "dotenv-webpack": "1.7.0",
     "eruda": "1.5.5",
     "eruda-code": "1.0.0",
     "eruda-dom": "1.0.1",

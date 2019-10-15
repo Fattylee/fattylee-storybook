@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const Dotenv = require('dotenv-webpack');
 
 const TerserJSPlugin = require('terser-webpack-plugin'); 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin'); 
@@ -18,13 +19,41 @@ module.exports = (env) => {
     
     //entry: './src/index.js',
     entry: path.join(__dirname, 'src/index.js'),
-    //entry: path.join(__dirname, 'src/components/App.js'),
+    //entry: path.join(__dirname, 'src/components/App.js'), 
     output: {
       path: publicPath,
       filename: 'bundle.js',
       publicPath: '/dist/',
     },
-    
+   // target: 'node',
+    devtool: isProduction? 'source-map' : 'cheap-module-eval-source-map' /* inline-source-map */,
+    devServer: {
+      contentBase: publicPath,
+      historyApiFallback: true, 
+    },
+    optimization: { 
+      minimizer: [
+        new TerserJSPlugin({}), 
+        new OptimizeCSSAssetsPlugin({})
+      ], 
+    }, 
+    plugins: [ 
+      new MiniCssExtractPlugin({ 
+      filename: '/css/styles.css', 
+      chunkFilename: '[id].css', 
+      }),  
+      new webpack.DefinePlugin({ 
+      "process.env": JSON.stringify(process.env)
+      }),
+      new Dotenv({
+        path: './.env',
+      }),
+      new Dotenv({
+        path: '../.env.test',
+      }),
+    ],
+  
+    mode: isProduction ? 'production' : 'development',
     module: {
       rules: [
         {
@@ -111,29 +140,8 @@ module.exports = (env) => {
         
         },//end css loader
       ], // end rules
-    },
-    devtool: isProduction? 'source-map' : 'cheap-module-eval-source-map' /* inline-source-map */,
-    devServer: {
-      contentBase: publicPath,
-      historyApiFallback: true, 
-    },
-    optimization: { 
-      minimizer: [
-        new TerserJSPlugin({}), 
-        new OptimizeCSSAssetsPlugin({})
-      ], 
-    }, 
-    plugins: [ 
-      new MiniCssExtractPlugin({ 
-      filename: '/css/styles.css', 
-      chunkFilename: '[id].css', 
-      }),  
-      new webpack.DefinePlugin({ 
-      "process.env": JSON.stringify(process.env)
-      }),
-    ],
-  
-    mode: isProduction ? 'production' : 'development',
+    }, // end 
+    
   };
   
 };

@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import axios from 'axios';
 import 'intersection-observer'; 
+//require('./eruda');
 
 if(process.env.NODE_ENV === 'development') { 
   require('./eruda');
@@ -30,8 +31,8 @@ import removeTrailingHash from './helpers/removeTrailingHash';
 
 
 $(window).on('load', (e) => {
-  
-  
+  console.log('load')
+  console.log('NODE_ENV', process.env.Put, process.env.TEST_FIREBASE_API_KEY, process.env);
   
   // fix upload filename
   bsCustomFileInput.init();

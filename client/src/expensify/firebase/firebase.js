@@ -1,10 +1,9 @@
-import * as firebase from 'firebase';
+import * as firebase from 'firebase/app';
 import firebaseConfig from '../config/keys';
-
+import 'firebase/database';
 
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
  
 const database =  firebase.database()
 
