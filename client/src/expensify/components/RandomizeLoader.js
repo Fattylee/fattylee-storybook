@@ -17,7 +17,7 @@ const RandomizeLoader = () => {
   
   return (
   <Fragment>
-    {loaders[1] }
+    {loaders[random] }
   </Fragment>
   );
 };
