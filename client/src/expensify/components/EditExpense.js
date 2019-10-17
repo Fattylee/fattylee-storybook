@@ -6,11 +6,19 @@ import ExpenseForm from './ExpenseForm';
 
 class EditExpense extends Component {
   
-  onSubmit = (expense) => {
+  onSubmit = async (expense) => {
+  
     const {id} = this.props.match.params;
-    
-    this.props.dispatch(editExpense(id, expense));
+    try {
+      this.props.history.push('/react/loading');
+    await this.props.dispatch(editExpense(id, expense));
     this.props.history.push('/react/expenses');
+    }
+    catch(e) {
+      console.log('Something went wrong, pls try again', e.message);
+      //this.props.history.push('/react/expenses/edit/' + id );
+      this.props.history.goBack();
+    };
     
   }; // end onSubmit
   

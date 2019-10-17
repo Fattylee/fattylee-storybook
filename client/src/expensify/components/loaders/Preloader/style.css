@@ -12,12 +12,13 @@ body {
   font-family: "Josefin Sans", sans-serif;
 }
 
+/*
 *,
 *::before,
 *::after {
   box-sizing: inherit;
 }
-
+*/
 .preloadeR {
   position: absolute;
   left: 50%;

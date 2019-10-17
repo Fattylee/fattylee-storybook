@@ -1,17 +1,20 @@
 
+
+
 div.encase-container {
   display: flex;
   align-items: center;
   position: relative;
   background: linear-gradient(to bottom right, #070630 0%, #060454 100%);
-  min-height: 100vh;
-  min-width: 800px;
+  height: 100vh;
+  width: 100vw;
+  Overflow: hidden;
 }
 
 .animation-container {
   display: block;
   position: relative;
-  width: 800px;
+  width: 100%;
   max-width: 100%;
   margin: 0 auto;
 }
@@ -342,5 +345,16 @@ div.encase-container {
     opacity: 0;
     -webkit-transform: scale(2) translate(-70px, -30px);
             transform: scale(2) translate(-70px, -30px);
+  }
+}
+
+@media (min-width: 440px) {
+
+  div.encase-container {
+    min-width: 800px;
+    //display: none;
+  }
+  .animation-container {
+    width: 800px;
   }
 }

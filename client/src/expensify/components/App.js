@@ -8,7 +8,7 @@ import ExpenseForm from './ExpenseForm';
 import AddExpense from './AddExpense';
 import EditExpense from './EditExpense';
 import Expense from './Expense';
-import Loading from './Loading';
+import RandomizeLoader from './RandomizeLoader';
 
 
 
@@ -61,8 +61,11 @@ const App = () => {
     <Route exact path='/react/expenses/:id' component={Expense} />
     <Route  path='/react/about' component={About} />
     <Route  path='/react/news' component={News} />
-    <Route  path='/react/loading' component={Loading} />
-    
+    {/*}<Route  path='/react/loading' component={(props) => <RandomizeLoader loaderIndex={7} {...props} />} />
+    */}
+    <Route path='/react/loading'>
+    <RandomizeLoader  />
+    </Route>
     <Route component={NotFound} />
     <News /> {/* never will it get here */}
   </Switch>
@@ -72,4 +75,3 @@ const App = () => {
 };
 
 export default App;
-
