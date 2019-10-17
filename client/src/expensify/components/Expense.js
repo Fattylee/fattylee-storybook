@@ -33,7 +33,7 @@ class Expense extends Component {
     <p>Amount: ₦{amount.toFixed(2)}</p>
    
     <p>Note: { note || 'No note'}</p>
-    <p>Date: {moment(createdAt).format().replace(/(.*)t.*/i, '$1')}</p>
+    <p>Date: {moment(createdAt).format('MMM Mo, YYYY')}</p>
     <button className='btn btn-sm btn-danger'
     onClick={() => {
       dispatch(removeExpense(id));

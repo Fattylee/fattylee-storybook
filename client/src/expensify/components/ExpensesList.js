@@ -10,6 +10,7 @@ import {setPathname} from '../actions/pathnameAction';
 import {getInit} from '../actions/expensesAction';
 import {setTextFilter } from '../actions/filtersAction';
 import ActionButton from './ActionButton';
+import SumExpenses from './SumExpenses';
 
 
 class ExpensesList extends Component { 
@@ -25,16 +26,12 @@ class ExpensesList extends Component {
   render() { 
   const {expenses, dispatch, filters, IS_DESKTOP} = this.props;
       
-  const expensesList = expenses.length ? expenses.map((expense, index) => (
   
-    <ExpenseListItem />
-  )) : <NoExpenses />; {/* expensesList */}
-         
-         
-  const expensesListSketch = expenses.length ? expenses.map(expense => (
+  const totalExpenses = expenses.length > 0 && <SumExpenses expenses={expenses} />
+  const expensesList = expenses.length ? expenses.map(expense => (
   
  <ExpenseListItem key={expense.id} dispatch={dispatch} IS_DESKTOP={IS_DESKTOP} {...expense} />
-  )) : <NoExpenses />; {/* expensesListSketch */}
+  )) : <NoExpenses />; {/* expensesList */}
   
   return (
 <Fragment>
@@ -44,10 +41,10 @@ class ExpensesList extends Component {
      <ActionButton />
      
      <h1 className='text-white my-4 text-center' >Expenses List</h1>
-     
+     {totalExpenses}
       <div  className="row mb-4">
        
-       {expensesListSketch}
+       {expensesList}
     
   </div>{/*}<!-- End row  -->*/}
 {/*}</div>{/*}<!-- End container -->*/}
