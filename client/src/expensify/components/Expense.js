@@ -30,10 +30,10 @@ class Expense extends Component {
   
   <div>
     <h3 className='my-4 h2'>{capitalizeSentence(description)}</h3>
-    <p>Amount: {amount}</p>
+    <p>Amount: ₦{amount.toFixed(2)}</p>
    
     <p>Note: { note || 'No note'}</p>
-    <p>Date: {moment(createdAt).format()}</p>
+    <p>Date: {moment(createdAt).format().replace(/(.*)t.*/i, '$1')}</p>
     <button className='btn btn-sm btn-danger'
     onClick={() => {
       dispatch(removeExpense(id));

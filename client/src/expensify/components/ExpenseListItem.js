@@ -9,7 +9,9 @@ import moment from 'moment';
 const ExpenseListItem = ({id, description, amount, createdAt, dispatch, IS_DESKTOP}) => {
   const descriptionText = IS_DESKTOP ?truncateText(description, 17) : capitalizeSentence(description);
   
-  const amountAndDate = IS_DESKTOP ?truncateText(`Amount: ${amount} - created ${moment(createdAt).fromNow()}`, 39) : capitalizeSentence(`Amount: ${amount} - created ${moment(createdAt).fromNow()}`);
+  const amountAndDateTemplate = `Amount: ₦${amount.toFixed(2)} - created ${moment(createdAt).fromNow()}`;
+  
+  const amountAndDate = IS_DESKTOP ?truncateText(amountAndDateTemplate, 39) : capitalizeSentence(amountAndDateTemplate);
   
   return (
   

@@ -36,7 +36,7 @@ class ExpenseForm extends Component {
     
     const state = {
       description,
-      amount: parseFloat(this.state.amount, 10) * 100,
+      amount: parseFloat(this.state.amount, 10),
       createdAt: this.state.createdAt.valueOf(),
       note: this.state.note.trim(),
       };
@@ -76,7 +76,7 @@ class ExpenseForm extends Component {
         ...prevState,
         ...this.props.expense,
         createdAt: moment(this.props.expense.createdAt),
-        amount: String(this.props.expense.amount / 100 ),
+        amount: String(this.props.expense.amount ),
       }));
     }
   }
