@@ -3,14 +3,14 @@ import './style.css';
 
 export default () => (
   <Fragment>
-<div class="v-align">
+<div className="v-align">
 
-  <div class="loader">
-    <aside class="loader__box loader--left"> 
-      <span class="loader__circle"></span>   
+  <div className="loader">
+    <aside className="loader__box loader--left"> 
+      <span className="loader__circle"></span>   
     </aside>
-    <aside class="loader__box loader--right">
-      <span class="loader__circle"></span>
+    <aside className="loader__box loader--right">
+      <span className="loader__circle"></span>
     </aside>
   </div>
 </div>

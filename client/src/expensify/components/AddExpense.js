@@ -2,13 +2,14 @@ import React, {Fragment, Component } from 'react';
 import {addExpense} from '../actions/expensesAction';
 import {connect} from 'react-redux';
 import ExpenseForm from './ExpenseForm';
+import {setLoading} from '../actions/isLoadingAction';
 
 
 class AddExpense extends Component {
   
   onSubmit = (expense) => {
     
-    //this.props.dispatch(addExpense(expense));
+    this.props.setLoading(true);
     this.props.addExpense(expense);
     this.props.history.push('/react/expenses');
     
@@ -20,6 +21,7 @@ class AddExpense extends Component {
     
     return (
     <Fragment>
+      
       <ExpenseForm onSubmitExpense={this.onSubmit} />
       
     </Fragment>
@@ -28,4 +30,4 @@ class AddExpense extends Component {
 }
 
 
-export default connect(null,{ addExpense })(AddExpense);
+export default connect(null ,{ addExpense, setLoading })(AddExpense);

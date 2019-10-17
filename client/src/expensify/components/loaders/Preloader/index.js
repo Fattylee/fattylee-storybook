@@ -4,47 +4,47 @@ import './style.css';
 export default () => (
   <Fragment>
 
-<div class="preloadeR">
-  <div class="preloader__wheel-wrapper">
-    <div class="preloader__wheel"><span class="preloader__content">l</span>
-      <div class="preloader__inner-wheel"></div>
-      <div class="preloader__second-inner-whell"></div>
+<div className="preloadeR">
+  <div className="preloader__wheel-wrapper">
+    <div className="preloader__wheel"><span className="preloader__content">l</span>
+      <div className="preloader__inner-wheel"></div>
+      <div className="preloader__second-inner-whell"></div>
     </div>
   </div>
-  <div class="preloader__wheel-wrapper">
-    <div class="preloader__wheel"><span class="preloader__content">o</span>
-      <div class="preloader__inner-wheel"></div>
-      <div class="preloader__second-inner-whell"></div>
+  <div className="preloader__wheel-wrapper">
+    <div className="preloader__wheel"><span className="preloader__content">o</span>
+      <div className="preloader__inner-wheel"></div>
+      <div className="preloader__second-inner-whell"></div>
     </div>
   </div>
-  <div class="preloader__wheel-wrapper">
-    <div class="preloader__wheel"><span class="preloader__content">a</span>
-      <div class="preloader__inner-wheel"></div>
-      <div class="preloader__second-inner-whell"></div>
+  <div className="preloader__wheel-wrapper">
+    <div className="preloader__wheel"><span className="preloader__content">a</span>
+      <div className="preloader__inner-wheel"></div>
+      <div className="preloader__second-inner-whell"></div>
     </div>
   </div>
-  <div class="preloader__wheel-wrapper">
-    <div class="preloader__wheel"><span class="preloader__content">d</span>
-      <div class="preloader__inner-wheel"></div>
-      <div class="preloader__second-inner-whell"></div>
+  <div className="preloader__wheel-wrapper">
+    <div className="preloader__wheel"><span className="preloader__content">d</span>
+      <div className="preloader__inner-wheel"></div>
+      <div className="preloader__second-inner-whell"></div>
     </div>
   </div>
-  <div class="preloader__wheel-wrapper">
-    <div class="preloader__wheel"><span class="preloader__content">i</span>
-      <div class="preloader__inner-wheel"></div>
-      <div class="preloader__second-inner-whell"></div>
+  <div className="preloader__wheel-wrapper">
+    <div className="preloader__wheel"><span className="preloader__content">i</span>
+      <div className="preloader__inner-wheel"></div>
+      <div className="preloader__second-inner-whell"></div>
     </div>
   </div>
-  <div class="preloader__wheel-wrapper">
-    <div class="preloader__wheel"><span class="preloader__content">n</span>
-      <div class="preloader__inner-wheel"></div>
-      <div class="preloader__second-inner-whell"></div>
+  <div className="preloader__wheel-wrapper">
+    <div className="preloader__wheel"><span className="preloader__content">n</span>
+      <div className="preloader__inner-wheel"></div>
+      <div className="preloader__second-inner-whell"></div>
     </div>
   </div>
-  <div class="preloader__wheel-wrapper">
-    <div class="preloader__wheel"><span class="preloader__content">g</span>
-      <div class="preloader__inner-wheel"></div>
-      <div class="preloader__second-inner-whell"></div>
+  <div className="preloader__wheel-wrapper">
+    <div className="preloader__wheel"><span className="preloader__content">g</span>
+      <div className="preloader__inner-wheel"></div>
+      <div className="preloader__second-inner-whell"></div>
     </div>
   </div>
 </div>

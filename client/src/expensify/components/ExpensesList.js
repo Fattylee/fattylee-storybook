@@ -11,6 +11,7 @@ import {getInit} from '../actions/expensesAction';
 import {setTextFilter } from '../actions/filtersAction';
 import ActionButton from './ActionButton';
 import SumExpenses from './SumExpenses';
+import RandomizeLoader from './RandomizeLoader';
 
 
 class ExpensesList extends Component { 
@@ -35,7 +36,9 @@ class ExpensesList extends Component {
   
   return (
 <Fragment>
-     
+     {
+        this.props.isLoading ? <RandomizeLoader /> : 
+     <Fragment>
      <ExpenseListFilters filters={filters} expenses={expenses} dispatch={dispatch}
      />
      <ActionButton />
@@ -48,7 +51,8 @@ class ExpensesList extends Component {
     
   </div>{/*}<!-- End row  -->*/}
 {/*}</div>{/*}<!-- End container -->*/}
-
+</Fragment>
+}
 </Fragment>
 );
 };
@@ -59,6 +63,7 @@ const mstp = (state) => {
     expenses: visibleExpenses( state.expenses, state.filters),
     filters: state.filters,
     IS_DESKTOP: state.IS_DESKTOP,
+    isLoading: state.IS_LOADING,
   };
 }
 

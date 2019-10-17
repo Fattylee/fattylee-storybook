@@ -5,26 +5,16 @@ import {connect} from 'react-redux';
 import axios from 'axios';
 import moment from 'moment';
 import capitalizeSentence from '../helpers/capitalizeSentence';
+import {setLoading} from '../actions/isLoadingAction';
 
 
 class Expense extends Component {
    
-  componentDidMount(prevState, prevProp) {
-    
-    axios.get('/api/v1/stories')
-    .then(res => {
-      //console.log('res', res);
-    })
-    .catch(err => {
-      //console.log('err', err);
-    })
-  }
-  
   render() {
     const {expense, dispatch} = this.props;
     let expenseView ;
     if (expense) {
-    const {id, note, description, createdAt, amount} = expense;
+    const {id, note, description, createdAt, amount} = expense; 
     expenseView = ( 
     <div className='text-center'>
   
@@ -33,9 +23,10 @@ class Expense extends Component {
     <p>Amount: ₦{amount.toFixed(2)}</p>
    
     <p>Note: { note || 'No note'}</p>
-    <p>Date: {moment(createdAt).format('MMM Mo, YYYY')}</p>
+    <p>Date: {moment(createdAt).format('MMM Do, YYYY')}</p>
     <button className='btn btn-sm btn-danger'
     onClick={() => {
+      dispatch(setLoading(true));
       dispatch(removeExpense(id));
     this.props.history.push('/react/expenses');
     }}
@@ -48,7 +39,9 @@ class Expense extends Component {
  </div>)
     }
     else {
-      expenseView = <h1>Not found</h1>;
+      expenseView = <h3 className='text-center'>Expense not found. Goto 
+      <Link to="/react/expenses"  className="btn bg-black text-white ml-2"> <span  className="fas fa-database"></span> Expenses</Link>
+      </h3>;
     }
     return (
     <Fragment>

@@ -3,9 +3,9 @@ import './style.less';
 
 export default () => (
   <Fragment>
-  <div className="body-wrapper">
-<div className='circle'>
-  <div className='inner'></div>
+  <div className='coder-body'>
+<div className="coder-loader">
+  <span>{'{'}</span><span>{'}'}</span>
 </div>
 </div>
   </Fragment>

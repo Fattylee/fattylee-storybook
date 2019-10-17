@@ -8,9 +8,10 @@ import SwingMask from './loaders/SwingMask';
 import GooLoader from './loaders/GooLoader';
 //import RotatingCircle from './loaders/RotatingCircle';
 import Rotator from './loaders/Rotator';
+import Coder from './loaders/Coder';
 
 
-const loaders = [<Loading />, <MaterialDesignSpinnerCss />, <NewtonLoader />, <Preloader />, /*<Glowing />,*/ <SwingMask />, <GooLoader />, /*<RotatingCircle />,*/ <Rotator />];
+const loaders = [<Loading />, <MaterialDesignSpinnerCss />, <NewtonLoader />, <Preloader />, /*<Glowing />,*/ <SwingMask />, <GooLoader />, /*<RotatingCircle />,*/ <Rotator />, <Coder />];
 // adjust Glowing size
 const RandomizeLoader = ({ loaderIndex }) => {
   const random = loaderIndex || Math.floor(Math.random() * loaders.length);

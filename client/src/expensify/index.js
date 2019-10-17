@@ -11,7 +11,6 @@ import RandomizeLoader from './components/RandomizeLoader';
 
 import {getInit} from './actions/expensesAction';
 
-
 const store = configureStore();
 
 $('body').addClass('react-body');
@@ -20,9 +19,8 @@ $('body').addClass('react-body');
 ReactDOM.render(<RandomizeLoader />, $('#rootZ')[0]);
 
 
-
 store.dispatch(getInit())
-.then(() => {
+.then(() => { 
   ReactDOM.render(<Provider store={store} >
 <App />
 </Provider>, $('#rootZ')[0]);

@@ -3,8 +3,8 @@ import './style.css';
 
 export default () => (
   <Fragment>
-<div class="holderRotatingCircle">
-  <div class="Preloader"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+<div className="holderRotatingCircle">
+  <div className="Preloader"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
 </div>
   </Fragment>
 );

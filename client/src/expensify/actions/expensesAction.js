@@ -1,7 +1,11 @@
-import uuid from 'uuid';
 import * as types from './types';
 import database, {firebase} from '../firebase/firebase';
 import configureStore from '../store/configureStore';
+import {setLoading} from './isLoadingAction';
+
+
+const store = configureStore();
+
 
 
 export const getInit = () => dispatch => {
@@ -9,6 +13,8 @@ export const getInit = () => dispatch => {
   return new Promise((resolve, reject) => {
     
   database.ref('expenses').on('value', (snapshot => {
+    
+  
   const expenses = [];
   snapshot.forEach(childSnapshot => {
     expenses.push({
@@ -17,6 +23,10 @@ export const getInit = () => dispatch => {
     });
   });
   dispatch({type: 'INITME', expenses}); 
+  /*console.log(store.getState());
+    store.subscribe(() => {
+      console.log(store.getState());
+    });*/
   resolve();
 }), (err => {
   console.log('couldnot fetch expenses from firebase, try again', err.message);
@@ -26,7 +36,7 @@ export const getInit = () => dispatch => {
 
 };
 
-//configureStore().dispatch(getInit());
+
 
 export const addExpense = ({
   description = '',
@@ -39,55 +49,18 @@ export const addExpense = ({
   .push({description, amount, createdAt, note})
   .then(ref => {
       console.log("data persisted to firebase database!");
-      
-   /* dispatch({
-    type: types.ADD_EXPENSE,
-    expense: {
-      id: ref.key,
-      description,
-      amount,
-      createdAt,
-      note,
-    },
-    });*/
+      dispatch(setLoading());
     
     })
     .catch(err => {
-      console.log('something went wrong!', err);
+      console.log('something went wrong! addExpense', err);
     });
-}
-
-export const startAddExpense = (expenseData = {}) => {
-  const {
-    description = '',
-    amount = 0,
-    createdAt = Date.now(),
-    note = '',
-  } = expenseData;
-  
-  const expense = {description, note, createdAt, amount};
-  
-  return (dispatch) => {
-    console.log('working to call firebase');
-    database.ref('expenses').push(expense).
-    then(ref => {
-      console.log("data persisted to firebase database!");
-      
-      dispatch(addExpense({
-        id: ref.key,
-        ...expense,
-      }));
-    })
-    .catch(err => {
-      console.log('something went wrong!', err);
-    });
-  };
 };
 
 export const removeExpense = (id) => dispatch => { 
 database.ref('expenses/' + id).remove()
 .then(ref => {
-  
+  dispatch(setLoading());
 })
 .catch(err => {
   console.log('could not delete expense', err.message);
@@ -124,3 +97,32 @@ export const editExpense = (id, expense = {}) => dispatch => {
     console.log('could not update expense with ID: ' +id, err.message);
   });*/
 };
+
+/*
+export const startAddExpense = (expenseData = {}) => {
+  const {
+    description = '',
+    amount = 0,
+    createdAt = Date.now(),
+    note = '',
+  } = expenseData;
+  
+  const expense = {description, note, createdAt, amount};
+  
+  return (dispatch) => {
+    console.log('working to call firebase');
+    database.ref('expenses').push(expense).
+    then(ref => {
+      console.log("data persisted to firebase database!");
+      
+      dispatch(addExpense({
+        id: ref.key,
+        ...expense,
+      }));
+    })
+    .catch(err => {
+      console.log('something went wrong!', err);
+    });
+  };
+};*/
+

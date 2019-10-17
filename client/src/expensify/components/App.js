@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, NavLink, Link, Switch } from 'react-router-dom';
+import {connect} from 'react-redux';
 
 import ExpensesList from './ExpensesList';
 import Dashboard from './Dashboard';
@@ -12,7 +13,7 @@ import RandomizeLoader from './RandomizeLoader';
 
 
 
-//console.log(require('react-router-dom'));
+
 import Header from './Header';
 
 
@@ -46,7 +47,8 @@ const Hoc = (WrappedComp) => {
 const Alias = Hoc(NotFound);
 //const ListHoc = Hoc(List);
 
-const App = () => {
+const App = (props) => {
+  //console.log(props.state);
   return(
   <Router>
   <Header />
@@ -60,18 +62,16 @@ const App = () => {
     <Route  path='/react/expenses/edit/:id' component={EditExpense} />
     <Route exact path='/react/expenses/:id' component={Expense} />
     <Route  path='/react/about' component={About} />
-    <Route  path='/react/news' component={News} />
-    {/*}<Route  path='/react/loading' component={(props) => <RandomizeLoader loaderIndex={7} {...props} />} />
-    */}
-    <Route path='/react/loading'>
-    <RandomizeLoader  />
-    </Route>
+    <Route  path='/react/news' component={News} /> 
+    <Route path='/react/loading'
+    render={(props) => <RandomizeLoader  {...props}/>} />
+    
     <Route component={NotFound} />
-    <News /> {/* never will it get here */}
+    
   </Switch>
   </div>
   </Router>
 );
 };
 
-export default App;
+export default connect(state => ({state}))(App);

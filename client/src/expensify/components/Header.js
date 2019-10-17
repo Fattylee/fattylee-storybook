@@ -45,12 +45,10 @@ class Header extends Component {
       $('.expense-list-filters').fadeIn('slow')
     }}
     >
-        <a className="nav-link"><i className='fas fa-search'></i> Search</a>
+        <a className="nav-link"><i className='fas fa-search'></i> Search expenses</a>
     </li>)
     } 
-     <li className="nav-item">
-        <NavLink className="nav-link" activeClassName='active-nav-link' to="/react/news"><i className='fas fa-user-plus'></i> News</NavLink>
-    </li>
+     
     <li className="nav-item">
         <NavLink className="nav-link" activeClassName='active-nav-link' to="/react/expenses/add"><i className='fas fa-coins'></i> Add expense</NavLink>
     </li>

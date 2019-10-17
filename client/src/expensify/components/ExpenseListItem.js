@@ -4,6 +4,7 @@ import {removeExpense} from '../actions/expensesAction';
 import capitalizeSentence from '../helpers/capitalizeSentence';
 import truncateText from '../helpers/truncateText';
 import moment from 'moment';
+import {setLoading} from '../actions/isLoadingAction';
 
 
 const ExpenseListItem = ({id, description, amount, createdAt, dispatch, IS_DESKTOP}) => {
@@ -22,7 +23,10 @@ const ExpenseListItem = ({id, description, amount, createdAt, dispatch, IS_DESKT
     <p>{amountAndDate}</p>
     </Link>
     <button className='btn btn-sm btn-danger'
-    onClick={() =>dispatch(removeExpense(id))}
+    onClick={() =>{
+      dispatch(removeExpense(id));
+      dispatch(setLoading(true));
+    }}
     >Remove</button>
     
      <Link to={'/react/expenses/edit/' + id} className='btn btn-sm btn-secondary ml-2'
