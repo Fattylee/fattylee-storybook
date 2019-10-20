@@ -8,6 +8,8 @@ import {setLoading} from '../actions/isLoadingAction';
 class AddExpense extends Component {
   
   onSubmit = (expense) => {
+    const {uid: owner} =  this.props.authUser;
+    expense.owner = owner;
     
     this.props.setLoading(true);
     this.props.addExpense(expense);
@@ -15,19 +17,16 @@ class AddExpense extends Component {
     
   }; // end onSubmit
   
-  
-  
   render() {
     
     return (
     <Fragment>
-      
       <ExpenseForm onSubmitExpense={this.onSubmit} />
-      
     </Fragment>
   );
   }
 }
 
 
-export default connect(null ,{ addExpense, setLoading })(AddExpense);
+export default connect(state => ({authUser: state.authUser}) ,{ addExpense, setLoading })(AddExpense);
+

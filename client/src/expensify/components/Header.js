@@ -2,7 +2,9 @@ import React, { Fragment, Component} from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import {connect} from 'react-redux';
 import $ from 'jquery';
-
+import Logout from './Logout';
+import Login from './Login';
+import {firebase} from '../firebase/firebase';
 
 class Header extends Component {
   
@@ -31,8 +33,10 @@ class Header extends Component {
     <ul className="navbar-nav ml-auto"
     onClick={this.onClickCloseNavbar}
     >
-   
-    
+   {
+     !this.props.authUser ?  <li className="nav-item">
+        <Login />
+    </li> : <Fragment>
     <li className="nav-item">
         <NavLink exact activeClassName='active-nav-link' className="nav-link" to="/react/expenses"><i className='fas fa-database'></i> Expenses</NavLink>
     </li>
@@ -40,8 +44,7 @@ class Header extends Component {
       this.props.pathname === '/react' && (
     <li className="nav-item"
     onClick={() => {
-     // $('.move-to-navbar-bottom').toggle('slow');
-      //alert('fa-book');
+     
       $('.expense-list-filters').fadeIn('slow')
     }}
     >
@@ -52,9 +55,14 @@ class Header extends Component {
     <li className="nav-item">
         <NavLink className="nav-link" activeClassName='active-nav-link' to="/react/expenses/add"><i className='fas fa-coins'></i> Add expense</NavLink>
     </li>
+    <li className="nav-item">
+        <Logout />
+    </li>
      <li className="nav-item">
         <a className="nav-link" href="/"><i className='fas fa-book'></i> Storybook</a>
     </li>
+    </Fragment>
+    }
   </ul>
       
   </div>

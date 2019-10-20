@@ -20,3 +20,7 @@ export const SET_PATHNAME = 'SET_PATHNAME';
 
 export const SET_LOADING = 'SET_LOADING';
 
+export const SET_CURRENT_USER = 'SET_CURRENT_USER';
+
+export const SET_EXPENSES = 'SET_EXPENSES';
+

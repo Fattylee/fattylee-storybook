@@ -9,14 +9,15 @@ class EditExpense extends Component {
   onSubmit = async (expense) => {
   
     const {id} = this.props.match.params;
+     const {uid:owner} =  this.props.state.authUser;
+    expense.owner = owner;
     try {
       this.props.history.push('/react/loading');
     await this.props.dispatch(editExpense(id, expense));
     this.props.history.push('/react/expenses');
     }
     catch(e) {
-      console.log('Something went wrong, pls try again', e.message);
-      //this.props.history.push('/react/expenses/edit/' + id );
+      console.log('Something went wrong, pls try again', e.message); 
       this.props.history.goBack();
     };
     

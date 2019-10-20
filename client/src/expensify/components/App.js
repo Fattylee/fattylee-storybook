@@ -1,8 +1,7 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, NavLink, Link, Switch } from 'react-router-dom';
 import {connect} from 'react-redux';
-
 import ExpensesList from './ExpensesList';
 import Dashboard from './Dashboard';
 import ExpenseForm from './ExpenseForm';
@@ -10,10 +9,6 @@ import AddExpense from './AddExpense';
 import EditExpense from './EditExpense';
 import Expense from './Expense';
 import RandomizeLoader from './RandomizeLoader';
-
-
-
-
 import Header from './Header';
 
 
@@ -52,11 +47,14 @@ const App = (props) => {
   return(
   <Router>
   <Header />
- 
+  
   <div className='container mt-4 text-white'>
   <Switch>
   
     <Route exact path='/react' component={Dashboard} />
+    <Fragment>
+    {props.state.authUser && (
+    <Switch>
     <Route exact path='/react/expenses' component={ExpensesList} />
     <Route  path='/react/expenses/add' component={AddExpense} />
     <Route  path='/react/expenses/edit/:id' component={EditExpense} />
@@ -65,11 +63,14 @@ const App = (props) => {
     <Route  path='/react/news' component={News} /> 
     <Route path='/react/loading'
     render={(props) => <RandomizeLoader  {...props}/>} />
-    
     <Route component={NotFound} />
+    </Switch>
+    )}
+    </Fragment>
     
   </Switch>
   </div>
+  
   </Router>
 );
 };

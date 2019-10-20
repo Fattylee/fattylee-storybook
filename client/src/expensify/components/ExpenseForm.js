@@ -12,7 +12,7 @@ class ExpenseForm extends Component {
     note: '',
     amount: '',
     createdAt: moment(),
-    focused: false,
+    focused: false, 
     errors: [],
     screen: window.innerWidth,
   }

@@ -1,20 +1,14 @@
 import * as types from './types';
 import database, {firebase} from '../firebase/firebase';
-import configureStore from '../store/configureStore';
 import {setLoading} from './isLoadingAction';
 
 
-const store = configureStore();
-
-
-
-export const getInit = () => dispatch => {
+export const getInit = (authUser = {}) => dispatch => {
   
   return new Promise((resolve, reject) => {
     
   database.ref('expenses').on('value', (snapshot => {
     
-  
   const expenses = [];
   snapshot.forEach(childSnapshot => {
     expenses.push({
@@ -22,11 +16,13 @@ export const getInit = () => dispatch => {
       ...childSnapshot.val(),
     });
   });
-  dispatch({type: 'INITME', expenses}); 
-  /*console.log(store.getState());
-    store.subscribe(() => {
-      console.log(store.getState());
-    });*/
+  
+  const filteredExpenses = expenses.filter(expense => expense.owner === authUser.uid);
+  console.log('filteredExpenses', filteredExpenses, 'state', authUser);
+  dispatch({
+    type: types.SET_EXPENSES, 
+    expenses: filteredExpenses,
+  });
   resolve();
 }), (err => {
   console.log('couldnot fetch expenses from firebase, try again', err.message);
@@ -34,23 +30,22 @@ export const getInit = () => dispatch => {
 }));
   });
 
-};
-
-
+}; // end getInit
 
 export const addExpense = ({
   description = '',
   amount = 0,
   createdAt = Date.now(),
-  note = '',} = {}) => dispatch => 
+  note = '',
+  owner,
+  } = {}) => dispatch => 
   {
   database
   .ref('expenses')
-  .push({description, amount, createdAt, note})
+  .push({description, amount, createdAt, note, owner})
   .then(ref => {
       console.log("data persisted to firebase database!");
       dispatch(setLoading());
-    
     })
     .catch(err => {
       console.log('something went wrong! addExpense', err);

@@ -17,8 +17,7 @@ import RandomizeLoader from './RandomizeLoader';
 class ExpensesList extends Component { 
   
   componentDidMount() {
-    this.props.dispatch(setPathname('/react'));
-    
+    this.props.dispatch(setPathname('/react')); 
   }
   componentWillUnmount() {
     this.props.dispatch(setPathname());
