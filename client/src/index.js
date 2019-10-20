@@ -9,7 +9,6 @@ if(process.env.NODE_ENV === 'development') {
   window.axios = axios;
 }
 
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/base.css';
 import './css/style.less';

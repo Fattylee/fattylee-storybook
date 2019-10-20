@@ -78,19 +78,7 @@ export const editExpense = (id, expense = {}) => dispatch => {
   }
   
   return database.ref('expenses/' + id).update({...update});
-  /*.then( ref => {
-    
-  /*  return dispatch({
-    type: types.EDIT_EXPENSE,
-    id,
-    expense: {
-     ...update
-    },
-  });/
-  })
-  .catch(err => {
-    console.log('could not update expense with ID: ' +id, err.message);
-  });*/
+ 
 };
 
 /*

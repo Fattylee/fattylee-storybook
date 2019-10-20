@@ -2,9 +2,9 @@ import React, {Fragment} from 'react';
 import {Link} from 'react-router-dom';
 import {login} from '../auth/auth';
 
-const Login = () => (
+const Login = ({notNav}) => (
    <Fragment>
-   <a className="nav-link"
+   <a className={notNav ? " btn btn-lg btn-dark bg-black" : 'nav-link'}
    onClick={() => {
      login()
      .then(function(result) {

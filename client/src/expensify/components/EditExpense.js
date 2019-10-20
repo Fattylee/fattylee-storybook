@@ -2,7 +2,7 @@ import React, {Fragment, Component } from 'react';
 import {editExpense} from '../actions/expensesAction';
 import {connect} from 'react-redux';
 import ExpenseForm from './ExpenseForm';
-
+import {setLoading} from '../actions/isLoadingAction';
 
 class EditExpense extends Component {
   
@@ -12,13 +12,15 @@ class EditExpense extends Component {
      const {uid:owner} =  this.props.state.authUser;
     expense.owner = owner;
     try {
-      this.props.history.push('/react/loading');
+      this.props.dispatch(setLoading(true));
+      this.props.history.push('/react/expenses');
     await this.props.dispatch(editExpense(id, expense));
-    this.props.history.push('/react/expenses');
+    this.props.dispatch(setLoading());
+    
     }
     catch(e) {
       console.log('Something went wrong, pls try again', e.message); 
-      this.props.history.goBack();
+      this.props.dispatch(setLoading());
     };
     
   }; // end onSubmit

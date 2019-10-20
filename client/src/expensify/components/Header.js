@@ -12,12 +12,18 @@ class Header extends Component {
  const btn = $('nav.navbar button'); 
  if(btn.attr('aria-expanded') === 'true') btn.click(); // close opened navbar
     }
-  
+  handleOnMouseLeave = () => {
+     
+ const btn = $('nav.navbar button');
+ if(btn.attr('aria-expanded') === 'true') btn.click(); 
+  }
   render () {
     
     return (
       <Fragment>
-        <nav className="navbar navbar-expand-sm navbar-dark bg-danger shadow-dark-react">
+        <nav className="navbar navbar-expand-sm navbar-dark bg-danger shadow-dark-react"
+        onMouseLeave={this.handleOnMouseLeave}
+        >
 <div className='container'>
   <NavLink className="navbar-brand" activeClassName='active-nav-link' exact to="/react"
   onClick={this.onClickCloseNavbar}
@@ -54,6 +60,9 @@ class Header extends Component {
      
     <li className="nav-item">
         <NavLink className="nav-link" activeClassName='active-nav-link' to="/react/expenses/add"><i className='fas fa-coins'></i> Add expense</NavLink>
+    </li>
+    <li className="nav-item">
+        <NavLink className="nav-link" activeClassName='active-nav-link' to="/react/expenses/add"><i className='fas fa-user'></i> {this.props.authUser.displayName}</NavLink>
     </li>
     <li className="nav-item">
         <Logout />

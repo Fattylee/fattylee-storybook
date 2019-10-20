@@ -9,6 +9,7 @@ import AddExpense from './AddExpense';
 import EditExpense from './EditExpense';
 import Expense from './Expense';
 import RandomizeLoader from './RandomizeLoader';
+import Login from './Login';
 import Header from './Header';
 
 
@@ -53,7 +54,7 @@ const App = (props) => {
   
     <Route exact path='/react' component={Dashboard} />
     <Fragment>
-    {props.state.authUser && (
+    {!props.state.authUser ? <Login notNav /> : (
     <Switch>
     <Route exact path='/react/expenses' component={ExpensesList} />
     <Route  path='/react/expenses/add' component={AddExpense} />

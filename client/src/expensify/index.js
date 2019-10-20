@@ -19,6 +19,12 @@ $('body').addClass('react-body');
 
 // page animation
 ReactDOM.render(<RandomizeLoader />, $('#rootZ')[0]);
+
+/*ReactDOM.render(<Provider store={store} >
+  <App />
+  </Provider>, $('#rootZ')[0]);
+  */
+  
 store.subscribe(() => console.log(store.getState()));
 
 store.dispatch(getCurrentUser())
