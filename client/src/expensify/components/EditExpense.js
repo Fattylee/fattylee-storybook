@@ -50,3 +50,4 @@ class EditExpense extends Component {
 
 
 export default connect(state => ({state}))(EditExpense);
+

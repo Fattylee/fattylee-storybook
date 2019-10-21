@@ -4,7 +4,7 @@ import {getInit} from './expensesAction';
 
 export const getCurrentUser = () => dispatch => {
   return new Promise((resolve, reject) => { 
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(user => {
     if (user) {
       const {displayName, email, photoURL, emailVerified, uid} = user;
     const currentUser = {displayName, email, photoURL, emailVerified, uid};
@@ -15,22 +15,23 @@ export const getCurrentUser = () => dispatch => {
     });
    
    dispatch(getInit(currentUser))
-   .then(() => { 
-    console.log('getInit ran');
-    resolve(currentUser);
+   .then(() => {  
+    resolve();
    })
    .catch(err => {
     console.log('getInit something went wrong 1', err);
    });
+ 
+    } 
   
-    
-    } else {
+    else {
       dispatch({
       type: types.SET_CURRENT_USER, 
     });
     reject('No signed in user'); 
     }
-  });
-  });
+  
+  }); // end onAuthStateChanged
+  }); // end Promise
 }
 

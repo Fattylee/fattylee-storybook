@@ -18,7 +18,7 @@ export const getInit = (authUser = {}) => dispatch => {
   });
   
   const filteredExpenses = expenses.filter(expense => expense.owner === authUser.uid);
-  console.log('filteredExpenses', filteredExpenses, 'state', authUser);
+  
   dispatch({
     type: types.SET_EXPENSES, 
     expenses: filteredExpenses,
@@ -43,8 +43,7 @@ export const addExpense = ({
   database
   .ref('expenses')
   .push({description, amount, createdAt, note, owner})
-  .then(ref => {
-      console.log("data persisted to firebase database!");
+  .then(ref => { 
       dispatch(setLoading());
     })
     .catch(err => {
@@ -60,7 +59,8 @@ database.ref('expenses/' + id).remove()
 .catch(err => {
   console.log('could not delete expense', err.message);
 });
-}
+};
+
 export const editExpense = (id, expense = {}) => dispatch => {
   
   const update = {};
@@ -80,32 +80,4 @@ export const editExpense = (id, expense = {}) => dispatch => {
   return database.ref('expenses/' + id).update({...update});
  
 };
-
-/*
-export const startAddExpense = (expenseData = {}) => {
-  const {
-    description = '',
-    amount = 0,
-    createdAt = Date.now(),
-    note = '',
-  } = expenseData;
-  
-  const expense = {description, note, createdAt, amount};
-  
-  return (dispatch) => {
-    console.log('working to call firebase');
-    database.ref('expenses').push(expense).
-    then(ref => {
-      console.log("data persisted to firebase database!");
-      
-      dispatch(addExpense({
-        id: ref.key,
-        ...expense,
-      }));
-    })
-    .catch(err => {
-      console.log('something went wrong!', err);
-    });
-  };
-};*/
 

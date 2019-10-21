@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 
-import usersReducer from './usersReducer';
 import filtersReducer from './filtersReducer';
 import expensesReducer from './expensesReducer';
 import pathnameReducer from './pathnameReducer';
@@ -9,7 +8,6 @@ import authUserReducer from './authUserReducer';
 
 
 export default combineReducers({
-  users: usersReducer,
   authUser: authUserReducer,
   filters: filtersReducer,
   expenses: expensesReducer,

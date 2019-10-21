@@ -69,7 +69,7 @@ onChange={(e) => {
   endDate={filters.endDate} // momentPropTypes.momentObj or null,
   endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
   onDatesChange={({ startDate, endDate }) => { 
-  console.log('=onDatesChange', startDate, endDate);
+  
   dispatch(setStartDate(startDate));
   dispatch(setEndDate(endDate));
   /*this.setState({ startDate, endDate }, () => {

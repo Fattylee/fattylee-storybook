@@ -10,37 +10,29 @@ import configureStore from './store/configureStore';
 import RandomizeLoader from './components/RandomizeLoader';
 import {getInit} from './actions/expensesAction';
 import {getCurrentUser} from './actions/authAction';
-import './auth/auth';
 
 
 const store = configureStore();
 
 $('body').addClass('react-body');
 
-// page animation
+const render = () => {
+  ReactDOM.render(<Provider store={store} >
+  <App />
+  </Provider>, $('#rootZ')[0]);
+}
+
+// page bootstrap animation
 ReactDOM.render(<RandomizeLoader />, $('#rootZ')[0]);
-
-/*ReactDOM.render(<Provider store={store} >
-  <App />
-  </Provider>, $('#rootZ')[0]);
-  */
   
-store.subscribe(() => console.log(store.getState()));
+//store.subscribe(() => console.log('abu', store.getState()));
 
+// this code will run only once
 store.dispatch(getCurrentUser())
-.then(currentUser => {
-  console.log('signed in', currentUser);
+.then(currentUser => { 
   // render App
-  ReactDOM.render(<Provider store={store} >
-  <App />
-  </Provider>, $('#rootZ')[0]);
-  
+  render();
 })
-.catch(err => {
-  console.log(err);
-  
-  ReactDOM.render(<Provider store={store} >
-  <App />
-  </Provider>, $('#rootZ')[0]);
- 
+.catch(err => { 
+  render();
 });

@@ -53,22 +53,24 @@ const App = (props) => {
   <Switch>
   
     <Route exact path='/react' component={Dashboard} />
+    <Route  path='/react/about' component={About} />
+    <Route  path='/react/news' component={News} /> 
+    
     <Fragment>
-    {!props.state.authUser ? <Login notNav /> : (
+    {!props.state.authUser ? <Login notNav /> : props.state.isLoading ? 'isLoading' : (
     <Switch>
     <Route exact path='/react/expenses' component={ExpensesList} />
     <Route  path='/react/expenses/add' component={AddExpense} />
     <Route  path='/react/expenses/edit/:id' component={EditExpense} />
     <Route exact path='/react/expenses/:id' component={Expense} />
-    <Route  path='/react/about' component={About} />
-    <Route  path='/react/news' component={News} /> 
+   
     <Route path='/react/loading'
     render={(props) => <RandomizeLoader  {...props}/>} />
     <Route component={NotFound} />
     </Switch>
     )}
     </Fragment>
-    
+ 
   </Switch>
   </div>
   

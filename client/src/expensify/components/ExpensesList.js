@@ -13,6 +13,8 @@ import ActionButton from './ActionButton';
 import SumExpenses from './SumExpenses';
 import RandomizeLoader from './RandomizeLoader';
 
+import {setCurrentUser} from '../actions/authAction';
+
 
 class ExpensesList extends Component { 
   
