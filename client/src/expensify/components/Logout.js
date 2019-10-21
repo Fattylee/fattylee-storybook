@@ -8,10 +8,10 @@ const Logout = () => (
    onClick={() => {
      logout()
      .then(function() {
-    console.log('Sign-out successful.');
+    //console.log('Sign-out successful.');
 }).catch(function(error) {
   // An error happened.
-console.log('An error happened.', error);
+//console.log('An error happened.', error);
 });
    }}
    >

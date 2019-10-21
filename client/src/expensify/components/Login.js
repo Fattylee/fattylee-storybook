@@ -4,7 +4,7 @@ import {login} from '../auth/auth';
 
 const Login = ({notNav}) => (
    <Fragment>
-   <a className={notNav ? " btn btn-lg btn-dark bg-black" : 'nav-link'}
+   <a className={notNav ? "btn btn-lg btn-dark bg-black" : 'nav-link'}
    onClick={() => {
      login()
      .then(function(result) {
@@ -12,7 +12,7 @@ const Login = ({notNav}) => (
   var token = result.credential.accessToken;
   // The signed-in user info.
   var user = result.user;
-console.log(token, user, 'success');
+//console.log(token, user, 'success');
   // ...
 }).catch(function(error) {
   // Handle Errors here.
@@ -23,7 +23,7 @@ console.log(token, user, 'success');
   // The firebase.auth.AuthCredential type that was used.
   var credential = error.credential;
   // ...
-console.log(errorCode, errorMessage, email, credential, 'error');
+//console.log(errorCode, errorMessage, email, credential, 'error');
 });
    }}
    >
