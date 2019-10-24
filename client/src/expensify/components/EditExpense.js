@@ -3,6 +3,7 @@ import {editExpense} from '../actions/expensesAction';
 import {connect} from 'react-redux';
 import ExpenseForm from './ExpenseForm';
 import {setLoading} from '../actions/isLoadingAction';
+import {setGlobalError} from '../actions/errorAction';
 
 class EditExpense extends Component {
   
@@ -14,6 +15,9 @@ class EditExpense extends Component {
     try {
       this.props.dispatch(setLoading(true));
       this.props.history.push('/react/expenses');
+      setTimeout(() => {
+        throw Error('Network issue, please try again later.');
+      }, 10000);
     await this.props.dispatch(editExpense(id, expense));
     this.props.dispatch(setLoading());
     
@@ -21,6 +25,11 @@ class EditExpense extends Component {
     catch(e) {
       console.log('Something went wrong, pls try again', e.message); 
       this.props.dispatch(setLoading());
+      if(e.message && e.message.toLowerCase().includes('Network issue')) {
+        return this.props.dispatch(setGlobalError({message: e.message, duration: 86400000}));
+      }
+      this.props.dispatch(setGlobalError({message: 'permission denied, could not edit expense, please try again later', duration: 86400000}));
+      
     };
     
   }; // end onSubmit
@@ -50,4 +59,3 @@ class EditExpense extends Component {
 
 
 export default connect(state => ({state}))(EditExpense);
-

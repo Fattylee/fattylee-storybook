@@ -1,14 +1,14 @@
 import * as types from './types';
 import database, {firebase} from '../firebase/firebase';
 import {setLoading} from './isLoadingAction';
-
+import {setGlobalError} from './errorAction';
 
 export const getInit = (authUser = {}) => dispatch => {
   
   return new Promise((resolve, reject) => {
     
   database.ref('expenses').on('value', (snapshot => {
-    
+  
   const expenses = [];
   snapshot.forEach(childSnapshot => {
     expenses.push({
@@ -25,7 +25,8 @@ export const getInit = (authUser = {}) => dispatch => {
   });
   resolve();
 }), (err => {
-  console.log('couldnot fetch expenses from firebase, try again', err.message);
+  console.log('couldnot fetch expenses from firebase, try again', err);
+  dispatch(setGlobalError({message: 'permission denied, could not retrieve expenses, please try again later', duration: 86400000})); 
   reject(err);
 }));
   });
@@ -48,6 +49,8 @@ export const addExpense = ({
     })
     .catch(err => {
       console.log('something went wrong! addExpense', err);
+      dispatch(setGlobalError({message: 'permission denied, could not add expense, please try again later', duration: 86400000}));
+      dispatch(setLoading());
     });
 };
 
@@ -58,6 +61,10 @@ database.ref('expenses/' + id).remove()
 })
 .catch(err => {
   console.log('could not delete expense', err.message);
+  dispatch(setGlobalError({
+    message: 'permission denied, could not delete expense, please try again later'
+  , duration: 86400000}));
+  dispatch(setLoading());
 });
 };
 
@@ -80,4 +87,3 @@ export const editExpense = (id, expense = {}) => dispatch => {
   return database.ref('expenses/' + id).update({...update});
  
 };
-

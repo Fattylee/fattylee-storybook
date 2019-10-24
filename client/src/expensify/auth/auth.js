@@ -4,7 +4,7 @@ import {firebase} from '../firebase/firebase';
 const provider = new firebase.auth.GoogleAuthProvider();
 
 
-export const login = () => firebase.auth().signInWithRedirect(provider);//firebase.auth().signInWithPopup(provider);
+export const login = () => firebase.auth().signInWithPopup(provider);//firebase.auth().signInWithRedirect(provider);
 
 
 /*.then(function(result) {

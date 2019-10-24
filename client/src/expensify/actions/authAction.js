@@ -20,6 +20,7 @@ export const getCurrentUser = () => dispatch => {
    })
    .catch(err => {
     console.log('getInit something went wrong 1', err);
+    resolve(); 
    });
  
     } 
@@ -34,4 +35,3 @@ export const getCurrentUser = () => dispatch => {
   }); // end onAuthStateChanged
   }); // end Promise
 }
-

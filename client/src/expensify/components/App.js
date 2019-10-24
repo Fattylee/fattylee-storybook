@@ -11,10 +11,14 @@ import Expense from './Expense';
 import RandomizeLoader from './RandomizeLoader';
 import Login from './Login';
 import Header from './Header';
+import PrivateRoute from './PrivateRoute';
+import PublicRoute from './PublicRoute';
+import AlertBox from './AlertBox';
 
 
 const About = () => (
-  <h4>About || This is the main Header</h4>
+  <h4>About || This is the main Header <Link to='/react/news'>News</Link>
+  </h4>
 );
 
 const News = (props) => {
@@ -49,15 +53,17 @@ const App = (props) => {
   <Router>
   <Header />
   
+  {props.state.globalError && <AlertBox /> }
+  
   <div className='container mt-4 text-white'>
   <Switch>
   
-    <Route exact path='/react' component={Dashboard} />
-    <Route  path='/react/about' component={About} />
-    <Route  path='/react/news' component={News} /> 
+    <PublicRoute exact path='/react' component={Dashboard} />
+    <About  path='/react/about' component={About} />
+    <PrivateRoute fake={'fakers'} path='/react/news' component={News} /> 
     
     <Fragment>
-    {!props.state.authUser ? <Login notNav /> : props.state.isLoading ? 'isLoading' : (
+    {!props.state.authUser ? <Login notNav />: (
     <Switch>
     <Route exact path='/react/expenses' component={ExpensesList} />
     <Route  path='/react/expenses/add' component={AddExpense} />
@@ -70,7 +76,7 @@ const App = (props) => {
     </Switch>
     )}
     </Fragment>
- 
+    
   </Switch>
   </div>
   

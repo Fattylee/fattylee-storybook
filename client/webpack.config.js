@@ -17,9 +17,8 @@ module.exports = (env) => {
 
   return  {
     
-    //entry: './src/index.js',
-    entry: path.join(__dirname, 'src/index.js'),
-    //entry: path.join(__dirname, 'src/components/App.js'), 
+    //entry: './playground/index.js',
+    entry: path.join(__dirname, 'src/index.js'), 
     output: {
       path: publicPath,
       filename: 'bundle.js',

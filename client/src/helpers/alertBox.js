@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-const  alertBox = (options = {}) => {
+const  alertBox = (options = {}, callback) => {
       const {
         type = 'danger',
         duration = 3000,
@@ -35,11 +35,17 @@ const  alertBox = (options = {}) => {
     
     $('body').after(alertMsgHandler);
     setTimeout(() => {
-      alertMsgHandler.fadeOut(speed, () => alertMsgHandler.remove())
+      alertMsgHandler.fadeOut(speed, () => {
+        alertMsgHandler.remove();
+         if(typeof callback === 'function')
+      callback();
+      })
     }, duration);
     
     $('button.close[data-dismiss="alert"]').on('click', function(){
       alertMsgHandler.remove();
+      if(typeof callback === 'function')
+      callback();
     });
     }; // end alertBox
 

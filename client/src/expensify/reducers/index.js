@@ -5,6 +5,7 @@ import expensesReducer from './expensesReducer';
 import pathnameReducer from './pathnameReducer';
 import isLoadingReducer from './isLoadingReducer';
 import authUserReducer from './authUserReducer';
+import errorReducer from './errorReducer';
 
 
 export default combineReducers({
@@ -13,5 +14,6 @@ export default combineReducers({
   expenses: expensesReducer,
   pathname: pathnameReducer,
   IS_DESKTOP: () => window.innerWidth > 440 ,
-  IS_LOADING: isLoadingReducer, 
+  IS_LOADING: isLoadingReducer,
+  globalError: errorReducer,
 });

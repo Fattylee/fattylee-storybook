@@ -25,7 +25,8 @@ const render = () => {
 // page bootstrap animation
 ReactDOM.render(<RandomizeLoader />, $('#rootZ')[0]);
   
-//store.subscribe(() => console.log('abu', store.getState()));
+store.subscribe(() => console.log('abu', store.getState()));
+
 
 // this code will run only once
 store.dispatch(getCurrentUser())
@@ -36,3 +37,24 @@ store.dispatch(getCurrentUser())
 .catch(err => { 
   render();
 });
+
+
+//const run = () => {
+
+      setTimeout(() => {
+        try {
+        throw ({message:'Network issue, please try again later.'});
+      }
+    
+    catch(e) {
+      console.log('qz ', e.message); 
+    
+      if( e.message && e.message.toLowerCase().includes('network issue')) {
+        return console.log('y ', e); 
+ 
+      }
+      
+      console.log('z Something went wrong, pls try again', e.message); 
+    }
+  }, 1000); // end setTimeout
+//};run();
