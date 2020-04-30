@@ -46,7 +46,7 @@
     "mongoose-url-slugs": "1.0.2",
     "connect-mongo": "3.0.0",
     "cors": "2.8.5",
-    "jquery": "3.4.1",
+    "jquery": "3.5.0",
     "request": "2.88.0",
     "jsonwebtoken": "8.5.0"
   },
