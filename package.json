@@ -61,7 +61,6 @@
     "webpack-dev-middleware": "3.7.1"
   },
   "engines": {
-    "node": "12.1.0"
   },
   "keywords": ["express", "nodejs", "passportjs", "express-handlebars", "stories"],
   "author": "fatai balogun",
