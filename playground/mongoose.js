@@ -8,7 +8,7 @@ const debug = require("debug")("debugger");
 const PostSchema = new mongoose.Schema({ title: String });
 
 const MangoSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  name: { type: String },
   avatar: { type: String },
   fileName: { type: String },
   posts: [PostSchema],
@@ -19,6 +19,17 @@ MangoSchema.virtual("more").get(function () {
   return 78;
 });
 const Mango = mongoose.model("Mango", MangoSchema);
+
+// new Mango({ name: "next" }).save().then(console.log);
+Mango.update(
+  { name: "next" },
+  // { $set: { avatar: "y_avatar" } },
+  { avatar: "y_avatar" },
+  { new: true }
+).then((res) => {
+  console.log("=".repeat(90));
+  Mango.find().then(console.log);
+});
 
 //mongoose connection
 //mongoose.connect('mongodb://localhost/test',
@@ -32,6 +43,7 @@ mongoose.connect("mongodb://localhost/expert", {
 // .catch((err) => console.error("Could not connect to db(test)"));
 
 mongoose.connection.once("open", () => console.log("Connected to mongodb"));
+
 const create = async (obj) => {
   try {
     const newMangoes = await Mango.insertMany(obj);
@@ -192,7 +204,7 @@ const mangoesArr = new Array(10).fill(0).map((m) => ({
 //fetch();
 //deleteMango();
 //update();
-updateManyUsers();
+// updateManyUsers();
 
 /*
 const o = {};
