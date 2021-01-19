@@ -1,19 +1,16 @@
-import prodKeys from './prod';
-import testDbKeys from './test_db';
+import testDbKeys from "./test_db";
+import prodKeys from "./prod";
 
 let keys;
 
-if(process.env.NODE_ENV  === 'production') {
+if (process.env.NODE_ENV === "production") {
   keys = prodKeys;
-}
-else if(process.env.NODE_ENV  === 'test') {
-  
+} else if (process.env.NODE_ENV === "test") {
   keys = testDbKeys;
-}
-else { 
-  keys = require('./dev');
+} else {
+  keys = require("./dev");
 }
 
-
+console.log(keys, "=======keys====");
+console.log(process.env);
 export default keys;
-

@@ -19,7 +19,7 @@ const registerSchema = loginSchema.keys({
     .valid(Joi.ref("password"))
     .required()
     .label("Confirm password")
-    .options({ language: { any: { allowOnly: "must match Password" } } })
+    .options({ messages: { "any.only": "{{#label}} must match Password" } })
     .trim(),
 });
 
