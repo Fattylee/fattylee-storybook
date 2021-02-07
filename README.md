@@ -9,7 +9,7 @@ This is app was created for the brilliant minds to showcase their thoughts for t
 ## Table of Content
 
 [Features](#features)<br>
-[Technology](#technologies and languages)<br>
+[Technology]('#technologies and languages')<br>
 [Installation](#installation)<br>
 [Testing](#testing)<br>
 [API End Points](#api-end-points)
