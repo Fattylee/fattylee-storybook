@@ -4,12 +4,12 @@
 
 This is app was created for the brilliant minds to showcase their thoughts for the benefit of humanity.
 
-[Open App](https://fattylee-storybook.herokuapp.com)
+<a href='https://fattylee-storybook.herokuapp.com' target='_blank'>Open App</a>
 
 ## Table of Content
 
 [Features](#features)<br>
-[Technology](#technology)<br>
+[Technology](#technologies and languages)<br>
 [Installation](#installation)<br>
 [Testing](#testing)<br>
 [API End Points](#api-end-points)
@@ -34,7 +34,7 @@ Users can upload a cover image for an article<br/>
 Users can change password<br/>
 Users can reset password<br/>
 
-## Technology
+## Technologies and Languages
 
 Modern JavaScript technologies were adopted in this project
 
@@ -47,14 +47,14 @@ Visit [here](https://nodejs.org/en/) for more information.
 ExressJS: This is the web application framework for Node.js
 Visit [here](https://expressjs.com) for more information.
 
-MongoDB, Mongoose ORM, PassportJS, Google CLoud Storage (GCS) used for saving images,Sendgrid, Express-handlebars, Webpack, Bootstrap, Less to mention a few.
+MongoDB, Mongoose ORM, PassportJS, Google CLoud Storage (GCS) used for saving images,Sendgrid, Express-handlebars, Webpack, Bootstrap, Less, CSS, HTML5 to mention a few.
 
 ## Installation
 
 1. Clone this repository into your local computer:
 
 ```
-https://github.com/Fattylee/fattylee-storybook
+git clone https://github.com/Fattylee/fattylee-storybook.git
 ```
 
 2. Navigate into the cloned repository in your computer:
