@@ -1,39 +1,48 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
   <head>
-  <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> 
-    {{#if pageTitle }}
-    {{ pageTitle }} || Storybook 
-    {{ else}}
-     Storybook 
-    {{/if}}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      {{#if pageTitle }} {{ pageTitle }} || Storybook {{ else}} Storybook
+      {{/if}}
     </title>
-    
+
     <link rel="shortcut icon" href="/img/storybook.png" />
-    
+
     <link rel="stylesheet" href="/dist/css/styles.css" />
-     
-    
+
+    <meta
+      name="description"
+      content="Publish your thought and make a difference!
+This is app was created for brilliant minds to showcase their thoughts for the benefit of humanity"
+    />
+    <meta
+      name="description"
+      property="og:description"
+      content="Publish your thought and make a difference!
+This is app was created for brilliant minds to showcase their thoughts for the benefit of humanity"
+    />
+    <meta name="title" property="og:title" content="Storybook" />
+    <meta property="og:type" content="Website" />
+    <meta
+      name="image"
+      property="og:image"
+      content="https://live.staticflickr.com/65535/50853039501_c2d473ec6b_z.jpg"
+    />
+    <meta name="author" content="Fatai Balogun" />
+
     <!-- main js -->
-  <script src="/dist/bundle.js"></script>
+    <script src="/dist/bundle.js"></script>
   </head>
 
   <body>
-    
-   <!-- navbar partials -->
-    {{> _navbar }}
-    {{> _msg }}
-    {{> _errors }}
-   
-   <div class="body">
-    {{{body}}}
-   </div>
-   
-   <div id="root"></div>
-   {{> _footer }}
-   
-  
+    <!-- navbar partials -->
+    {{> _navbar }} {{> _msg }} {{> _errors }}
+
+    <div class="body">{{{body}}}</div>
+
+    <div id="root"></div>
+    {{> _footer }}
   </body>
 </html>
